@@ -1,0 +1,1835 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1066px;
+            height: 589px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/sun_assets_1.js"></script>
+        <script src="data/mon_assets_2.js"></script>
+        <script src="data/tue_assets_3.js"></script>
+        <script src="data/wed_assets_4.js"></script>
+        <script src="data/thu_assets_5.js"></script>
+        <script src="data/fri_assets_6.js"></script>
+        <script src="data/sat_assets_7.js"></script>
+        <script src="data/search_assets_8.js"></script>
+        <script src="data/assets_9.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-1.6949913579709035,36.29340698337814],[-0.9069407667692215,37.72221216540201]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_sun_assets_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Category</th>\
+                        <td class="visible-with-data" id="Category">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SundayLogin'] !== null ? autolinker.link(feature.properties['SundayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SundayLogoff'] !== null ? autolinker.link(feature.properties['SundayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_sun_assets_1_0() {
+            return {
+                pane: 'pane_sun_assets_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,182,54,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_sun_assets_1');
+        map.getPane('pane_sun_assets_1').style.zIndex = 401;
+        map.getPane('pane_sun_assets_1').style['mix-blend-mode'] = 'normal';
+        var layer_sun_assets_1 = new L.geoJson(json_sun_assets_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_sun_assets_1',
+            layerName: 'layer_sun_assets_1',
+            pane: 'pane_sun_assets_1',
+            onEachFeature: pop_sun_assets_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_sun_assets_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_sun_assets_1);
+        map.addLayer(layer_sun_assets_1);
+        function pop_mon_assets_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Category</th>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MondayLogin'] !== null ? autolinker.link(feature.properties['MondayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MondayLogoff'] !== null ? autolinker.link(feature.properties['MondayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_mon_assets_2_0() {
+            return {
+                pane: 'pane_mon_assets_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_mon_assets_2');
+        map.getPane('pane_mon_assets_2').style.zIndex = 402;
+        map.getPane('pane_mon_assets_2').style['mix-blend-mode'] = 'normal';
+        var layer_mon_assets_2 = new L.geoJson(json_mon_assets_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_mon_assets_2',
+            layerName: 'layer_mon_assets_2',
+            pane: 'pane_mon_assets_2',
+            onEachFeature: pop_mon_assets_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_mon_assets_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_mon_assets_2);
+        map.addLayer(layer_mon_assets_2);
+        function pop_tue_assets_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TuesdayLogin'] !== null ? autolinker.link(feature.properties['TuesdayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TuesdayLogoff'] !== null ? autolinker.link(feature.properties['TuesdayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_tue_assets_3_0() {
+            return {
+                pane: 'pane_tue_assets_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_tue_assets_3');
+        map.getPane('pane_tue_assets_3').style.zIndex = 403;
+        map.getPane('pane_tue_assets_3').style['mix-blend-mode'] = 'normal';
+        var layer_tue_assets_3 = new L.geoJson(json_tue_assets_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_tue_assets_3',
+            layerName: 'layer_tue_assets_3',
+            pane: 'pane_tue_assets_3',
+            onEachFeature: pop_tue_assets_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_tue_assets_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_tue_assets_3);
+        map.addLayer(layer_tue_assets_3);
+        function pop_wed_assets_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['WednesdayLogin'] !== null ? autolinker.link(feature.properties['WednesdayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['WednesdayLogoff'] !== null ? autolinker.link(feature.properties['WednesdayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_wed_assets_4_0() {
+            return {
+                pane: 'pane_wed_assets_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(145,82,45,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_wed_assets_4');
+        map.getPane('pane_wed_assets_4').style.zIndex = 404;
+        map.getPane('pane_wed_assets_4').style['mix-blend-mode'] = 'normal';
+        var layer_wed_assets_4 = new L.geoJson(json_wed_assets_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_wed_assets_4',
+            layerName: 'layer_wed_assets_4',
+            pane: 'pane_wed_assets_4',
+            onEachFeature: pop_wed_assets_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_wed_assets_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_wed_assets_4);
+        map.addLayer(layer_wed_assets_4);
+        function pop_thu_assets_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ThursdayLogin'] !== null ? autolinker.link(feature.properties['ThursdayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ThursdayLogoff'] !== null ? autolinker.link(feature.properties['ThursdayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_thu_assets_5_0() {
+            return {
+                pane: 'pane_thu_assets_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,139,143,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_thu_assets_5');
+        map.getPane('pane_thu_assets_5').style.zIndex = 405;
+        map.getPane('pane_thu_assets_5').style['mix-blend-mode'] = 'normal';
+        var layer_thu_assets_5 = new L.geoJson(json_thu_assets_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_thu_assets_5',
+            layerName: 'layer_thu_assets_5',
+            pane: 'pane_thu_assets_5',
+            onEachFeature: pop_thu_assets_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_thu_assets_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_thu_assets_5);
+        map.addLayer(layer_thu_assets_5);
+        function pop_fri_assets_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FridayLogin'] !== null ? autolinker.link(feature.properties['FridayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FridayLogoff'] !== null ? autolinker.link(feature.properties['FridayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_fri_assets_6_0() {
+            return {
+                pane: 'pane_fri_assets_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(133,182,111,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_fri_assets_6');
+        map.getPane('pane_fri_assets_6').style.zIndex = 406;
+        map.getPane('pane_fri_assets_6').style['mix-blend-mode'] = 'normal';
+        var layer_fri_assets_6 = new L.geoJson(json_fri_assets_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_fri_assets_6',
+            layerName: 'layer_fri_assets_6',
+            pane: 'pane_fri_assets_6',
+            onEachFeature: pop_fri_assets_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_fri_assets_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_fri_assets_6);
+        map.addLayer(layer_fri_assets_6);
+        function pop_sat_assets_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SaturdayLogin'] !== null ? autolinker.link(feature.properties['SaturdayLogin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SaturdayLogoff'] !== null ? autolinker.link(feature.properties['SaturdayLogoff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_sat_assets_7_0() {
+            return {
+                pane: 'pane_sat_assets_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,113,88,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_sat_assets_7');
+        map.getPane('pane_sat_assets_7').style.zIndex = 407;
+        map.getPane('pane_sat_assets_7').style['mix-blend-mode'] = 'normal';
+        var layer_sat_assets_7 = new L.geoJson(json_sat_assets_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_sat_assets_7',
+            layerName: 'layer_sat_assets_7',
+            pane: 'pane_sat_assets_7',
+            onEachFeature: pop_sat_assets_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_sat_assets_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_sat_assets_7);
+        map.addLayer(layer_sat_assets_7);
+        function pop_search_assets_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NameEK'] !== null ? autolinker.link(feature.properties['NameEK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_search_assets_8_0() {
+            return {
+                fill: false,
+                stroke: false,
+                interactive: false
+            }
+        }
+        map.createPane('pane_search_assets_8');
+        map.getPane('pane_search_assets_8').style.zIndex = 408;
+        map.getPane('pane_search_assets_8').style['mix-blend-mode'] = 'normal';
+        var layer_search_assets_8 = new L.geoJson(json_search_assets_8, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_search_assets_8',
+            layerName: 'layer_search_assets_8',
+            pane: 'pane_search_assets_8',
+            onEachFeature: pop_search_assets_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_search_assets_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_search_assets_8);
+        function pop_assets_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">HdstSerial</th>\
+                        <td>' + (feature.properties['HdstSerial'] !== null ? autolinker.link(feature.properties['HdstSerial'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">HdstName</th>\
+                        <td class="visible-with-data" id="HdstName">' + (feature.properties['HdstName'] !== null ? autolinker.link(feature.properties['HdstName'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AdptSerial'] !== null ? autolinker.link(feature.properties['AdptSerial'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IssueDate'] !== null ? autolinker.link(feature.properties['IssueDate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ReturnDate'] !== null ? autolinker.link(feature.properties['ReturnDate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+        function style_assets_9_0(feature) {
+            var context = {
+                feature: feature,
+                variables: {}
+            };
+            // Start of if blocks and style check logic
+            if (exp_assets_9rule0_eval_expression(context)) {
+                  return {
+                pane: 'pane_assets_9',
+                radius: 6.4,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,128,53,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_assets_9rule1_eval_expression(context)) {
+                  return {
+                pane: 'pane_assets_9',
+                shape: 'triangle',
+                radius: 6.4,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_assets_9rule2_eval_expression(context)) {
+                  return {
+                pane: 'pane_assets_9',
+                shape: 'diamond',
+                radius: 6.8,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            };
+                }
+            else {
+                return {fill: false, stroke: false};
+            }
+        }
+        map.createPane('pane_assets_9');
+        map.getPane('pane_assets_9').style.zIndex = 409;
+        map.getPane('pane_assets_9').style['mix-blend-mode'] = 'normal';
+        var layer_assets_9 = new L.geoJson(json_assets_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_assets_9',
+            layerName: 'layer_assets_9',
+            pane: 'pane_assets_9',
+            onEachFeature: pop_assets_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_assets_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_assets_9);
+        map.addLayer(layer_assets_9);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        var overlaysTree = [
+            {label: 'assets<br /><table><tr><td style="text-align: center;"><img src="legend/assets_9_OKtoUse0.png" /></td><td>OK to Use</td></tr><tr><td style="text-align: center;"><img src="legend/assets_9_PrepareforReplacement1.png" /></td><td>Prepare for Replacement</td></tr><tr><td style="text-align: center;"><img src="legend/assets_9_DueforReplacement2.png" /></td><td>Due for Replacement</td></tr></table>', layer: layer_assets_9},
+            {label: 'search_assets', layer: layer_search_assets_8},
+            {label: '<img src="legend/sat_assets_7.png" /> sat_assets', layer: layer_sat_assets_7},
+            {label: '<img src="legend/fri_assets_6.png" /> fri_assets', layer: layer_fri_assets_6},
+            {label: '<img src="legend/thu_assets_5.png" /> thu_assets', layer: layer_thu_assets_5},
+            {label: '<img src="legend/wed_assets_4.png" /> wed_assets', layer: layer_wed_assets_4},
+            {label: '<img src="legend/tue_assets_3.png" /> tue_assets', layer: layer_tue_assets_3},
+            {label: '<img src="legend/mon_assets_2.png" /> mon_assets', layer: layer_mon_assets_2},
+            {label: '<img src="legend/sun_assets_1.png" /> sun_assets', layer: layer_sun_assets_1},
+            {label: "OpenStreetMap", layer: layer_OpenStreetMap_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_search_assets_8,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'NameEK'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"IssueDate": "date","ReturnDate": "date","ThurLogoff": "real","SunLogin": "real","FriLogin": "real","ThurLogin": "real","MonLogin": "real","SunLogoff": "real","SatLogoff": "real","WedLogin": "real","TueLogoff": "real","MonLogoff": "real","FriLogoff": "real","WedLogoff": "real","TuesLogin": "real","SatLogin": "real","Office": "str","Manager": "str","Category": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_IssueDate_date1 = document.createElement("div");
+            div_IssueDate_date1.id = "div_IssueDate_date1";
+            div_IssueDate_date1.className= "filterselect";
+            document.getElementById("menu").appendChild(div_IssueDate_date1);
+            dat_IssueDate_date1 = document.createElement('input');
+            dat_IssueDate_date1.type = "text";
+            dat_IssueDate_date1.id = "dat_IssueDate_date1";
+            div_IssueDate_date1.appendChild(dat_IssueDate_date1);
+            var lab_IssueDate_date1 = document.createElement('div');
+            lab_IssueDate_date1.innerHTML  = 'IssueDate from';
+            lab_IssueDate_date1.className = 'filterlabel';
+            document.getElementById("div_IssueDate_date1").appendChild(
+                lab_IssueDate_date1);
+            var reset_IssueDate_date1 = document.createElement('div');
+            reset_IssueDate_date1.innerHTML = "clear";
+            reset_IssueDate_date1.className = 'filterlabel';
+            reset_IssueDate_date1.onclick = function() {
+                tail.DateTime("#dat_IssueDate_date1", {
+                    dateStart: 1593378000000,
+                    dateEnd: 1722286800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2020,6-1,29,0,0,0);
+                tail.DateTime("#dat_IssueDate_date1").reload()
+            }
+            document.getElementById("div_IssueDate_date1").appendChild(
+                reset_IssueDate_date1);
+            document.addEventListener("DOMContentLoaded", function(){
+                tail.DateTime("#dat_IssueDate_date1", {
+                    dateStart: 1593378000000,
+                    dateEnd: 1722286800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2020,6-1,29,0,0,0);
+                tail.DateTime("#dat_IssueDate_date1").reload()
+                tail.DateTime("#dat_IssueDate_date2", {
+                    dateStart: 1593378000000,
+                    dateEnd: 1722286800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2024,7-1,30,0,0,0);
+                tail.DateTime("#dat_IssueDate_date2").reload()
+                filterFunc()
+                dat_IssueDate_date1.onchange = function(){filterFunc()};
+                dat_IssueDate_date2.onchange = function(){filterFunc()};
+            });
+            var div_IssueDate_date2 = document.createElement("div");
+            div_IssueDate_date2.id = "div_IssueDate_date2";
+            div_IssueDate_date2.className= "filterselect";
+            document.getElementById("menu").appendChild(div_IssueDate_date2);
+            dat_IssueDate_date2 = document.createElement('input');
+            dat_IssueDate_date2.type = "text";
+            dat_IssueDate_date2.id = "dat_IssueDate_date2";
+            div_IssueDate_date2.appendChild(dat_IssueDate_date2);
+            var lab_IssueDate_date2 = document.createElement('div');
+            lab_IssueDate_date2.innerHTML  = 'IssueDate till';
+            lab_IssueDate_date2.className = 'filterlabel';
+            document.getElementById("div_IssueDate_date2")
+              .appendChild(lab_IssueDate_date2);
+            var reset_IssueDate_date2 = document.createElement('div');
+            reset_IssueDate_date2.innerHTML = "clear";
+            reset_IssueDate_date2.className = 'filterlabel';
+            reset_IssueDate_date2.onclick = function() {
+                tail.DateTime("#dat_IssueDate_date2", {
+                    dateStart: 1593378000000,
+                    dateEnd: 1722286800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2024,7-1,30,0,0,0);
+                tail.DateTime("#dat_IssueDate_date2").reload()
+            }
+            document.getElementById("div_IssueDate_date2").appendChild(
+                reset_IssueDate_date2);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ReturnDate_date1 = document.createElement("div");
+            div_ReturnDate_date1.id = "div_ReturnDate_date1";
+            div_ReturnDate_date1.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ReturnDate_date1);
+            dat_ReturnDate_date1 = document.createElement('input');
+            dat_ReturnDate_date1.type = "text";
+            dat_ReturnDate_date1.id = "dat_ReturnDate_date1";
+            div_ReturnDate_date1.appendChild(dat_ReturnDate_date1);
+            var lab_ReturnDate_date1 = document.createElement('div');
+            lab_ReturnDate_date1.innerHTML  = 'ReturnDate from';
+            lab_ReturnDate_date1.className = 'filterlabel';
+            document.getElementById("div_ReturnDate_date1").appendChild(
+                lab_ReturnDate_date1);
+            var reset_ReturnDate_date1 = document.createElement('div');
+            reset_ReturnDate_date1.innerHTML = "clear";
+            reset_ReturnDate_date1.className = 'filterlabel';
+            reset_ReturnDate_date1.onclick = function() {
+                tail.DateTime("#dat_ReturnDate_date1", {
+                    dateStart: 1656450000000,
+                    dateEnd: 1785358800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2022,6-1,29,0,0,0);
+                tail.DateTime("#dat_ReturnDate_date1").reload()
+            }
+            document.getElementById("div_ReturnDate_date1").appendChild(
+                reset_ReturnDate_date1);
+            document.addEventListener("DOMContentLoaded", function(){
+                tail.DateTime("#dat_ReturnDate_date1", {
+                    dateStart: 1656450000000,
+                    dateEnd: 1785358800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2022,6-1,29,0,0,0);
+                tail.DateTime("#dat_ReturnDate_date1").reload()
+                tail.DateTime("#dat_ReturnDate_date2", {
+                    dateStart: 1656450000000,
+                    dateEnd: 1785358800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2026,7-1,30,0,0,0);
+                tail.DateTime("#dat_ReturnDate_date2").reload()
+                filterFunc()
+                dat_ReturnDate_date1.onchange = function(){filterFunc()};
+                dat_ReturnDate_date2.onchange = function(){filterFunc()};
+            });
+            var div_ReturnDate_date2 = document.createElement("div");
+            div_ReturnDate_date2.id = "div_ReturnDate_date2";
+            div_ReturnDate_date2.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ReturnDate_date2);
+            dat_ReturnDate_date2 = document.createElement('input');
+            dat_ReturnDate_date2.type = "text";
+            dat_ReturnDate_date2.id = "dat_ReturnDate_date2";
+            div_ReturnDate_date2.appendChild(dat_ReturnDate_date2);
+            var lab_ReturnDate_date2 = document.createElement('div');
+            lab_ReturnDate_date2.innerHTML  = 'ReturnDate till';
+            lab_ReturnDate_date2.className = 'filterlabel';
+            document.getElementById("div_ReturnDate_date2")
+              .appendChild(lab_ReturnDate_date2);
+            var reset_ReturnDate_date2 = document.createElement('div');
+            reset_ReturnDate_date2.innerHTML = "clear";
+            reset_ReturnDate_date2.className = 'filterlabel';
+            reset_ReturnDate_date2.onclick = function() {
+                tail.DateTime("#dat_ReturnDate_date2", {
+                    dateStart: 1656450000000,
+                    dateEnd: 1785358800000,
+                    dateFormat: 'YYYY-mm-dd',
+                    timeFormat: false,
+                    today: false,
+                    weekStart: 1,
+                    position: "left",
+                    closeButton: true,
+                    timeStepMinutes:1,
+                    timeStepSeconds: 1
+                }).selectDate(2026,7-1,30,0,0,0);
+                tail.DateTime("#dat_ReturnDate_date2").reload()
+            }
+            document.getElementById("div_ReturnDate_date2").appendChild(
+                reset_ReturnDate_date2);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ThurLogoff = document.createElement("div");
+            div_ThurLogoff.id = "div_ThurLogoff";
+            div_ThurLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_ThurLogoff);
+            var lab_ThurLogoff = document.createElement('div');
+            lab_ThurLogoff.innerHTML  = 'ThurLogoff: <span id="val_ThurLogoff"></span>';
+            lab_ThurLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_ThurLogoff);
+            var reset_ThurLogoff = document.createElement('div');
+            reset_ThurLogoff.innerHTML = 'clear filter';
+            reset_ThurLogoff.className = 'filterlabel';
+            lab_ThurLogoff.className = 'filterlabel';
+            reset_ThurLogoff.onclick = function() {
+                sel_ThurLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_ThurLogoff);
+            var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
+            noUiSlider.create(sel_ThurLogoff, {
+                connect: true,
+                start: [5.45, 6.29],
+                range: {
+                min: 5.45,
+                max: 6.29
+                }
+            });
+            sel_ThurLogoff.noUiSlider.on('update', function (values) {
+            val_ThurLogoff = document.getElementById('val_ThurLogoff');
+            val_ThurLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SunLogin = document.createElement("div");
+            div_SunLogin.id = "div_SunLogin";
+            div_SunLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_SunLogin);
+            var lab_SunLogin = document.createElement('div');
+            lab_SunLogin.innerHTML  = 'SunLogin: <span id="val_SunLogin"></span>';
+            lab_SunLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_SunLogin);
+            var reset_SunLogin = document.createElement('div');
+            reset_SunLogin.innerHTML = 'clear filter';
+            reset_SunLogin.className = 'filterlabel';
+            lab_SunLogin.className = 'filterlabel';
+            reset_SunLogin.onclick = function() {
+                sel_SunLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_SunLogin);
+            var sel_SunLogin = document.getElementById('div_SunLogin');
+            noUiSlider.create(sel_SunLogin, {
+                connect: true,
+                start: [1.21, 1.92],
+                range: {
+                min: 1.21,
+                max: 1.92
+                }
+            });
+            sel_SunLogin.noUiSlider.on('update', function (values) {
+            val_SunLogin = document.getElementById('val_SunLogin');
+            val_SunLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_FriLogin = document.createElement("div");
+            div_FriLogin.id = "div_FriLogin";
+            div_FriLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_FriLogin);
+            var lab_FriLogin = document.createElement('div');
+            lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
+            lab_FriLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_FriLogin);
+            var reset_FriLogin = document.createElement('div');
+            reset_FriLogin.innerHTML = 'clear filter';
+            reset_FriLogin.className = 'filterlabel';
+            lab_FriLogin.className = 'filterlabel';
+            reset_FriLogin.onclick = function() {
+                sel_FriLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_FriLogin);
+            var sel_FriLogin = document.getElementById('div_FriLogin');
+            noUiSlider.create(sel_FriLogin, {
+                connect: true,
+                start: [6.21, 6.92],
+                range: {
+                min: 6.21,
+                max: 6.92
+                }
+            });
+            sel_FriLogin.noUiSlider.on('update', function (values) {
+            val_FriLogin = document.getElementById('val_FriLogin');
+            val_FriLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ThurLogin = document.createElement("div");
+            div_ThurLogin.id = "div_ThurLogin";
+            div_ThurLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_ThurLogin);
+            var lab_ThurLogin = document.createElement('div');
+            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
+            lab_ThurLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_ThurLogin);
+            var reset_ThurLogin = document.createElement('div');
+            reset_ThurLogin.innerHTML = 'clear filter';
+            reset_ThurLogin.className = 'filterlabel';
+            lab_ThurLogin.className = 'filterlabel';
+            reset_ThurLogin.onclick = function() {
+                sel_ThurLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_ThurLogin);
+            var sel_ThurLogin = document.getElementById('div_ThurLogin');
+            noUiSlider.create(sel_ThurLogin, {
+                connect: true,
+                start: [5.21, 5.92],
+                range: {
+                min: 5.21,
+                max: 5.92
+                }
+            });
+            sel_ThurLogin.noUiSlider.on('update', function (values) {
+            val_ThurLogin = document.getElementById('val_ThurLogin');
+            val_ThurLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_MonLogin = document.createElement("div");
+            div_MonLogin.id = "div_MonLogin";
+            div_MonLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_MonLogin);
+            var lab_MonLogin = document.createElement('div');
+            lab_MonLogin.innerHTML  = 'MonLogin: <span id="val_MonLogin"></span>';
+            lab_MonLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_MonLogin);
+            var reset_MonLogin = document.createElement('div');
+            reset_MonLogin.innerHTML = 'clear filter';
+            reset_MonLogin.className = 'filterlabel';
+            lab_MonLogin.className = 'filterlabel';
+            reset_MonLogin.onclick = function() {
+                sel_MonLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_MonLogin);
+            var sel_MonLogin = document.getElementById('div_MonLogin');
+            noUiSlider.create(sel_MonLogin, {
+                connect: true,
+                start: [2.21, 2.92],
+                range: {
+                min: 2.21,
+                max: 2.92
+                }
+            });
+            sel_MonLogin.noUiSlider.on('update', function (values) {
+            val_MonLogin = document.getElementById('val_MonLogin');
+            val_MonLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SunLogoff = document.createElement("div");
+            div_SunLogoff.id = "div_SunLogoff";
+            div_SunLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_SunLogoff);
+            var lab_SunLogoff = document.createElement('div');
+            lab_SunLogoff.innerHTML  = 'SunLogoff: <span id="val_SunLogoff"></span>';
+            lab_SunLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_SunLogoff);
+            var reset_SunLogoff = document.createElement('div');
+            reset_SunLogoff.innerHTML = 'clear filter';
+            reset_SunLogoff.className = 'filterlabel';
+            lab_SunLogoff.className = 'filterlabel';
+            reset_SunLogoff.onclick = function() {
+                sel_SunLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_SunLogoff);
+            var sel_SunLogoff = document.getElementById('div_SunLogoff');
+            noUiSlider.create(sel_SunLogoff, {
+                connect: true,
+                start: [1.45, 2.29],
+                range: {
+                min: 1.45,
+                max: 2.29
+                }
+            });
+            sel_SunLogoff.noUiSlider.on('update', function (values) {
+            val_SunLogoff = document.getElementById('val_SunLogoff');
+            val_SunLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SatLogoff = document.createElement("div");
+            div_SatLogoff.id = "div_SatLogoff";
+            div_SatLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_SatLogoff);
+            var lab_SatLogoff = document.createElement('div');
+            lab_SatLogoff.innerHTML  = 'SatLogoff: <span id="val_SatLogoff"></span>';
+            lab_SatLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_SatLogoff);
+            var reset_SatLogoff = document.createElement('div');
+            reset_SatLogoff.innerHTML = 'clear filter';
+            reset_SatLogoff.className = 'filterlabel';
+            lab_SatLogoff.className = 'filterlabel';
+            reset_SatLogoff.onclick = function() {
+                sel_SatLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_SatLogoff);
+            var sel_SatLogoff = document.getElementById('div_SatLogoff');
+            noUiSlider.create(sel_SatLogoff, {
+                connect: true,
+                start: [7.45, 8.29],
+                range: {
+                min: 7.45,
+                max: 8.29
+                }
+            });
+            sel_SatLogoff.noUiSlider.on('update', function (values) {
+            val_SatLogoff = document.getElementById('val_SatLogoff');
+            val_SatLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_WedLogin = document.createElement("div");
+            div_WedLogin.id = "div_WedLogin";
+            div_WedLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_WedLogin);
+            var lab_WedLogin = document.createElement('div');
+            lab_WedLogin.innerHTML  = 'WedLogin: <span id="val_WedLogin"></span>';
+            lab_WedLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_WedLogin);
+            var reset_WedLogin = document.createElement('div');
+            reset_WedLogin.innerHTML = 'clear filter';
+            reset_WedLogin.className = 'filterlabel';
+            lab_WedLogin.className = 'filterlabel';
+            reset_WedLogin.onclick = function() {
+                sel_WedLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_WedLogin);
+            var sel_WedLogin = document.getElementById('div_WedLogin');
+            noUiSlider.create(sel_WedLogin, {
+                connect: true,
+                start: [4.21, 4.92],
+                range: {
+                min: 4.21,
+                max: 4.92
+                }
+            });
+            sel_WedLogin.noUiSlider.on('update', function (values) {
+            val_WedLogin = document.getElementById('val_WedLogin');
+            val_WedLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_TueLogoff = document.createElement("div");
+            div_TueLogoff.id = "div_TueLogoff";
+            div_TueLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_TueLogoff);
+            var lab_TueLogoff = document.createElement('div');
+            lab_TueLogoff.innerHTML  = 'TueLogoff: <span id="val_TueLogoff"></span>';
+            lab_TueLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_TueLogoff);
+            var reset_TueLogoff = document.createElement('div');
+            reset_TueLogoff.innerHTML = 'clear filter';
+            reset_TueLogoff.className = 'filterlabel';
+            lab_TueLogoff.className = 'filterlabel';
+            reset_TueLogoff.onclick = function() {
+                sel_TueLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_TueLogoff);
+            var sel_TueLogoff = document.getElementById('div_TueLogoff');
+            noUiSlider.create(sel_TueLogoff, {
+                connect: true,
+                start: [3.54, 4.29],
+                range: {
+                min: 3.54,
+                max: 4.29
+                }
+            });
+            sel_TueLogoff.noUiSlider.on('update', function (values) {
+            val_TueLogoff = document.getElementById('val_TueLogoff');
+            val_TueLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_MonLogoff = document.createElement("div");
+            div_MonLogoff.id = "div_MonLogoff";
+            div_MonLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_MonLogoff);
+            var lab_MonLogoff = document.createElement('div');
+            lab_MonLogoff.innerHTML  = 'MonLogoff: <span id="val_MonLogoff"></span>';
+            lab_MonLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_MonLogoff);
+            var reset_MonLogoff = document.createElement('div');
+            reset_MonLogoff.innerHTML = 'clear filter';
+            reset_MonLogoff.className = 'filterlabel';
+            lab_MonLogoff.className = 'filterlabel';
+            reset_MonLogoff.onclick = function() {
+                sel_MonLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_MonLogoff);
+            var sel_MonLogoff = document.getElementById('div_MonLogoff');
+            noUiSlider.create(sel_MonLogoff, {
+                connect: true,
+                start: [2.45, 3.29],
+                range: {
+                min: 2.45,
+                max: 3.29
+                }
+            });
+            sel_MonLogoff.noUiSlider.on('update', function (values) {
+            val_MonLogoff = document.getElementById('val_MonLogoff');
+            val_MonLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_FriLogoff = document.createElement("div");
+            div_FriLogoff.id = "div_FriLogoff";
+            div_FriLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_FriLogoff);
+            var lab_FriLogoff = document.createElement('div');
+            lab_FriLogoff.innerHTML  = 'FriLogoff: <span id="val_FriLogoff"></span>';
+            lab_FriLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_FriLogoff);
+            var reset_FriLogoff = document.createElement('div');
+            reset_FriLogoff.innerHTML = 'clear filter';
+            reset_FriLogoff.className = 'filterlabel';
+            lab_FriLogoff.className = 'filterlabel';
+            reset_FriLogoff.onclick = function() {
+                sel_FriLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_FriLogoff);
+            var sel_FriLogoff = document.getElementById('div_FriLogoff');
+            noUiSlider.create(sel_FriLogoff, {
+                connect: true,
+                start: [6.5, 7.29],
+                range: {
+                min: 6.5,
+                max: 7.29
+                }
+            });
+            sel_FriLogoff.noUiSlider.on('update', function (values) {
+            val_FriLogoff = document.getElementById('val_FriLogoff');
+            val_FriLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_WedLogoff = document.createElement("div");
+            div_WedLogoff.id = "div_WedLogoff";
+            div_WedLogoff.className = "slider";
+            document.getElementById("menu").appendChild(div_WedLogoff);
+            var lab_WedLogoff = document.createElement('div');
+            lab_WedLogoff.innerHTML  = 'WedLogoff: <span id="val_WedLogoff"></span>';
+            lab_WedLogoff.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_WedLogoff);
+            var reset_WedLogoff = document.createElement('div');
+            reset_WedLogoff.innerHTML = 'clear filter';
+            reset_WedLogoff.className = 'filterlabel';
+            lab_WedLogoff.className = 'filterlabel';
+            reset_WedLogoff.onclick = function() {
+                sel_WedLogoff.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_WedLogoff);
+            var sel_WedLogoff = document.getElementById('div_WedLogoff');
+            noUiSlider.create(sel_WedLogoff, {
+                connect: true,
+                start: [4.45, 5.29],
+                range: {
+                min: 4.45,
+                max: 5.29
+                }
+            });
+            sel_WedLogoff.noUiSlider.on('update', function (values) {
+            val_WedLogoff = document.getElementById('val_WedLogoff');
+            val_WedLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_TuesLogin = document.createElement("div");
+            div_TuesLogin.id = "div_TuesLogin";
+            div_TuesLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_TuesLogin);
+            var lab_TuesLogin = document.createElement('div');
+            lab_TuesLogin.innerHTML  = 'TuesLogin: <span id="val_TuesLogin"></span>';
+            lab_TuesLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_TuesLogin);
+            var reset_TuesLogin = document.createElement('div');
+            reset_TuesLogin.innerHTML = 'clear filter';
+            reset_TuesLogin.className = 'filterlabel';
+            lab_TuesLogin.className = 'filterlabel';
+            reset_TuesLogin.onclick = function() {
+                sel_TuesLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_TuesLogin);
+            var sel_TuesLogin = document.getElementById('div_TuesLogin');
+            noUiSlider.create(sel_TuesLogin, {
+                connect: true,
+                start: [3.21, 3.92],
+                range: {
+                min: 3.21,
+                max: 3.92
+                }
+            });
+            sel_TuesLogin.noUiSlider.on('update', function (values) {
+            val_TuesLogin = document.getElementById('val_TuesLogin');
+            val_TuesLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SatLogin = document.createElement("div");
+            div_SatLogin.id = "div_SatLogin";
+            div_SatLogin.className = "slider";
+            document.getElementById("menu").appendChild(div_SatLogin);
+            var lab_SatLogin = document.createElement('div');
+            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
+            lab_SatLogin.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_SatLogin);
+            var reset_SatLogin = document.createElement('div');
+            reset_SatLogin.innerHTML = 'clear filter';
+            reset_SatLogin.className = 'filterlabel';
+            lab_SatLogin.className = 'filterlabel';
+            reset_SatLogin.onclick = function() {
+                sel_SatLogin.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_SatLogin);
+            var sel_SatLogin = document.getElementById('div_SatLogin');
+            noUiSlider.create(sel_SatLogin, {
+                connect: true,
+                start: [7.21, 7.92],
+                range: {
+                min: 7.21,
+                max: 7.92
+                }
+            });
+            sel_SatLogin.noUiSlider.on('update', function (values) {
+            val_SatLogin = document.getElementById('val_SatLogin');
+            val_SatLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Office = document.createElement('div');
+            div_Office.id = "div_Office";
+            div_Office.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Office);
+            sel_Office = document.createElement('select');
+            sel_Office.multiple = true;
+            sel_Office.size = 5;
+            sel_Office.id = "sel_Office";
+            var Office_options_str = "<option value='' unselected></option>";
+            sel_Office.onchange = function(){filterFunc()};
+            Office_options_str  += '<option value="NULL">NULL</option>';
+            Office_options_str  += '<option value="Eldoret">Eldoret</option>';
+            Office_options_str  += '<option value="Machakos">Machakos</option>';
+            Office_options_str  += '<option value="Nairobi">Nairobi</option>';
+            Office_options_str  += '<option value="Thika">Thika</option>';
+            sel_Office.innerHTML = Office_options_str;
+            div_Office.appendChild(sel_Office);
+            var lab_Office = document.createElement('div');
+            lab_Office.innerHTML = 'Office';
+            lab_Office.className = 'filterlabel';
+            div_Office.appendChild(lab_Office);
+            var reset_Office = document.createElement('div');
+            reset_Office.innerHTML = 'clear filter';
+            reset_Office.className = 'filterlabel';
+            reset_Office.onclick = function() {
+                var options = document.getElementById("sel_Office").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Office.appendChild(reset_Office);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Manager = document.createElement('div');
+            div_Manager.id = "div_Manager";
+            div_Manager.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Manager);
+            sel_Manager = document.createElement('select');
+            sel_Manager.multiple = true;
+            sel_Manager.size = 10;
+            sel_Manager.id = "sel_Manager";
+            var Manager_options_str = "<option value='' unselected></option>";
+            sel_Manager.onchange = function(){filterFunc()};
+            Manager_options_str  += '<option value="Allan">Allan</option>';
+            Manager_options_str  += '<option value="Anne">Anne</option>';
+            Manager_options_str  += '<option value="Augustine">Augustine</option>';
+            Manager_options_str  += '<option value="Beatrice">Beatrice</option>';
+            Manager_options_str  += '<option value="Bernard">Bernard</option>';
+            Manager_options_str  += '<option value="Boniface">Boniface</option>';
+            Manager_options_str  += '<option value="Catherine">Catherine</option>';
+            Manager_options_str  += '<option value="Daisy">Daisy</option>';
+            Manager_options_str  += '<option value="Daudi">Daudi</option>';
+            Manager_options_str  += '<option value="Davin">Davin</option>';
+            Manager_options_str  += '<option value="Dennis">Dennis</option>';
+            Manager_options_str  += '<option value="Edward">Edward</option>';
+            Manager_options_str  += '<option value="Elijah">Elijah</option>';
+            Manager_options_str  += '<option value="Elizabeth">Elizabeth</option>';
+            Manager_options_str  += '<option value="Emmanuel">Emmanuel</option>';
+            Manager_options_str  += '<option value="Franklin">Franklin</option>';
+            Manager_options_str  += '<option value="Georgette">Georgette</option>';
+            Manager_options_str  += '<option value="Goldermier">Goldermier</option>';
+            Manager_options_str  += '<option value="Henry">Henry</option>';
+            Manager_options_str  += '<option value="Jackline">Jackline</option>';
+            Manager_options_str  += '<option value="Jacquiline">Jacquiline</option>';
+            Manager_options_str  += '<option value="James">James</option>';
+            Manager_options_str  += '<option value="Jeremiah">Jeremiah</option>';
+            Manager_options_str  += '<option value="Jessica">Jessica</option>';
+            Manager_options_str  += '<option value="John">John</option>';
+            Manager_options_str  += '<option value="Josephine">Josephine</option>';
+            Manager_options_str  += '<option value="Lillian">Lillian</option>';
+            Manager_options_str  += '<option value="Lucy">Lucy</option>';
+            Manager_options_str  += '<option value="Marc">Marc</option>';
+            Manager_options_str  += '<option value="Mary">Mary</option>';
+            Manager_options_str  += '<option value="Michael">Michael</option>';
+            Manager_options_str  += '<option value="Moses">Moses</option>';
+            Manager_options_str  += '<option value="Omwenga">Omwenga</option>';
+            Manager_options_str  += '<option value="Paul">Paul</option>';
+            Manager_options_str  += '<option value="Peter">Peter</option>';
+            Manager_options_str  += '<option value="Philemon">Philemon</option>';
+            Manager_options_str  += '<option value="Rhoda">Rhoda</option>';
+            Manager_options_str  += '<option value="Samson">Samson</option>';
+            Manager_options_str  += '<option value="Simon">Simon</option>';
+            Manager_options_str  += '<option value="Stella">Stella</option>';
+            Manager_options_str  += '<option value="Susan">Susan</option>';
+            Manager_options_str  += '<option value="Timothy">Timothy</option>';
+            Manager_options_str  += '<option value="Vincent">Vincent</option>';
+            Manager_options_str  += '<option value="Wilfred">Wilfred</option>';
+            Manager_options_str  += '<option value="Wilson">Wilson</option>';
+            Manager_options_str  += '<option value="Winnie">Winnie</option>';
+            sel_Manager.innerHTML = Manager_options_str;
+            div_Manager.appendChild(sel_Manager);
+            var lab_Manager = document.createElement('div');
+            lab_Manager.innerHTML = 'Manager';
+            lab_Manager.className = 'filterlabel';
+            div_Manager.appendChild(lab_Manager);
+            var reset_Manager = document.createElement('div');
+            reset_Manager.innerHTML = 'clear filter';
+            reset_Manager.className = 'filterlabel';
+            reset_Manager.onclick = function() {
+                var options = document.getElementById("sel_Manager").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Manager.appendChild(reset_Manager);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Category = document.createElement('div');
+            div_Category.id = "div_Category";
+            div_Category.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Category);
+            sel_Category = document.createElement('select');
+            sel_Category.multiple = true;
+            sel_Category.size = 5;
+            sel_Category.id = "sel_Category";
+            var Category_options_str = "<option value='' unselected></option>";
+            sel_Category.onchange = function(){filterFunc()};
+            Category_options_str  += '<option value="CCR">CCR</option>';
+            Category_options_str  += '<option value="CXX Team">CXX Team</option>';
+            Category_options_str  += '<option value="QA Team">QA Team</option>';
+            Category_options_str  += '<option value="Support Team">Support Team</option>';
+            Category_options_str  += '<option value="TL Team">TL Team</option>';
+            sel_Category.innerHTML = Category_options_str;
+            div_Category.appendChild(sel_Category);
+            var lab_Category = document.createElement('div');
+            lab_Category.innerHTML = 'Category';
+            lab_Category.className = 'filterlabel';
+            div_Category.appendChild(lab_Category);
+            var reset_Category = document.createElement('div');
+            reset_Category.innerHTML = 'clear filter';
+            reset_Category.className = 'filterlabel';
+            reset_Category.onclick = function() {
+                var options = document.getElementById("sel_Category").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Category.appendChild(reset_Category);
+        </script>
+    </body>
+</html>
