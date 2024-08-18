@@ -268,11 +268,15 @@ function fnc_regexp_match(values, context) {
 };
 
 function fnc_now(values, context) {
-    return false;
+    return new Date();
 };
 
 function fnc_age(values, context) {
-    return false;
+    const date1 = new Date(values[0]);
+    const date2 = new Date(values[1]);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
 };
 
 function fnc_year(values, context) {
@@ -288,7 +292,7 @@ function fnc_week(values, context) {
 };
 
 function fnc_day(values, context) {
-    return false;
+    return values[0];
 };
 
 function fnc_hour(values, context) {
@@ -757,7 +761,7 @@ function fnc_project_color(values, context) {
 
 
 
-function exp_assets_9rule0_eval_expression(context) {
+function exp_headsets_1rule0_eval_expression(context) {
     // day(age(now(), "IssueDate")) < 668
 
     var feature = context.feature;
@@ -770,7 +774,7 @@ function exp_assets_9rule0_eval_expression(context) {
 }
 
 
-function exp_assets_9rule1_eval_expression(context) {
+function exp_headsets_1rule1_eval_expression(context) {
     // day(age(now(), "IssueDate")) > 668 AND day(age(now(), "IssueDate")) < 730
 
     var feature = context.feature;
@@ -783,7 +787,7 @@ function exp_assets_9rule1_eval_expression(context) {
 }
 
 
-function exp_assets_9rule2_eval_expression(context) {
+function exp_headsets_1rule2_eval_expression(context) {
     // day(age(now(), "IssueDate")) > 730
 
     var feature = context.feature;
