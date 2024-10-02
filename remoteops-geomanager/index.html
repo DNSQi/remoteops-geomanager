@@ -20,15 +20,94 @@
         <link rel="stylesheet" href="css/w3.css">
         <style>
         #map {
-            width: 1066px;
-            height: 589px;
+            width: 99vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        .leaflet-popup-content {
+            min-width: 300px;
+            /*height: 300px;
+                overflow-y: scroll;*/
+        }
+
+        table,
+        th {
+            border: 2px solid grey;
+        }
+
+        /* Fixing width of first
+                column of each row*/
+        table,
+        td:nth-child(1) {
+            border: 2px solid grey;
+            width: 30%;
+        }
+
+        /* Fixing width of second
+                column of each row*/
+        table,
+        td:nth-child(2) {
+            border: 2px solid grey;
+            width: 60%;
+        }
+
+        /*adding row numbers through css*/
+        .stafftable {
+            counter-reset: serial-number;
+            /* Set the serial number counter to 0 */
+        }
+
+        .stafftable td:first-child:before {
+            counter-increment: serial-number;
+            /* Increment the serial number counter */
+            content: counter(serial-number);
+            /* Display the counter */
+        }
+
+        .stafftable th {
+            border: 2px solid grey;
+        }
+
+        .stafftable td:nth-child(1) {
+            border: 2px solid grey;
+            width: 10%;
+        }
+
+        .stafftable td:nth-child(2) {
+            border: 2px solid grey;
+            width: 30%;
+        }
+
+        .stafftable td:nth-child(3) {
+            border: 2px solid grey;
+            width: 60%;
+        }
+
+        .save {
+            margin: 0;
+            position: absolute;
+            left: 45%;
+            font-weight: bold;
+        }
+
+        .delete {
+            margin: 0;
+            position: absolute;
+            left: 5%;
+            font-weight: bold;
+        }
+
+        .export {
+            margin: 0;
+            position: absolute;
+            right: 5%;
+            font-weight: bold;
         }
         </style>
         <title>Geo-Manager</title>
     </head>
     <body>
-        <div id="map">
-        </div>
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
@@ -58,6 +137,93 @@
         <script src="data/tuesday_7.js"></script>
         <script src="data/monday_8.js"></script>
         <script src="data/sunday_9.js"></script>
+
+        
+    <div id="map">
+        <div id="sidebar" class="sidebar collapsed">
+            <!-- Nav tabs -->
+            <div class="sidebar-tabs">
+                <ul role="tablist">
+                    <li title="View Staff Group"><a href="#shiftslider" role="tab"><i class="fa fa-list-ul"></i></a>
+                    </li>
+                    <li class="disabled"><a href="#void" role="tab"></a></li>
+                    <li title="View Map Filters"><a href="#filter" role="tab"><i class="fa fa-filter"></i></a></li>
+                    <li class="disabled"><a href="#void" role="tab"></a></li>
+                    <li title="View WorkTools"><a href="#select" role="tab"><i class="fa fa-users"></i></a></li>
+                </ul>
+
+                <ul role="tablist">
+                    <li><a href="#settings" role="tab"><i class="fa fa-cog"></i></a></li>
+                </ul>
+            </div>
+
+            <!-- Tab panes -->
+            <div class="sidebar-content" id="sidebar-content">
+                <div class="sidebar-pane" id="shiftslider">
+                    <h1 class="sidebar-header" style="font-weight:bold">
+                        Staff Group
+                        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    </h1>
+                    <p>
+                    <table id="stafftable" class="w3-table-all" style="width:100%; border-style:solid;">
+                        <tr>
+                            <th colspan="3" style="font-size:14px;padding: 1px 1px;">Draw a Shape on the Map to View the
+                                Staff List</th>
+                        </tr>
+                        <tr>
+                            <th style="padding: 1px 1px;border:none"></th>
+                            <th style="padding: 1px 1px;border:none"></th>
+                            <th style="padding: 1px 1px;border:none"></th>
+                        </tr>
+                    </table>
+                    </p>
+                    <p>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                </div>
+
+                <div class="sidebar-pane" id="filter">
+                    <h1 class="sidebar-header" style="font-weight:bold">
+                        Layer Switch & Filter
+                        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    </h1><br>
+                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                </div>
+
+                <div class="sidebar-pane" id="select">
+                    <h1 class="sidebar-header" style="font-weight:bold">
+                        View\Edit Selected Staff Details
+                        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    </h1>
+                    <p>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                    <form action="save.php" method="POST">
+                        <table id="table" class="w3-table-all" style="width:100%; border:none;">
+                            <tr>
+                                <th colspan="2" style="font-size:14px;padding: 1px 1px;">Click on a Marker on the Map to
+                                    View or Edit the Details</th>
+                            </tr>
+                            <tr>
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                        </table>
+                    </form>
+                    </p>
+                </div>
+
+                <div class="sidebar-pane" id="settings">
+                    <h1 class="sidebar-header" style="font-weight:bold">
+                        Settings
+                        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    </h1>
+                    <p>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -84,8 +250,23 @@
             [-1.155665462047198,37.376257339256426]
         ]);
         var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://github.com/DNSQi" target="_blank">DNSQi</a>');
+        map.attributionControl.setPrefix('<a href="https://github.com/DNSQi" target="_blank">DNSQi</a>');
+        map.attributionControl.setPosition('bottomleft');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+        var refresh = L.control({
+            position: 'topleft'
+        });
+        refresh.onAdd = function(map) {
+            var div = L.DomUtil.create('div');
+            div.innerHTML =
+                `<input type="button" id="refresh" 
+                        onclick=location.reload(true) value="Refresh Map">
+                    </input>`;
+            return div;
+        };
+        refresh.addTo(map);
+
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
@@ -143,6 +324,28 @@
         });
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
+        
+        
+        // add Leaflet-Sidebar controls with some options to the map 
+        var sidebar = L.control.sidebar('sidebar', {
+            position: 'right'
+        }).addTo(map);
+        var div = L.DomUtil.get('sidebar');
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+        map.pm.addControls({
+            position: 'topleft',
+            drawMarker: false,
+            drawCircle: true,
+            drawText: false,
+            drawCircleMarker: false,
+            drawPolyline: false,
+            editMode: false,
+            cutPolygon: false,
+            rotateMode: false,
+        });
+
+
         function pop_headsets_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -1054,6 +1257,18 @@
             collapsed: false, 
         });
         lay.addTo(map);
+
+
+        var htmlObject = lay.getContainer();
+        var a = document.getElementById('filter')
+
+        function setParent(el, newParent) {
+            newParent.appendChild(el);
+        }
+        setParent(htmlObject, a);
+
+
+
         setBounds();
         map.addControl(new L.Control.Search({
             layer: layer_search_2,
@@ -1075,7 +1290,7 @@
         col1.style.display = "inline-block";
         var col2 = document.createElement('div');
         col2.className="col3";
-        col2.id = "menu";
+        col2.id = "filter";
         col2.style.display = "inline-block";
         mapDiv.parentNode.insertBefore(row, mapDiv);
         document.getElementById("all").appendChild(col1);
@@ -1171,12 +1386,12 @@
           }
           })
         }
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_IssueDate_date1 = document.createElement("div");
             div_IssueDate_date1.id = "div_IssueDate_date1";
             div_IssueDate_date1.className= "filterselect";
-            document.getElementById("menu").appendChild(div_IssueDate_date1);
+            document.getElementById("filter").appendChild(div_IssueDate_date1);
             dat_IssueDate_date1 = document.createElement('input');
             dat_IssueDate_date1.type = "text";
             dat_IssueDate_date1.id = "dat_IssueDate_date1";
@@ -1240,7 +1455,7 @@
             var div_IssueDate_date2 = document.createElement("div");
             div_IssueDate_date2.id = "div_IssueDate_date2";
             div_IssueDate_date2.className= "filterselect";
-            document.getElementById("menu").appendChild(div_IssueDate_date2);
+            document.getElementById("filter").appendChild(div_IssueDate_date2);
             dat_IssueDate_date2 = document.createElement('input');
             dat_IssueDate_date2.type = "text";
             dat_IssueDate_date2.id = "dat_IssueDate_date2";
@@ -1270,12 +1485,12 @@
             }
             document.getElementById("div_IssueDate_date2").appendChild(
                 reset_IssueDate_date2);
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_ReturnDate_date1 = document.createElement("div");
             div_ReturnDate_date1.id = "div_ReturnDate_date1";
             div_ReturnDate_date1.className= "filterselect";
-            document.getElementById("menu").appendChild(div_ReturnDate_date1);
+            document.getElementById("filter").appendChild(div_ReturnDate_date1);
             dat_ReturnDate_date1 = document.createElement('input');
             dat_ReturnDate_date1.type = "text";
             dat_ReturnDate_date1.id = "dat_ReturnDate_date1";
@@ -1339,7 +1554,7 @@
             var div_ReturnDate_date2 = document.createElement("div");
             div_ReturnDate_date2.id = "div_ReturnDate_date2";
             div_ReturnDate_date2.className= "filterselect";
-            document.getElementById("menu").appendChild(div_ReturnDate_date2);
+            document.getElementById("filter").appendChild(div_ReturnDate_date2);
             dat_ReturnDate_date2 = document.createElement('input');
             dat_ReturnDate_date2.type = "text";
             dat_ReturnDate_date2.id = "dat_ReturnDate_date2";
@@ -1369,16 +1584,16 @@
             }
             document.getElementById("div_ReturnDate_date2").appendChild(
                 reset_ReturnDate_date2);
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_SunLogin = document.createElement("div");
             div_SunLogin.id = "div_SunLogin";
             div_SunLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_SunLogin);
+            document.getElementById("filter").appendChild(div_SunLogin);
             var lab_SunLogin = document.createElement('div');
             lab_SunLogin.innerHTML  = 'SunLogin: <span id="val_SunLogin"></span>';
             lab_SunLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_SunLogin);
+            document.getElementById("filter").appendChild(lab_SunLogin);
             var reset_SunLogin = document.createElement('div');
             reset_SunLogin.innerHTML = 'clear filter';
             reset_SunLogin.className = 'filterlabel';
@@ -1386,7 +1601,7 @@
             reset_SunLogin.onclick = function() {
                 sel_SunLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_SunLogin);
+            document.getElementById("filter").appendChild(reset_SunLogin);
             var sel_SunLogin = document.getElementById('div_SunLogin');
             noUiSlider.create(sel_SunLogin, {
                 connect: true,
@@ -1401,16 +1616,16 @@
             val_SunLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_SatLogin = document.createElement("div");
             div_SatLogin.id = "div_SatLogin";
             div_SatLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_SatLogin);
+            document.getElementById("filter").appendChild(div_SatLogin);
             var lab_SatLogin = document.createElement('div');
             lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
             lab_SatLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_SatLogin);
+            document.getElementById("filter").appendChild(lab_SatLogin);
             var reset_SatLogin = document.createElement('div');
             reset_SatLogin.innerHTML = 'clear filter';
             reset_SatLogin.className = 'filterlabel';
@@ -1418,7 +1633,7 @@
             reset_SatLogin.onclick = function() {
                 sel_SatLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_SatLogin);
+            document.getElementById("filter").appendChild(reset_SatLogin);
             var sel_SatLogin = document.getElementById('div_SatLogin');
             noUiSlider.create(sel_SatLogin, {
                 connect: true,
@@ -1433,16 +1648,16 @@
             val_SatLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_ThurLogin = document.createElement("div");
             div_ThurLogin.id = "div_ThurLogin";
             div_ThurLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_ThurLogin);
+            document.getElementById("filter").appendChild(div_ThurLogin);
             var lab_ThurLogin = document.createElement('div');
             lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
             lab_ThurLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_ThurLogin);
+            document.getElementById("filter").appendChild(lab_ThurLogin);
             var reset_ThurLogin = document.createElement('div');
             reset_ThurLogin.innerHTML = 'clear filter';
             reset_ThurLogin.className = 'filterlabel';
@@ -1450,7 +1665,7 @@
             reset_ThurLogin.onclick = function() {
                 sel_ThurLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_ThurLogin);
+            document.getElementById("filter").appendChild(reset_ThurLogin);
             var sel_ThurLogin = document.getElementById('div_ThurLogin');
             noUiSlider.create(sel_ThurLogin, {
                 connect: true,
@@ -1465,16 +1680,16 @@
             val_ThurLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_SunLogoff = document.createElement("div");
             div_SunLogoff.id = "div_SunLogoff";
             div_SunLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_SunLogoff);
+            document.getElementById("filter").appendChild(div_SunLogoff);
             var lab_SunLogoff = document.createElement('div');
             lab_SunLogoff.innerHTML  = 'SunLogoff: <span id="val_SunLogoff"></span>';
             lab_SunLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_SunLogoff);
+            document.getElementById("filter").appendChild(lab_SunLogoff);
             var reset_SunLogoff = document.createElement('div');
             reset_SunLogoff.innerHTML = 'clear filter';
             reset_SunLogoff.className = 'filterlabel';
@@ -1482,7 +1697,7 @@
             reset_SunLogoff.onclick = function() {
                 sel_SunLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_SunLogoff);
+            document.getElementById("filter").appendChild(reset_SunLogoff);
             var sel_SunLogoff = document.getElementById('div_SunLogoff');
             noUiSlider.create(sel_SunLogoff, {
                 connect: true,
@@ -1497,16 +1712,16 @@
             val_SunLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_TuesLogin = document.createElement("div");
             div_TuesLogin.id = "div_TuesLogin";
             div_TuesLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_TuesLogin);
+            document.getElementById("filter").appendChild(div_TuesLogin);
             var lab_TuesLogin = document.createElement('div');
             lab_TuesLogin.innerHTML  = 'TuesLogin: <span id="val_TuesLogin"></span>';
             lab_TuesLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_TuesLogin);
+            document.getElementById("filter").appendChild(lab_TuesLogin);
             var reset_TuesLogin = document.createElement('div');
             reset_TuesLogin.innerHTML = 'clear filter';
             reset_TuesLogin.className = 'filterlabel';
@@ -1514,7 +1729,7 @@
             reset_TuesLogin.onclick = function() {
                 sel_TuesLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_TuesLogin);
+            document.getElementById("filter").appendChild(reset_TuesLogin);
             var sel_TuesLogin = document.getElementById('div_TuesLogin');
             noUiSlider.create(sel_TuesLogin, {
                 connect: true,
@@ -1529,16 +1744,16 @@
             val_TuesLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_ThurLogoff = document.createElement("div");
             div_ThurLogoff.id = "div_ThurLogoff";
             div_ThurLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_ThurLogoff);
+            document.getElementById("filter").appendChild(div_ThurLogoff);
             var lab_ThurLogoff = document.createElement('div');
             lab_ThurLogoff.innerHTML  = 'ThurLogoff: <span id="val_ThurLogoff"></span>';
             lab_ThurLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_ThurLogoff);
+            document.getElementById("filter").appendChild(lab_ThurLogoff);
             var reset_ThurLogoff = document.createElement('div');
             reset_ThurLogoff.innerHTML = 'clear filter';
             reset_ThurLogoff.className = 'filterlabel';
@@ -1546,7 +1761,7 @@
             reset_ThurLogoff.onclick = function() {
                 sel_ThurLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_ThurLogoff);
+            document.getElementById("filter").appendChild(reset_ThurLogoff);
             var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
             noUiSlider.create(sel_ThurLogoff, {
                 connect: true,
@@ -1561,16 +1776,16 @@
             val_ThurLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_MonLogoff = document.createElement("div");
             div_MonLogoff.id = "div_MonLogoff";
             div_MonLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_MonLogoff);
+            document.getElementById("filter").appendChild(div_MonLogoff);
             var lab_MonLogoff = document.createElement('div');
             lab_MonLogoff.innerHTML  = 'MonLogoff: <span id="val_MonLogoff"></span>';
             lab_MonLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_MonLogoff);
+            document.getElementById("filter").appendChild(lab_MonLogoff);
             var reset_MonLogoff = document.createElement('div');
             reset_MonLogoff.innerHTML = 'clear filter';
             reset_MonLogoff.className = 'filterlabel';
@@ -1578,7 +1793,7 @@
             reset_MonLogoff.onclick = function() {
                 sel_MonLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_MonLogoff);
+            document.getElementById("filter").appendChild(reset_MonLogoff);
             var sel_MonLogoff = document.getElementById('div_MonLogoff');
             noUiSlider.create(sel_MonLogoff, {
                 connect: true,
@@ -1593,16 +1808,16 @@
             val_MonLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_TueLogoff = document.createElement("div");
             div_TueLogoff.id = "div_TueLogoff";
             div_TueLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_TueLogoff);
+            document.getElementById("filter").appendChild(div_TueLogoff);
             var lab_TueLogoff = document.createElement('div');
             lab_TueLogoff.innerHTML  = 'TueLogoff: <span id="val_TueLogoff"></span>';
             lab_TueLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_TueLogoff);
+            document.getElementById("filter").appendChild(lab_TueLogoff);
             var reset_TueLogoff = document.createElement('div');
             reset_TueLogoff.innerHTML = 'clear filter';
             reset_TueLogoff.className = 'filterlabel';
@@ -1610,7 +1825,7 @@
             reset_TueLogoff.onclick = function() {
                 sel_TueLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_TueLogoff);
+            document.getElementById("filter").appendChild(reset_TueLogoff);
             var sel_TueLogoff = document.getElementById('div_TueLogoff');
             noUiSlider.create(sel_TueLogoff, {
                 connect: true,
@@ -1625,16 +1840,16 @@
             val_TueLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_FriLogoff = document.createElement("div");
             div_FriLogoff.id = "div_FriLogoff";
             div_FriLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_FriLogoff);
+            document.getElementById("filter").appendChild(div_FriLogoff);
             var lab_FriLogoff = document.createElement('div');
             lab_FriLogoff.innerHTML  = 'FriLogoff: <span id="val_FriLogoff"></span>';
             lab_FriLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_FriLogoff);
+            document.getElementById("filter").appendChild(lab_FriLogoff);
             var reset_FriLogoff = document.createElement('div');
             reset_FriLogoff.innerHTML = 'clear filter';
             reset_FriLogoff.className = 'filterlabel';
@@ -1642,7 +1857,7 @@
             reset_FriLogoff.onclick = function() {
                 sel_FriLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_FriLogoff);
+            document.getElementById("filter").appendChild(reset_FriLogoff);
             var sel_FriLogoff = document.getElementById('div_FriLogoff');
             noUiSlider.create(sel_FriLogoff, {
                 connect: true,
@@ -1657,16 +1872,16 @@
             val_FriLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_MonLogin = document.createElement("div");
             div_MonLogin.id = "div_MonLogin";
             div_MonLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_MonLogin);
+            document.getElementById("filter").appendChild(div_MonLogin);
             var lab_MonLogin = document.createElement('div');
             lab_MonLogin.innerHTML  = 'MonLogin: <span id="val_MonLogin"></span>';
             lab_MonLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_MonLogin);
+            document.getElementById("filter").appendChild(lab_MonLogin);
             var reset_MonLogin = document.createElement('div');
             reset_MonLogin.innerHTML = 'clear filter';
             reset_MonLogin.className = 'filterlabel';
@@ -1674,7 +1889,7 @@
             reset_MonLogin.onclick = function() {
                 sel_MonLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_MonLogin);
+            document.getElementById("filter").appendChild(reset_MonLogin);
             var sel_MonLogin = document.getElementById('div_MonLogin');
             noUiSlider.create(sel_MonLogin, {
                 connect: true,
@@ -1689,16 +1904,16 @@
             val_MonLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_WedLogoff = document.createElement("div");
             div_WedLogoff.id = "div_WedLogoff";
             div_WedLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_WedLogoff);
+            document.getElementById("filter").appendChild(div_WedLogoff);
             var lab_WedLogoff = document.createElement('div');
             lab_WedLogoff.innerHTML  = 'WedLogoff: <span id="val_WedLogoff"></span>';
             lab_WedLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_WedLogoff);
+            document.getElementById("filter").appendChild(lab_WedLogoff);
             var reset_WedLogoff = document.createElement('div');
             reset_WedLogoff.innerHTML = 'clear filter';
             reset_WedLogoff.className = 'filterlabel';
@@ -1706,7 +1921,7 @@
             reset_WedLogoff.onclick = function() {
                 sel_WedLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_WedLogoff);
+            document.getElementById("filter").appendChild(reset_WedLogoff);
             var sel_WedLogoff = document.getElementById('div_WedLogoff');
             noUiSlider.create(sel_WedLogoff, {
                 connect: true,
@@ -1721,16 +1936,16 @@
             val_WedLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_FriLogin = document.createElement("div");
             div_FriLogin.id = "div_FriLogin";
             div_FriLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_FriLogin);
+            document.getElementById("filter").appendChild(div_FriLogin);
             var lab_FriLogin = document.createElement('div');
             lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
             lab_FriLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_FriLogin);
+            document.getElementById("filter").appendChild(lab_FriLogin);
             var reset_FriLogin = document.createElement('div');
             reset_FriLogin.innerHTML = 'clear filter';
             reset_FriLogin.className = 'filterlabel';
@@ -1738,7 +1953,7 @@
             reset_FriLogin.onclick = function() {
                 sel_FriLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_FriLogin);
+            document.getElementById("filter").appendChild(reset_FriLogin);
             var sel_FriLogin = document.getElementById('div_FriLogin');
             noUiSlider.create(sel_FriLogin, {
                 connect: true,
@@ -1753,16 +1968,16 @@
             val_FriLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_WedLogin = document.createElement("div");
             div_WedLogin.id = "div_WedLogin";
             div_WedLogin.className = "slider";
-            document.getElementById("menu").appendChild(div_WedLogin);
+            document.getElementById("filter").appendChild(div_WedLogin);
             var lab_WedLogin = document.createElement('div');
             lab_WedLogin.innerHTML  = 'WedLogin: <span id="val_WedLogin"></span>';
             lab_WedLogin.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_WedLogin);
+            document.getElementById("filter").appendChild(lab_WedLogin);
             var reset_WedLogin = document.createElement('div');
             reset_WedLogin.innerHTML = 'clear filter';
             reset_WedLogin.className = 'filterlabel';
@@ -1770,7 +1985,7 @@
             reset_WedLogin.onclick = function() {
                 sel_WedLogin.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_WedLogin);
+            document.getElementById("filter").appendChild(reset_WedLogin);
             var sel_WedLogin = document.getElementById('div_WedLogin');
             noUiSlider.create(sel_WedLogin, {
                 connect: true,
@@ -1785,16 +2000,16 @@
             val_WedLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_SatLogoff = document.createElement("div");
             div_SatLogoff.id = "div_SatLogoff";
             div_SatLogoff.className = "slider";
-            document.getElementById("menu").appendChild(div_SatLogoff);
+            document.getElementById("filter").appendChild(div_SatLogoff);
             var lab_SatLogoff = document.createElement('div');
             lab_SatLogoff.innerHTML  = 'SatLogoff: <span id="val_SatLogoff"></span>';
             lab_SatLogoff.className = 'filterlabel';
-            document.getElementById("menu").appendChild(lab_SatLogoff);
+            document.getElementById("filter").appendChild(lab_SatLogoff);
             var reset_SatLogoff = document.createElement('div');
             reset_SatLogoff.innerHTML = 'clear filter';
             reset_SatLogoff.className = 'filterlabel';
@@ -1802,7 +2017,7 @@
             reset_SatLogoff.onclick = function() {
                 sel_SatLogoff.noUiSlider.reset();
             };
-            document.getElementById("menu").appendChild(reset_SatLogoff);
+            document.getElementById("filter").appendChild(reset_SatLogoff);
             var sel_SatLogoff = document.getElementById('div_SatLogoff');
             noUiSlider.create(sel_SatLogoff, {
                 connect: true,
@@ -1817,12 +2032,12 @@
             val_SatLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_Office = document.createElement('div');
             div_Office.id = "div_Office";
             div_Office.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Office);
+            document.getElementById("filter").appendChild(div_Office);
             sel_Office = document.createElement('select');
             sel_Office.multiple = true;
             sel_Office.size = 4;
@@ -1850,12 +2065,12 @@
                 filterFunc();
             };
             div_Office.appendChild(reset_Office);
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_Manager = document.createElement('div');
             div_Manager.id = "div_Manager";
             div_Manager.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Manager);
+            document.getElementById("filter").appendChild(div_Manager);
             sel_Manager = document.createElement('select');
             sel_Manager.multiple = true;
             sel_Manager.size = 10;
@@ -1909,12 +2124,12 @@
                 filterFunc();
             };
             div_Manager.appendChild(reset_Manager);
-            document.getElementById("menu").appendChild(
+            document.getElementById("filter").appendChild(
                 document.createElement("div"));
             var div_Category = document.createElement('div');
             div_Category.id = "div_Category";
             div_Category.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Category);
+            document.getElementById("filter").appendChild(div_Category);
             sel_Category = document.createElement('select');
             sel_Category.multiple = true;
             sel_Category.size = 2;
@@ -1940,6 +2155,101 @@
                 filterFunc();
             };
             div_Category.appendChild(reset_Category);
+
+
+            L.Polygon.include({
+            contains: function(latLng) {
+                return turf.inside(new L.Marker(latLng).toGeoJSON(), this.toGeoJSON());
+            }
+        });
+        L.Rectangle.include({
+            contains: function(latLng) {
+                return this.getBounds().contains(latLng);
+            }
+        });
+        L.Circle.include({
+            contains: function(latLng) {
+                return this.getLatLng().distanceTo(latLng) < this.getRadius();
+            }
+        });
+
+        map.on('pm:create', function(e) {
+            layer_headset_2.eachLayer(function(marker) {
+                if (!e.layer.contains(marker.getLatLng())) {
+                    marker.remove();
+                }
+            })
+        });
+
+        map.on('pm:drawend', e => {
+            e.target.eachLayer(layer => {
+                if (layer.options.shape) {
+                    document.getElementsByClassName("leaflet-interactive")[0].addEventListener("mouseover", function() {
+                        var demo1 =
+                            "<h1 class=" + "sidebar-header" + " style=" + "font-weight:bold" + ">Staff Group<span class=" + "sidebar-close" + ">\n" +
+                            "<i class=" + "\'fa fa-caret-right\'></i></span></h1>\n" +
+                            "<p>\n" +
+                            "<table id=" + "stafftable" + " class=" + "stafftable" + " style=" + "width:100%;border-collapse:collapse;" + ">\n" +
+                            "<tr>\n" +
+                            "<th width=" + "10%" + " style=" + "font-size:14px;" + ">#</th>\n" +
+                            "<th width=" + "30%" + " style=" + "font-size:14px;" + ">Staff No.</th>\n" +
+                            "<th width=" + "60%" + " style=" + "font-size:14px;" + ">Name </th>\n" +
+                            "</tr>\n" +
+                            "</table>\n" +
+                            "</p>\n" +
+                            "<p>\n" +
+                            "<span class=" + "sidebar-close" + ">\n" +
+                            "<button style=" + "float:left;height:100%;border:none;" + " class=" + "\'fa fa-caret-right\'" + ">\n" +
+                            "</button>\n" +
+                            "</span>";
+
+                        document.querySelector("#sidebar #sidebar-content #shiftslider").innerHTML = demo1;
+                        var demo =
+                            "<table style=width:\'100%\' border=\'1\'>\n" +
+                            "<tr>\n" +
+                            "<td></td>\n" +
+                            "<td>" + layer.feature.properties.EK + "</td>\n" +
+                            "<td>" + layer.feature.properties.Name + "</td>\n" +
+                            "</tr>\n" +
+                            "</table>";
+                        for (var i = 0; i < demo.length; i++) {
+                            if (demo !== 0) {
+                                return function() {
+                                    (document.querySelector("#sidebar #sidebar-content #shiftslider #stafftable").innerHTML += demo);
+                                }
+                            }
+                        }
+                    }(), {
+                        once: true
+                    });
+                }
+            });
+        });
+
+            
+        map.on('pm:drawend', e => {
+            e.target.on('click', function() {
+                toggleSidebar();
+            });
+            var sidebarDiv = document.getElementById('sidebar');
+            toggleSidebar = function() {
+                if (hasClass(sidebarDiv, 'collapsed')) {
+                    sidebar.open('shiftslider');
+                } else {
+                    sidebar.close();
+                }
+            }
+
+            function hasClass(element, cls) {
+                return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+            };
+        });
+
+        function toggleFunction(bool) {
+            alert(bool)
+        }
+
+
         </script>
     </body>
 </html>
