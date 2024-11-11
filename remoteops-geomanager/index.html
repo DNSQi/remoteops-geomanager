@@ -112,6 +112,7 @@
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
         <script src="js/leaflet-geoman.min.js"></script>
+        <script src="js/turf.min.js"></script>
         <script src="js/multiselect-dropdown.js"></script>
         <script src="js/leaflet-sidebar.js"></script>
         <script src="js/leaflet-svg-shape-markers.min.js"></script>
@@ -144,12 +145,13 @@
             <!-- Nav tabs -->
             <div class="sidebar-tabs">
                 <ul role="tablist">
-                    <li title="View Staff Group"><a href="#shiftslider" role="tab"><i class="fa fa-list-ul"></i></a>
-                    </li>
+                    <li class="disabled"><a href="#shiftslider" role="tab"><i class="fa fa-list-ul"></i></a></li>
                     <li class="disabled"><a href="#void" role="tab"></a></li>
-                    <li title="View Map Filters"><a href="#filter" role="tab"><i class="fa fa-filter"></i></a></li>
+                    <li title="View Staff Filters"><a href="#shiftsliders" role="tab"><i class="fa fa-users"></i></a></li>
                     <li class="disabled"><a href="#void" role="tab"></a></li>
-                    <li title="View WorkTools"><a href="#select" role="tab"><i class="fa fa-users"></i></a></li>
+                    <li title="View Equipment Filters"><a href="#filter" role="tab"><i class="fa fa-filter"></i></a></li>
+                    <li class="disabled"><a href="#void" role="tab"></a></li>
+                    <li class="disabled"><a href="#select" role="tab"><i class="fa fa-users"></i></a></li>
                 </ul>
 
                 <ul role="tablist">
@@ -159,6 +161,16 @@
 
             <!-- Tab panes -->
             <div class="sidebar-content" id="sidebar-content">
+                <div class="sidebar-pane" id="shiftsliders">
+                    <h1 class="sidebar-header" style="font-weight:bold">
+                        Staff Layers
+                        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    </h1>
+                    <br>
+                    <span style="font-size:15px;font-weight:bold">Filter by Workday:</span>
+
+                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                </div>
                 <div class="sidebar-pane" id="shiftslider">
                     <h1 class="sidebar-header" style="font-weight:bold">
                         Staff Group
@@ -183,9 +195,11 @@
 
                 <div class="sidebar-pane" id="filter">
                     <h1 class="sidebar-header" style="font-weight:bold">
-                        Layer Switch & Filter
+                        Equipment Layers
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
-                    </h1><br>
+                    </h1>
+                    <br>
+                    <span style="font-size:15px;font-weight:bold">Filter by Type of Equipment:</span>
                     <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
                 </div>
 
@@ -363,27 +377,125 @@
                     }
                 },
                 mouseover: highlightFeature,
+                mousedown: function(e) {
+                    if (layer.options.shape) {
+                        var demo2 =
+                            "<table>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Staff No</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "staffno" + " value='" + layer.feature.properties.EK + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">UserName</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "username" + " value='" + layer.feature.properties.Username + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Name</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "names" + " value='" + layer.feature.properties.Name + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Category</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "category" + " value='" + layer.feature.properties.Category + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Office</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "office" + " value='" + layer.feature.properties.Office + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Team Leader</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "tlead" + " value='" + layer.feature.properties.TeamLead + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Manager</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "manager" + " value='" + layer.feature.properties.Manager + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Route</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "route" + " value='" + layer.feature.properties.Route + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Sub-Route</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "sroute" + " value='" + layer.feature.properties.SubRoute + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Residence</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "reside" + " value='" + layer.feature.properties.Residence + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Phone No.</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "phone" + " value='" + layer.feature.properties.Phone + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;hidden;" + ">Coordinates</th>\n" +
+                            "<td style=" + "padding:0px;" + "><table style=" + "width:100%;border:none;font-weight:normal;padding:0px;" + ">\n" +
+                            "<tr><th style=" + "padding:0px;" + "border:none;" + ">Latitude:</th>\n" +
+                            "<td style=" + "width:40%;border:none;padding:0px;><input style=" + "width:100%;border:none;" + " name=" + "lat" + " value='" + layer.feature.properties.Latitude + "'></td>" +
+                            "<th style=" + "padding:0px;border:none;" + ">Long:</th>\n" +
+                            "<td style=" + "width:40%;border:none;padding:0px;><input style=" + "width:100%;border:none;" + " name=" + "lng" + " value='" + layer.feature.properties.Longitude + "'></td></tr></table></th>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Headset Name</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "hname" + " value='" + layer.feature.properties.HdstName + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Headset Serial</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "hserial" + " value='" + layer.feature.properties.HdstSerial + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Adaptor Serial</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "aserial" + " value='" + layer.feature.properties.AdptSerial + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Issue Date</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input type=" + "date" + " style=" + "width:100%;border:none;" + " name=" + "idate" + " value='" + layer.feature.properties.IssueDate + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Return Date</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input type=" + "date" + " style=" + "width:100%;border:none;" + " name=" + "rdate" + " value='" + layer.feature.properties.ReturnDate + "'></td>\n" +
+                            "</tr>\n" +
+                            "</table>" +
+                            "<input type=" + "button" + " style=" + "font-size:10px;" + " value=" + "Delete" + " class=" + "delete" + ">" +
+                            "<button type=" + "submit" + " name=" + "save" + " style=" + "font-size:10px;" + " class=" + "save" + ">Save</button>" +
+                            "<input type=" + "button" + " style=" + "font-size:10px;" + " value=" + "Export" + " class=" + "export" + ">";
+                        (document.querySelector("#sidebar #sidebar-content #select #table").innerHTML = demo2);
+                    };
+
+                    var sidebarDiv = document.getElementById('sidebar');
+
+                    if (hasClass(sidebarDiv, 'collapsed')) {
+                        sidebar.open('select');
+                    } else {
+                        sidebar.open('select');
+                    }
+
+                    function hasClass(element, cls) {
+                        return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+                    }
+                    // close sidebar when press esc
+                    document.addEventListener("keydown", function(event) {
+                        if (event.key === "Escape") {
+                            sidebar.close();
+                        }
+                    });
+
+                }
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">HdstSerial</th>\
-                        <td>' + (feature.properties['HdstSerial'] !== null ? autolinker.link(feature.properties['HdstSerial'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/' + (feature.properties['HdstName'] !== null ? autolinker.link(feature.properties['HdstName'].toLocaleString()) : '').split(" ")[0] + '.jpg" width=85 />\
+                        </td>\
+                        <td style="border:none;">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['HdstName'] !== null ? autolinker.link(feature.properties['HdstName'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">AdptSerial</th>\
-                        <td>' + (feature.properties['AdptSerial'] !== null ? autolinker.link(feature.properties['AdptSerial'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Username</th>\
-                        <td>' + (feature.properties['Username'] !== null ? autolinker.link(feature.properties['Username'].toLocaleString()) : '') + '</td>\
+                        <td id=" + "Username" + " >' + (feature.properties['Username'] !== null ? autolinker.link(feature.properties['Username'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Category</th>\
@@ -394,25 +506,26 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">Headset Serial</th>\
+                        <td>' + (feature.properties['HdstSerial'] !== null ? autolinker.link(feature.properties['HdstSerial'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">Adaptor Serial</th>\
+                        <td>' + (feature.properties['AdptSerial'] !== null ? autolinker.link(feature.properties['AdptSerial'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">IssueDate</th>\
+                        <th scope="row">Issue Date</th>\
                         <td>' + (feature.properties['IssueDate'] !== null ? autolinker.link(feature.properties['IssueDate'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">ReturnDate</th>\
+                        <th scope="row">Return Date</th>\
                         <td>' + (feature.properties['ReturnDate'] !== null ? autolinker.link(feature.properties['ReturnDate'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.bindPopup(popupContent, {
+                maxHeight: 400,
+                autoPan: false
+            });
         }
         function style_headsets_1_0(feature) {
             var context = {
@@ -1235,19 +1348,55 @@
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
-        var baseMaps = {};
-        var overlaysTree = [
-            {label: '<img src="legend/sunday_9.png" /> sunday', layer: layer_sunday_9},
-            {label: '<img src="legend/monday_8.png" /> monday', layer: layer_monday_8},
-            {label: '<img src="legend/tuesday_7.png" /> tuesday', layer: layer_tuesday_7},
-            {label: '<img src="legend/wednesday_6.png" /> wednesday', layer: layer_wednesday_6},
-            {label: '<img src="legend/thursday_5.png" /> thursday', layer: layer_thursday_5},
-            {label: '<img src="legend/friday_4.png" /> friday', layer: layer_friday_4},
-            {label: '<img src="legend/saturday_3.png" /> saturday', layer: layer_saturday_3},
-            {label: 'search', layer: layer_search_2},
-            {label: 'headsets<br /><table><tr><td style="text-align: center;"><img src="legend/headsets_1_OKtoUse0.png" /></td><td>OK to Use</td></tr><tr><td style="text-align: center;"><img src="legend/headsets_1_PreparetoReplace1.png" /></td><td>Prepare to Replace</td></tr><tr><td style="text-align: center;"><img src="legend/headsets_1_DueforReplacement2.png" /></td><td>Due for Replacement</td></tr></table>', layer: layer_headsets_1},
-            {label: "OpenStreetMap", layer: layer_OpenStreetMap_0},]
-        var lay = L.control.layers.tree(null, overlaysTree,{
+        
+        var baseMaps = {
+            '<span title="Sunday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Sunday()">Sunday</span>': layer_sunday_9,
+            '<span title="Monday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Monday()">Monday</span>': layer_monday_8,
+            '<span title="Tuesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Tuesday()">Tuesday</span>': layer_tuesday_7,
+            '<span title="Wednesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Wednesday()">Wednesday</span>': layer_wednesday_6,
+            '<span title="Thursday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Thursday()">Thursday</span>': layer_thursday_5,
+            '<span title="Friday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Friday()">Friday</span>': layer_friday_4,
+            '<span title="Saturday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Saturday()">Saturday</span>': layer_saturday_3
+        };
+        var layer = L.control.layers(baseMaps, {}, {
+            collapsed: false
+        }).addTo(map);
+        var htmlObject = layer.getContainer();
+        var a = document.getElementById('shiftsliders')
+
+        function setParent(el, newParent) {
+            newParent.appendChild(el);
+        }
+        setParent(htmlObject, a);
+
+        var overlaysTree1 = [
+            //{label: '<img src="legend/sunday_9.png" /> sunday', layer: layer_sunday_9},
+            //{label: '<img src="legend/monday_8.png" /> monday', layer: layer_monday_8},
+            //{label: '<img src="legend/tuesday_7.png" /> tuesday', layer: layer_tuesday_7},
+            //{label: '<img src="legend/wednesday_6.png" /> wednesday', layer: layer_wednesday_6},
+            //{label: '<img src="legend/thursday_5.png" /> thursday', layer: layer_thursday_5},
+            //{label: '<img src="legend/friday_4.png" /> friday', layer: layer_friday_4},
+            //{label: '<img src="legend/saturday_3.png" /> saturday', layer: layer_saturday_3},
+            //{label: "OpenStreetMap", layer: layer_OpenStreetMap_0},
+        ]
+        var lay = L.control.layers.tree(null, overlaysTree1,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        //lay.addTo(map);
+
+        var overlaysTree2 = [
+            {label: '<span title="Overview of Headsets Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction1()">Headsets and Adaptors</span>', layer: layer_headsets_1},
+            {label: '<span title="Overview of Routers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Connection Routers</span>', layer: layer_search_2},
+            {label: '<span title="Overview of Computers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Computers</span>', layer: layer_search_2},
+            {label: '<span title="Overview of Office Seats Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Office Seats</span>', layer: layer_search_2},
+        ]
+        var lay = L.control.layers.tree(null, overlaysTree2,{
             //namedToggle: true,
             //selectorBack: false,
             //closedSymbol: '&#8862; &#x1f5c0;',
@@ -1258,16 +1407,14 @@
         });
         lay.addTo(map);
 
-
+        
+        var equipment_type = document.createElement('div');
+        equipment_type.id = "equipment_type";
+        document.getElementById("filter").appendChild(
+            equipment_type);
         var htmlObject = lay.getContainer();
-        var a = document.getElementById('filter')
-
-        function setParent(el, newParent) {
-            newParent.appendChild(el);
-        }
-        setParent(htmlObject, a);
-
-
+        document.getElementById("equipment_type").appendChild(
+            htmlObject);
 
         setBounds();
         map.addControl(new L.Control.Search({
@@ -1296,7 +1443,18 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"IssueDate": "date","ReturnDate": "date","SunLogin": "real","SatLogin": "real","ThurLogin": "real","SunLogoff": "real","TuesLogin": "real","ThurLogoff": "real","MonLogoff": "real","TueLogoff": "real","FriLogoff": "real","MonLogin": "real","WedLogoff": "real","FriLogin": "real","WedLogin": "real","SatLogoff": "real","Office": "str","Manager": "str","Category": "str"};
+        var Filters = {"IssueDate": "date",
+        "ReturnDate": "date",
+        "SunLogin": "real",
+        "SatLogin": "real",
+        "ThurLogin": "real",
+        "SunLogoff": "real",
+        "TuesLogin": "real",
+        "ThurLogoff": "real",
+        "MonLogoff": "real",
+        "TueLogoff": "real",
+        "FriLogoff": "real",
+        "MonLogin": "real","WedLogoff": "real","FriLogin": "real","WedLogin": "real","SatLogoff": "real","Office": "str","Manager": "str","Category": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -1386,222 +1544,295 @@
           }
           })
         }
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_IssueDate_date1 = document.createElement("div");
-            div_IssueDate_date1.id = "div_IssueDate_date1";
-            div_IssueDate_date1.className= "filterselect";
-            document.getElementById("filter").appendChild(div_IssueDate_date1);
-            dat_IssueDate_date1 = document.createElement('input');
-            dat_IssueDate_date1.type = "text";
-            dat_IssueDate_date1.id = "dat_IssueDate_date1";
-            div_IssueDate_date1.appendChild(dat_IssueDate_date1);
-            var lab_IssueDate_date1 = document.createElement('div');
-            lab_IssueDate_date1.innerHTML  = 'IssueDate from';
-            lab_IssueDate_date1.className = 'filterlabel';
-            document.getElementById("div_IssueDate_date1").appendChild(
-                lab_IssueDate_date1);
-            var reset_IssueDate_date1 = document.createElement('div');
-            reset_IssueDate_date1.innerHTML = "clear";
-            reset_IssueDate_date1.className = 'filterlabel';
-            reset_IssueDate_date1.onclick = function() {
-                tail.DateTime("#dat_IssueDate_date1", {
-                    dateStart: 1644872400000,
-                    dateEnd: 1720386000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2022,2-1,15,0,0,0);
-                tail.DateTime("#dat_IssueDate_date1").reload()
-            }
-            document.getElementById("div_IssueDate_date1").appendChild(
-                reset_IssueDate_date1);
-            document.addEventListener("DOMContentLoaded", function(){
-                tail.DateTime("#dat_IssueDate_date1", {
-                    dateStart: 1644872400000,
-                    dateEnd: 1720386000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2022,2-1,15,0,0,0);
-                tail.DateTime("#dat_IssueDate_date1").reload()
-                tail.DateTime("#dat_IssueDate_date2", {
-                    dateStart: 1644872400000,
-                    dateEnd: 1720386000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2024,7-1,8,0,0,0);
-                tail.DateTime("#dat_IssueDate_date2").reload()
+        document.getElementById("filter").appendChild(
+            document.createElement("div"));
+        var div_IssueDate_date1 = document.createElement("div");
+        div_IssueDate_date1.id = "div_IssueDate_date1";
+        div_IssueDate_date1.className = "filterselect";
+        document.getElementById("filter").appendChild(div_IssueDate_date1);
+        var header_issueDate = document.createElement('div');
+        header_issueDate.id = "header_issueDate";
+        header_issueDate.innerHTML = '<br><br><br><br><br><br><br><span style="font-size: 15px; font-weight: bold;">Filter by Date of Issue:</span>';
+        document.getElementById("div_IssueDate_date1")
+            .appendChild(header_issueDate);
+        dat_IssueDate_date1 = document.createElement('input');
+        dat_IssueDate_date1.type = "text";
+        dat_IssueDate_date1.id = "dat_IssueDate_date1";
+        var lab_IssueDate_date1 = document.createElement('div');
+        lab_IssueDate_date1.id = "lab_IssueDate_date1";
+        lab_IssueDate_date1.innerHTML = '<span style="font-size: 12px; font-weight: bold;">First Date of Issue</span>';
+        lab_IssueDate_date1.className = 'filterlabel';
+        document.getElementById("div_IssueDate_date1").appendChild(
+            lab_IssueDate_date1);
+        div_IssueDate_date1.appendChild(dat_IssueDate_date1);
+        var reset_IssueDate_date1 = document.createElement('button');
+        reset_IssueDate_date1.style.float = "right";
+        reset_IssueDate_date1.innerHTML = "Clear Filter";
+        reset_IssueDate_date1.className = 'resetfilter';
+        reset_IssueDate_date1.onclick = function() {
+            tail.DateTime("#dat_IssueDate_date1", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(2022, 1, 1, 0, 0, 0);
+            tail.DateTime("#dat_IssueDate_date1").reload()
+        }
+        document.getElementById("div_IssueDate_date1").appendChild(
+            reset_IssueDate_date1);
+        document.addEventListener("DOMContentLoaded", function() {
+            tail.DateTime("#dat_IssueDate_date1", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(2022, 1, 1, 0, 0, 0);
+            tail.DateTime("#dat_IssueDate_date1").reload()
+            tail.DateTime("#dat_IssueDate_date2", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date());
+            tail.DateTime("#dat_IssueDate_date2").reload()
+            filterFunc()
+            dat_IssueDate_date1.onchange = function() {
                 filterFunc()
-                dat_IssueDate_date1.onchange = function(){filterFunc()};
-                dat_IssueDate_date2.onchange = function(){filterFunc()};
-            });
-            var div_IssueDate_date2 = document.createElement("div");
-            div_IssueDate_date2.id = "div_IssueDate_date2";
-            div_IssueDate_date2.className= "filterselect";
-            document.getElementById("filter").appendChild(div_IssueDate_date2);
-            dat_IssueDate_date2 = document.createElement('input');
-            dat_IssueDate_date2.type = "text";
-            dat_IssueDate_date2.id = "dat_IssueDate_date2";
-            div_IssueDate_date2.appendChild(dat_IssueDate_date2);
-            var lab_IssueDate_date2 = document.createElement('div');
-            lab_IssueDate_date2.innerHTML  = 'IssueDate till';
-            lab_IssueDate_date2.className = 'filterlabel';
-            document.getElementById("div_IssueDate_date2")
-              .appendChild(lab_IssueDate_date2);
-            var reset_IssueDate_date2 = document.createElement('div');
-            reset_IssueDate_date2.innerHTML = "clear";
-            reset_IssueDate_date2.className = 'filterlabel';
-            reset_IssueDate_date2.onclick = function() {
-                tail.DateTime("#dat_IssueDate_date2", {
-                    dateStart: 1644872400000,
-                    dateEnd: 1720386000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2024,7-1,8,0,0,0);
-                tail.DateTime("#dat_IssueDate_date2").reload()
-            }
-            document.getElementById("div_IssueDate_date2").appendChild(
-                reset_IssueDate_date2);
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_ReturnDate_date1 = document.createElement("div");
-            div_ReturnDate_date1.id = "div_ReturnDate_date1";
-            div_ReturnDate_date1.className= "filterselect";
-            document.getElementById("filter").appendChild(div_ReturnDate_date1);
-            dat_ReturnDate_date1 = document.createElement('input');
-            dat_ReturnDate_date1.type = "text";
-            dat_ReturnDate_date1.id = "dat_ReturnDate_date1";
-            div_ReturnDate_date1.appendChild(dat_ReturnDate_date1);
-            var lab_ReturnDate_date1 = document.createElement('div');
-            lab_ReturnDate_date1.innerHTML  = 'ReturnDate from';
-            lab_ReturnDate_date1.className = 'filterlabel';
-            document.getElementById("div_ReturnDate_date1").appendChild(
-                lab_ReturnDate_date1);
-            var reset_ReturnDate_date1 = document.createElement('div');
-            reset_ReturnDate_date1.innerHTML = "clear";
-            reset_ReturnDate_date1.className = 'filterlabel';
-            reset_ReturnDate_date1.onclick = function() {
-                tail.DateTime("#dat_ReturnDate_date1", {
-                    dateStart: 1707944400000,
-                    dateEnd: 1783458000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2024,2-1,15,0,0,0);
-                tail.DateTime("#dat_ReturnDate_date1").reload()
-            }
-            document.getElementById("div_ReturnDate_date1").appendChild(
-                reset_ReturnDate_date1);
-            document.addEventListener("DOMContentLoaded", function(){
-                tail.DateTime("#dat_ReturnDate_date1", {
-                    dateStart: 1707944400000,
-                    dateEnd: 1783458000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2024,2-1,15,0,0,0);
-                tail.DateTime("#dat_ReturnDate_date1").reload()
-                tail.DateTime("#dat_ReturnDate_date2", {
-                    dateStart: 1707944400000,
-                    dateEnd: 1783458000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2026,7-1,8,0,0,0);
-                tail.DateTime("#dat_ReturnDate_date2").reload()
+            };
+            dat_IssueDate_date2.onchange = function() {
                 filterFunc()
-                dat_ReturnDate_date1.onchange = function(){filterFunc()};
-                dat_ReturnDate_date2.onchange = function(){filterFunc()};
-            });
-            var div_ReturnDate_date2 = document.createElement("div");
-            div_ReturnDate_date2.id = "div_ReturnDate_date2";
-            div_ReturnDate_date2.className= "filterselect";
-            document.getElementById("filter").appendChild(div_ReturnDate_date2);
-            dat_ReturnDate_date2 = document.createElement('input');
-            dat_ReturnDate_date2.type = "text";
-            dat_ReturnDate_date2.id = "dat_ReturnDate_date2";
-            div_ReturnDate_date2.appendChild(dat_ReturnDate_date2);
-            var lab_ReturnDate_date2 = document.createElement('div');
-            lab_ReturnDate_date2.innerHTML  = 'ReturnDate till';
-            lab_ReturnDate_date2.className = 'filterlabel';
-            document.getElementById("div_ReturnDate_date2")
-              .appendChild(lab_ReturnDate_date2);
-            var reset_ReturnDate_date2 = document.createElement('div');
-            reset_ReturnDate_date2.innerHTML = "clear";
-            reset_ReturnDate_date2.className = 'filterlabel';
-            reset_ReturnDate_date2.onclick = function() {
-                tail.DateTime("#dat_ReturnDate_date2", {
-                    dateStart: 1707944400000,
-                    dateEnd: 1783458000000,
-                    dateFormat: 'YYYY-mm-dd',
-                    timeFormat: false,
-                    today: false,
-                    weekStart: 1,
-                    position: "left",
-                    closeButton: true,
-                    timeStepMinutes:1,
-                    timeStepSeconds: 1
-                }).selectDate(2026,7-1,8,0,0,0);
-                tail.DateTime("#dat_ReturnDate_date2").reload()
-            }
-            document.getElementById("div_ReturnDate_date2").appendChild(
-                reset_ReturnDate_date2);
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_SunLogin = document.createElement("div");
-            div_SunLogin.id = "div_SunLogin";
-            div_SunLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_SunLogin);
+            };
+        });
+        var div_IssueDate_date2 = document.createElement("div");
+        div_IssueDate_date2.id = "div_IssueDate_date2";
+        div_IssueDate_date2.className = "filterselect";
+        document.getElementById("filter").appendChild(div_IssueDate_date2);
+        dat_IssueDate_date2 = document.createElement('input');
+        dat_IssueDate_date2.type = "text";
+        dat_IssueDate_date2.id = "dat_IssueDate_date2";
+        var lab_IssueDate_date2 = document.createElement('div');
+        lab_IssueDate_date2.id = "lab_IssueDate_date2";
+        lab_IssueDate_date2.innerHTML = '<br><span style="font-size: 12px; font-weight: bold;">Last Date of Issue</span>';
+        lab_IssueDate_date2.className = 'filterlabel';
+        document.getElementById("div_IssueDate_date2")
+            .appendChild(lab_IssueDate_date2);
+        div_IssueDate_date2.appendChild(dat_IssueDate_date2);
+        var reset_IssueDate_date2 = document.createElement('button');
+        reset_IssueDate_date2.style.float = "right";
+        reset_IssueDate_date2.innerHTML = "Clear Filter";
+        reset_IssueDate_date2.className = 'resetfilter';
+        reset_IssueDate_date2.onclick = function() {
+            tail.DateTime("#dat_IssueDate_date2", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date());
+            tail.DateTime("#dat_IssueDate_date2").reload()
+        }
+        document.getElementById("div_IssueDate_date2").appendChild(
+            reset_IssueDate_date2);
+        
+        document.getElementById("filter").appendChild(document.createElement("div"));
+        var div_IssueDate_date3 = document.createElement("div");
+        div_IssueDate_date3.id = "div_IssueDate_date3";
+        div_IssueDate_date3.className = "filterselect";
+        document.getElementById("filter").appendChild(div_IssueDate_date3);
+        var header_radioButtons = document.createElement('div');
+        header_radioButtons.id = "header_radioButtons";
+        header_radioButtons.innerHTML = '<br><span style="font-size: 15px; font-weight: bold;">Filter by Condition:</span>';
+        document.getElementById("div_IssueDate_date3")
+            .appendChild(header_radioButtons);
+        var reset_IssueDate_date3 = document.createElement('input');
+        reset_IssueDate_date3.id = 'radio';
+        reset_IssueDate_date3.type = "radio";
+        reset_IssueDate_date3.name = "radio";
+        reset_IssueDate_date3.style.width = "auto";
+        reset_IssueDate_date3.style.display = "inline";
+        reset_IssueDate_date3.onclick = function() {
+            tail.DateTime("#dat_IssueDate_date1", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date(new Date().setDate(new Date().getDate() - 668)));
+            tail.DateTime("#dat_IssueDate_date1").reload()
+            tail.DateTime("#dat_IssueDate_date2", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date());
+            tail.DateTime("#dat_IssueDate_date2").reload()
+        }
+        var label = document.createElement('label');
+        label.setAttribute('for', reset_IssueDate_date3.id);
+        label.innerHTML = '<span style="font-size: 14px; font-weight: bold; color: #008000;"> OK TO USE</span>';
+        document.getElementById("div_IssueDate_date3").appendChild(reset_IssueDate_date3);
+        document.getElementById("div_IssueDate_date3").appendChild(label);
+
+        var div_IssueDate_date4 = document.createElement('div');
+        div_IssueDate_date4.id = "div_IssueDate_date4";
+        div_IssueDate_date4.className = "filterselect";
+        document.getElementById("filter").appendChild(div_IssueDate_date4);
+        var reset_IssueDate_date4 = document.createElement('input');
+        reset_IssueDate_date4.type = "radio";
+        reset_IssueDate_date4.id = 'radio2';
+        reset_IssueDate_date4.name = "radio";
+        reset_IssueDate_date4.style.width = "auto";
+        reset_IssueDate_date4.style.display = "inline";
+        reset_IssueDate_date4.onclick = function() {
+            tail.DateTime("#dat_IssueDate_date1", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date(new Date().setDate(new Date().getDate() - 730)));
+            tail.DateTime("#dat_IssueDate_date1").reload()
+            tail.DateTime("#dat_IssueDate_date2", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date(new Date().setDate(new Date().getDate() - 668)));
+            tail.DateTime("#dat_IssueDate_date2").reload()
+        }
+        var label2 = document.createElement('label');
+        label2.setAttribute('for', reset_IssueDate_date4.id);
+        label2.innerHTML = '<span style="font-size: 14px; font-weight: bold; color: #ff8000;"> PREPARE TO REPLACE</span>';
+        document.getElementById("div_IssueDate_date4").appendChild(reset_IssueDate_date4);
+        document.getElementById("div_IssueDate_date4").appendChild(label2);
+
+
+        var div_IssueDate_date5 = document.createElement('div');
+        div_IssueDate_date5.id = "div_IssueDate_date5";
+        div_IssueDate_date5.className = "filterselect";
+        document.getElementById("filter").appendChild(div_IssueDate_date5);
+
+        var reset_IssueDate_date5 = document.createElement('input');
+        reset_IssueDate_date5.type = "radio";
+        reset_IssueDate_date5.id = 'radio3';
+        reset_IssueDate_date5.name = "radio";
+        reset_IssueDate_date5.style.width = "auto";
+        reset_IssueDate_date5.style.display = "inline";
+        reset_IssueDate_date5.onclick = function() {
+            tail.DateTime("#dat_IssueDate_date1", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(2022, 1, 1, 0, 0, 0);
+            tail.DateTime("#dat_IssueDate_date1").reload()
+            tail.DateTime("#dat_IssueDate_date2", {
+                dateStart: 1640995200000,
+                //dateEnd: 1693429200000,
+                dateFormat: 'YYYY-mm-dd',
+                timeFormat: false,
+                today: false,
+                weekStart: 1,
+                position: "left",
+                closeButton: true,
+                timeStepMinutes: 1,
+                timeStepSeconds: 1
+            }).selectDate(new Date(new Date().setDate(new Date().getDate() - 730)));
+            tail.DateTime("#dat_IssueDate_date2").reload()
+        }
+        var label3 = document.createElement('label');
+        label3.setAttribute('for', reset_IssueDate_date5.id);
+        label3.innerHTML = '<span style="font-size: 14px; font-weight: bold; color: #cc0000;"> DUE FOR REPLACEMENT</span>';
+        document.getElementById("div_IssueDate_date5").appendChild(reset_IssueDate_date5);
+        document.getElementById("div_IssueDate_date5").appendChild(label3);
+
+
+        var div_SpaceStyle = document.createElement("div");
+            div_SpaceStyle.id = "div_SpaceStyle";
+            //div_SpaceStyle.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SpaceStyle);
+            var lab_SpaceStyle = document.createElement('div');
+            lab_SpaceStyle.innerHTML  = '<br><br><br><br><br><br><br><br><br><br>';
+            lab_SpaceStyle.className = 'filterlabel';
+            document.getElementById("div_SpaceStyle").appendChild(lab_SpaceStyle);
+
+
+
+
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_SunLogins = document.createElement("div");
+            div_SunLogins.id = "div_SunLogins";
+            //div_SunLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SunLogins);
             var lab_SunLogin = document.createElement('div');
             lab_SunLogin.innerHTML  = 'SunLogin: <span id="val_SunLogin"></span>';
             lab_SunLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_SunLogin);
-            var reset_SunLogin = document.createElement('div');
-            reset_SunLogin.innerHTML = 'clear filter';
-            reset_SunLogin.className = 'filterlabel';
-            lab_SunLogin.className = 'filterlabel';
+            document.getElementById("div_SunLogins").appendChild(lab_SunLogin);
+            var div_SunLogin = document.createElement("div");
+            div_SunLogin.id = "div_SunLogin";
+            div_SunLogin.className = "slider";
+            document.getElementById("div_SunLogins").appendChild(div_SunLogin);
+            var reset_SunLogin = document.createElement('button');
+            reset_SunLogin.style.float = "right";
+            reset_SunLogin.innerHTML = 'Clear Filter';
+            //reset_SunLogin.className = 'filterlabel';
+            reset_SunLogin.style.width = "auto";
+            reset_SunLogin.style.display = "inline";
             reset_SunLogin.onclick = function() {
                 sel_SunLogin.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_SunLogin);
+            document.getElementById("div_SunLogins").appendChild(reset_SunLogin);
             var sel_SunLogin = document.getElementById('div_SunLogin');
             noUiSlider.create(sel_SunLogin, {
                 connect: true,
@@ -1616,88 +1847,29 @@
             val_SunLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_SatLogin = document.createElement("div");
-            div_SatLogin.id = "div_SatLogin";
-            div_SatLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_SatLogin);
-            var lab_SatLogin = document.createElement('div');
-            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
-            lab_SatLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_SatLogin);
-            var reset_SatLogin = document.createElement('div');
-            reset_SatLogin.innerHTML = 'clear filter';
-            reset_SatLogin.className = 'filterlabel';
-            lab_SatLogin.className = 'filterlabel';
-            reset_SatLogin.onclick = function() {
-                sel_SatLogin.noUiSlider.reset();
-            };
-            document.getElementById("filter").appendChild(reset_SatLogin);
-            var sel_SatLogin = document.getElementById('div_SatLogin');
-            noUiSlider.create(sel_SatLogin, {
-                connect: true,
-                start: [7.21, 7.83],
-                range: {
-                min: 7.21,
-                max: 7.83
-                }
-            });
-            sel_SatLogin.noUiSlider.on('update', function (values) {
-            val_SatLogin = document.getElementById('val_SatLogin');
-            val_SatLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_ThurLogin = document.createElement("div");
-            div_ThurLogin.id = "div_ThurLogin";
-            div_ThurLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_ThurLogin);
-            var lab_ThurLogin = document.createElement('div');
-            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
-            lab_ThurLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_ThurLogin);
-            var reset_ThurLogin = document.createElement('div');
-            reset_ThurLogin.innerHTML = 'clear filter';
-            reset_ThurLogin.className = 'filterlabel';
-            lab_ThurLogin.className = 'filterlabel';
-            reset_ThurLogin.onclick = function() {
-                sel_ThurLogin.noUiSlider.reset();
-            };
-            document.getElementById("filter").appendChild(reset_ThurLogin);
-            var sel_ThurLogin = document.getElementById('div_ThurLogin');
-            noUiSlider.create(sel_ThurLogin, {
-                connect: true,
-                start: [5.21, 5.83],
-                range: {
-                min: 5.21,
-                max: 5.83
-                }
-            });
-            sel_ThurLogin.noUiSlider.on('update', function (values) {
-            val_ThurLogin = document.getElementById('val_ThurLogin');
-            val_ThurLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_SunLogoff = document.createElement("div");
-            div_SunLogoff.id = "div_SunLogoff";
-            div_SunLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_SunLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_SunLogoffs = document.createElement("div");
+            div_SunLogoffs.id = "div_SunLogoffs";
+            //div_SunLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SunLogoffs);
             var lab_SunLogoff = document.createElement('div');
             lab_SunLogoff.innerHTML  = 'SunLogoff: <span id="val_SunLogoff"></span>';
             lab_SunLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_SunLogoff);
-            var reset_SunLogoff = document.createElement('div');
-            reset_SunLogoff.innerHTML = 'clear filter';
-            reset_SunLogoff.className = 'filterlabel';
-            lab_SunLogoff.className = 'filterlabel';
+            document.getElementById("div_SunLogoffs").appendChild(lab_SunLogoff);
+            var div_SunLogoff = document.createElement("div");
+            div_SunLogoff.id = "div_SunLogoff";
+            div_SunLogoff.className = "slider";
+            document.getElementById("div_SunLogoffs").appendChild(div_SunLogoff);
+            var reset_SunLogoff = document.createElement('button');
+            reset_SunLogoff.style.float = "right";
+            reset_SunLogoff.innerHTML = 'Clear Filter';
+            //reset_SunLogoff.className = 'filterlabel';
+            reset_SunLogoff.style.width = "auto";
+            reset_SunLogoff.style.display = "inline";
             reset_SunLogoff.onclick = function() {
                 sel_SunLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_SunLogoff);
+            document.getElementById("div_SunLogoffs").appendChild(reset_SunLogoff);
             var sel_SunLogoff = document.getElementById('div_SunLogoff');
             noUiSlider.create(sel_SunLogoff, {
                 connect: true,
@@ -1712,24 +1884,103 @@
             val_SunLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_TuesLogin = document.createElement("div");
-            div_TuesLogin.id = "div_TuesLogin";
-            div_TuesLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_TuesLogin);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_SatLogins = document.createElement("div");
+            div_SatLogins.id = "div_SatLogins";
+            div_SatLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SatLogins);
+            var lab_SatLogin = document.createElement('div');
+            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
+            lab_SatLogin.className = 'filterlabel';
+            document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
+            var div_SatLogin = document.createElement("div");
+            div_SatLogin.id = "div_SatLogin";
+            div_SatLogin.className = "slider";
+            document.getElementById("div_SatLogins").appendChild(div_SatLogin);
+            var reset_SatLogin = document.createElement('button');
+            reset_SatLogin.style.float = "right";
+            reset_SatLogin.innerHTML = 'Clear Filter';
+            //reset_SatLogin.className = 'filterlabel';
+            reset_SatLogin.style.width = "auto";
+            reset_SatLogin.style.display = "inline";
+            reset_SatLogin.onclick = function() {
+                sel_SatLogin.noUiSlider.reset();
+            };
+            document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
+            var sel_SatLogin = document.getElementById('div_SatLogin');
+            noUiSlider.create(sel_SatLogin, {
+                connect: true,
+                start: [7.21, 7.83],
+                range: {
+                min: 7.21,
+                max: 7.83
+                }
+            });
+            sel_SatLogin.noUiSlider.on('update', function (values) {
+            val_SatLogin = document.getElementById('val_SatLogin');
+            val_SatLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_ThurLogins = document.createElement("div");
+            div_ThurLogins.id = "div_ThurLogins";
+            div_ThurLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_ThurLogins);
+            var lab_ThurLogin = document.createElement('div');
+            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
+            lab_ThurLogin.className = 'filterlabel';
+            document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
+            var div_ThurLogin = document.createElement("div");
+            div_ThurLogin.id = "div_ThurLogin";
+            div_ThurLogin.className = "slider";
+            document.getElementById("div_ThurLogins").appendChild(div_ThurLogin);
+            var reset_ThurLogin = document.createElement('button');
+            reset_ThurLogin.style.float = "right";
+            reset_ThurLogin.innerHTML = 'Clear Filter';
+            //reset_ThurLogin.className = 'filterlabel';
+            reset_ThurLogin.style.width = "auto";
+            reset_ThurLogin.style.display = "inline";
+            reset_ThurLogin.onclick = function() {
+                sel_ThurLogin.noUiSlider.reset();
+            };
+            document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
+            var sel_ThurLogin = document.getElementById('div_ThurLogin');
+            noUiSlider.create(sel_ThurLogin, {
+                connect: true,
+                start: [5.21, 5.83],
+                range: {
+                min: 5.21,
+                max: 5.83
+                }
+            });
+            sel_ThurLogin.noUiSlider.on('update', function (values) {
+            val_ThurLogin = document.getElementById('val_ThurLogin');
+            val_ThurLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_TuesLogins = document.createElement("div");
+            div_TuesLogins.id = "div_TuesLogins";
+            div_TuesLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_TuesLogins);
             var lab_TuesLogin = document.createElement('div');
             lab_TuesLogin.innerHTML  = 'TuesLogin: <span id="val_TuesLogin"></span>';
             lab_TuesLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_TuesLogin);
-            var reset_TuesLogin = document.createElement('div');
-            reset_TuesLogin.innerHTML = 'clear filter';
-            reset_TuesLogin.className = 'filterlabel';
-            lab_TuesLogin.className = 'filterlabel';
+            document.getElementById("div_TuesLogins").appendChild(lab_TuesLogin);
+            var div_TuesLogin = document.createElement("div");
+            div_TuesLogin.id = "div_TuesLogin";
+            div_TuesLogin.className = "slider";
+            document.getElementById("div_TuesLogins").appendChild(div_TuesLogin);
+            var reset_TuesLogin = document.createElement('button');
+            reset_TuesLogin.style.float = "right";
+            reset_TuesLogin.innerHTML = 'Clear Filter';
+            //reset_TuesLogin.className = 'filterlabel';
+            reset_TuesLogin.style.width = "auto";
+            reset_TuesLogin.style.display = "inline";
             reset_TuesLogin.onclick = function() {
                 sel_TuesLogin.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_TuesLogin);
+            document.getElementById("div_TuesLogins").appendChild(reset_TuesLogin);
             var sel_TuesLogin = document.getElementById('div_TuesLogin');
             noUiSlider.create(sel_TuesLogin, {
                 connect: true,
@@ -1744,24 +1995,29 @@
             val_TuesLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_ThurLogoff = document.createElement("div");
-            div_ThurLogoff.id = "div_ThurLogoff";
-            div_ThurLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_ThurLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_ThurLogoffs = document.createElement("div");
+            div_ThurLogoffs.id = "div_ThurLogoffs";
+            div_ThurLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
             var lab_ThurLogoff = document.createElement('div');
             lab_ThurLogoff.innerHTML  = 'ThurLogoff: <span id="val_ThurLogoff"></span>';
             lab_ThurLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_ThurLogoff);
-            var reset_ThurLogoff = document.createElement('div');
-            reset_ThurLogoff.innerHTML = 'clear filter';
-            reset_ThurLogoff.className = 'filterlabel';
-            lab_ThurLogoff.className = 'filterlabel';
+            document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
+            var div_ThurLogoff = document.createElement("div");
+            div_ThurLogoff.id = "div_ThurLogoff";
+            div_ThurLogoff.className = "slider";
+            document.getElementById("div_ThurLogoffs").appendChild(div_ThurLogoff);
+            var reset_ThurLogoff = document.createElement('button');
+            reset_ThurLogoff.style.float = "right";
+            reset_ThurLogoff.innerHTML = 'Clear Filter';
+            //reset_ThurLogoff.className = 'filterlabel';
+            reset_ThurLogoff.style.width = "auto";
+            reset_ThurLogoff.style.display = "inline";
             reset_ThurLogoff.onclick = function() {
                 sel_ThurLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_ThurLogoff);
+            document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
             var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
             noUiSlider.create(sel_ThurLogoff, {
                 connect: true,
@@ -1776,24 +2032,29 @@
             val_ThurLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_MonLogoff = document.createElement("div");
-            div_MonLogoff.id = "div_MonLogoff";
-            div_MonLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_MonLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_MonLogoffs = document.createElement("div");
+            div_MonLogoffs.id = "div_MonLogoffs";
+            div_MonLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
             var lab_MonLogoff = document.createElement('div');
             lab_MonLogoff.innerHTML  = 'MonLogoff: <span id="val_MonLogoff"></span>';
             lab_MonLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_MonLogoff);
-            var reset_MonLogoff = document.createElement('div');
-            reset_MonLogoff.innerHTML = 'clear filter';
-            reset_MonLogoff.className = 'filterlabel';
-            lab_MonLogoff.className = 'filterlabel';
+            document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
+            var div_MonLogoff = document.createElement("div");
+            div_MonLogoff.id = "div_MonLogoff";
+            div_MonLogoff.className = "slider";
+            document.getElementById("div_MonLogoffs").appendChild(div_MonLogoff);
+            var reset_MonLogoff = document.createElement('button');
+            reset_MonLogoff.style.float = "right";
+            reset_MonLogoff.innerHTML = 'Clear Filter';
+            //reset_MonLogoff.className = 'filterlabel';
+            reset_MonLogoff.style.width = "auto";
+            reset_MonLogoff.style.display = "inline";
             reset_MonLogoff.onclick = function() {
                 sel_MonLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_MonLogoff);
+            document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
             var sel_MonLogoff = document.getElementById('div_MonLogoff');
             noUiSlider.create(sel_MonLogoff, {
                 connect: true,
@@ -1808,24 +2069,29 @@
             val_MonLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_TueLogoff = document.createElement("div");
-            div_TueLogoff.id = "div_TueLogoff";
-            div_TueLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_TueLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_TueLogoffs = document.createElement("div");
+            div_TueLogoffs.id = "div_TueLogoffs";
+            div_TueLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
             var lab_TueLogoff = document.createElement('div');
             lab_TueLogoff.innerHTML  = 'TueLogoff: <span id="val_TueLogoff"></span>';
             lab_TueLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_TueLogoff);
-            var reset_TueLogoff = document.createElement('div');
-            reset_TueLogoff.innerHTML = 'clear filter';
-            reset_TueLogoff.className = 'filterlabel';
-            lab_TueLogoff.className = 'filterlabel';
+            document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
+            var div_TueLogoff = document.createElement("div");
+            div_TueLogoff.id = "div_TueLogoff";
+            div_TueLogoff.className = "slider";
+            document.getElementById("div_TueLogoffs").appendChild(div_TueLogoff);
+            var reset_TueLogoff = document.createElement('button');
+            reset_TueLogoff.style.float = "right";
+            reset_TueLogoff.innerHTML = 'Clear Filter';
+            //reset_TueLogoff.className = 'filterlabel';
+            reset_TueLogoff.style.width = "auto";
+            reset_TueLogoff.style.display = "inline";
             reset_TueLogoff.onclick = function() {
                 sel_TueLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_TueLogoff);
+            document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
             var sel_TueLogoff = document.getElementById('div_TueLogoff');
             noUiSlider.create(sel_TueLogoff, {
                 connect: true,
@@ -1840,24 +2106,29 @@
             val_TueLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_FriLogoff = document.createElement("div");
-            div_FriLogoff.id = "div_FriLogoff";
-            div_FriLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_FriLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_FriLogoffs = document.createElement("div");
+            div_FriLogoffs.id = "div_FriLogoffs";
+            div_FriLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
             var lab_FriLogoff = document.createElement('div');
             lab_FriLogoff.innerHTML  = 'FriLogoff: <span id="val_FriLogoff"></span>';
             lab_FriLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_FriLogoff);
-            var reset_FriLogoff = document.createElement('div');
-            reset_FriLogoff.innerHTML = 'clear filter';
-            reset_FriLogoff.className = 'filterlabel';
-            lab_FriLogoff.className = 'filterlabel';
+            document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
+            var div_FriLogoff = document.createElement("div");
+            div_FriLogoff.id = "div_FriLogoff";
+            div_FriLogoff.className = "slider";
+            document.getElementById("div_FriLogoffs").appendChild(div_FriLogoff);
+            var reset_FriLogoff = document.createElement('button');
+            reset_FriLogoff.style.float = "right";
+            reset_FriLogoff.innerHTML = 'Clear Filter';
+            //reset_FriLogoff.className = 'filterlabel';
+            reset_FriLogoff.style.width = "auto";
+            reset_FriLogoff.style.display = "inline";
             reset_FriLogoff.onclick = function() {
                 sel_FriLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_FriLogoff);
+            document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
             var sel_FriLogoff = document.getElementById('div_FriLogoff');
             noUiSlider.create(sel_FriLogoff, {
                 connect: true,
@@ -1872,24 +2143,29 @@
             val_FriLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_MonLogin = document.createElement("div");
-            div_MonLogin.id = "div_MonLogin";
-            div_MonLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_MonLogin);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_MonLogins = document.createElement("div");
+            div_MonLogins.id = "div_MonLogins";
+            div_MonLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_MonLogins);
             var lab_MonLogin = document.createElement('div');
             lab_MonLogin.innerHTML  = 'MonLogin: <span id="val_MonLogin"></span>';
             lab_MonLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_MonLogin);
-            var reset_MonLogin = document.createElement('div');
-            reset_MonLogin.innerHTML = 'clear filter';
-            reset_MonLogin.className = 'filterlabel';
-            lab_MonLogin.className = 'filterlabel';
+            document.getElementById("div_MonLogins").appendChild(lab_MonLogin);
+            var div_MonLogin = document.createElement("div");
+            div_MonLogin.id = "div_MonLogin";
+            div_MonLogin.className = "slider";
+            document.getElementById("div_MonLogins").appendChild(div_MonLogin);
+            var reset_MonLogin = document.createElement('button');
+            reset_MonLogin.style.float = "right";
+            reset_MonLogin.innerHTML = 'Clear Filter';
+            //reset_MonLogin.className = 'filterlabel';
+            reset_MonLogin.style.width = "auto";
+            reset_MonLogin.style.display = "inline";
             reset_MonLogin.onclick = function() {
                 sel_MonLogin.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_MonLogin);
+            document.getElementById("div_MonLogins").appendChild(reset_MonLogin);
             var sel_MonLogin = document.getElementById('div_MonLogin');
             noUiSlider.create(sel_MonLogin, {
                 connect: true,
@@ -1904,24 +2180,29 @@
             val_MonLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_WedLogoff = document.createElement("div");
-            div_WedLogoff.id = "div_WedLogoff";
-            div_WedLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_WedLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_WedLogoffs = document.createElement("div");
+            div_WedLogoffs.id = "div_WedLogoffs";
+            div_WedLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
             var lab_WedLogoff = document.createElement('div');
             lab_WedLogoff.innerHTML  = 'WedLogoff: <span id="val_WedLogoff"></span>';
             lab_WedLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_WedLogoff);
-            var reset_WedLogoff = document.createElement('div');
-            reset_WedLogoff.innerHTML = 'clear filter';
-            reset_WedLogoff.className = 'filterlabel';
-            lab_WedLogoff.className = 'filterlabel';
+            document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
+            var div_WedLogoff = document.createElement("div");
+            div_WedLogoff.id = "div_WedLogoff";
+            div_WedLogoff.className = "slider";
+            document.getElementById("div_WedLogoffs").appendChild(div_WedLogoff);
+            var reset_WedLogoff = document.createElement('button');
+            reset_WedLogoff.style.float = "right";
+            reset_WedLogoff.innerHTML = 'Clear Filter';
+            //reset_WedLogoff.className = 'filterlabel';
+            reset_WedLogoff.style.width = "auto";
+            reset_WedLogoff.style.display = "inline";
             reset_WedLogoff.onclick = function() {
                 sel_WedLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_WedLogoff);
+            document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
             var sel_WedLogoff = document.getElementById('div_WedLogoff');
             noUiSlider.create(sel_WedLogoff, {
                 connect: true,
@@ -1936,24 +2217,29 @@
             val_WedLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_FriLogin = document.createElement("div");
-            div_FriLogin.id = "div_FriLogin";
-            div_FriLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_FriLogin);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_FriLogins = document.createElement("div");
+            div_FriLogins.id = "div_FriLogins";
+            div_FriLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_FriLogins);
             var lab_FriLogin = document.createElement('div');
             lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
             lab_FriLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_FriLogin);
-            var reset_FriLogin = document.createElement('div');
-            reset_FriLogin.innerHTML = 'clear filter';
-            reset_FriLogin.className = 'filterlabel';
-            lab_FriLogin.className = 'filterlabel';
+            document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
+            var div_FriLogin = document.createElement("div");
+            div_FriLogin.id = "div_FriLogin";
+            div_FriLogin.className = "slider";
+            document.getElementById("div_FriLogins").appendChild(div_FriLogin);
+            var reset_FriLogin = document.createElement('button');
+            reset_FriLogin.style.float = "right";
+            reset_FriLogin.innerHTML = 'Clear Filter';
+            //reset_FriLogin.className = 'filterlabel';
+            reset_FriLogin.style.width = "auto";
+            reset_FriLogin.style.display = "inline";
             reset_FriLogin.onclick = function() {
                 sel_FriLogin.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_FriLogin);
+            document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
             var sel_FriLogin = document.getElementById('div_FriLogin');
             noUiSlider.create(sel_FriLogin, {
                 connect: true,
@@ -1968,24 +2254,29 @@
             val_FriLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_WedLogin = document.createElement("div");
-            div_WedLogin.id = "div_WedLogin";
-            div_WedLogin.className = "slider";
-            document.getElementById("filter").appendChild(div_WedLogin);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_WedLogins = document.createElement("div");
+            div_WedLogins.id = "div_WedLogins";
+            div_WedLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_WedLogins);
             var lab_WedLogin = document.createElement('div');
             lab_WedLogin.innerHTML  = 'WedLogin: <span id="val_WedLogin"></span>';
             lab_WedLogin.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_WedLogin);
-            var reset_WedLogin = document.createElement('div');
-            reset_WedLogin.innerHTML = 'clear filter';
-            reset_WedLogin.className = 'filterlabel';
-            lab_WedLogin.className = 'filterlabel';
+            document.getElementById("div_WedLogins").appendChild(lab_WedLogin);
+            var div_WedLogin = document.createElement("div");
+            div_WedLogin.id = "div_WedLogin";
+            div_WedLogin.className = "slider";
+            document.getElementById("div_WedLogins").appendChild(div_WedLogin);
+            var reset_WedLogin = document.createElement('button');
+            reset_WedLogin.style.float = "right";
+            reset_WedLogin.innerHTML = 'Clear Filter';
+            //reset_WedLogin.className = 'filterlabel';
+            reset_WedLogin.style.width = "auto";
+            reset_WedLogin.style.display = "inline";
             reset_WedLogin.onclick = function() {
                 sel_WedLogin.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_WedLogin);
+            document.getElementById("div_WedLogins").appendChild(reset_WedLogin);
             var sel_WedLogin = document.getElementById('div_WedLogin');
             noUiSlider.create(sel_WedLogin, {
                 connect: true,
@@ -2000,24 +2291,29 @@
             val_WedLogin.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
-            var div_SatLogoff = document.createElement("div");
-            div_SatLogoff.id = "div_SatLogoff";
-            div_SatLogoff.className = "slider";
-            document.getElementById("filter").appendChild(div_SatLogoff);
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_SatLogoffs = document.createElement("div");
+            div_SatLogoffs.id = "div_SatLogoffs";
+            div_SatLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SatLogoffs);
             var lab_SatLogoff = document.createElement('div');
             lab_SatLogoff.innerHTML  = 'SatLogoff: <span id="val_SatLogoff"></span>';
             lab_SatLogoff.className = 'filterlabel';
-            document.getElementById("filter").appendChild(lab_SatLogoff);
-            var reset_SatLogoff = document.createElement('div');
-            reset_SatLogoff.innerHTML = 'clear filter';
-            reset_SatLogoff.className = 'filterlabel';
-            lab_SatLogoff.className = 'filterlabel';
+            document.getElementById("div_SatLogoffs").appendChild(lab_SatLogoff);
+            var div_SatLogoff = document.createElement("div");
+            div_SatLogoff.id = "div_SatLogoff";
+            div_SatLogoff.className = "slider";
+            document.getElementById("div_SatLogoffs").appendChild(div_SatLogoff);
+            var reset_SatLogoff = document.createElement('button');
+            reset_SatLogoff.style.float = "right";
+            reset_SatLogoff.innerHTML = 'Clear Filter';
+            //reset_SatLogoff.className = 'filterlabel';
+            reset_SatLogoff.style.width = "auto";
+            reset_SatLogoff.style.display = "inline";
             reset_SatLogoff.onclick = function() {
                 sel_SatLogoff.noUiSlider.reset();
             };
-            document.getElementById("filter").appendChild(reset_SatLogoff);
+            document.getElementById("div_SatLogoffs").appendChild(reset_SatLogoff);
             var sel_SatLogoff = document.getElementById('div_SatLogoff');
             noUiSlider.create(sel_SatLogoff, {
                 connect: true,
@@ -2032,12 +2328,19 @@
             val_SatLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
-            document.getElementById("filter").appendChild(
-                document.createElement("div"));
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_Office = document.createElement('div');
             div_Office.id = "div_Office";
             div_Office.className= "filterselect";
-            document.getElementById("filter").appendChild(div_Office);
+            document.getElementById("shiftsliders").appendChild(div_Office);
+            var header_staffDetails = document.createElement('div');
+            header_staffDetails.id = "header_staffDetails";
+            header_staffDetails.innerHTML = '<br><span style="font-size: 15px; font-weight: bold;">Filter by Staff Details:</span>';
+            document.getElementById("div_Office").appendChild(header_staffDetails);
+            var lab_Office = document.createElement('div');
+            lab_Office.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Office</span>';
+            lab_Office.className = 'filterlabel';
+            div_Office.appendChild(lab_Office);
             sel_Office = document.createElement('select');
             sel_Office.multiple = true;
             sel_Office.size = 4;
@@ -2050,13 +2353,12 @@
             Office_options_str  += '<option value="Thika">Thika</option>';
             sel_Office.innerHTML = Office_options_str;
             div_Office.appendChild(sel_Office);
-            var lab_Office = document.createElement('div');
-            lab_Office.innerHTML = 'Office';
-            lab_Office.className = 'filterlabel';
-            div_Office.appendChild(lab_Office);
-            var reset_Office = document.createElement('div');
-            reset_Office.innerHTML = 'clear filter';
-            reset_Office.className = 'filterlabel';
+            var reset_Office = document.createElement('button');
+            reset_Office.style.float = "right";
+            reset_Office.innerHTML = 'Clear Filter';
+            //reset_Office.className = 'filterlabel';
+            reset_Office.style.width = "auto";
+            reset_Office.style.display = "inline";
             reset_Office.onclick = function() {
                 var options = document.getElementById("sel_Office").options;
                 for (var i=0; i < options.length; i++) {
@@ -2065,12 +2367,16 @@
                 filterFunc();
             };
             div_Office.appendChild(reset_Office);
-            document.getElementById("filter").appendChild(
+            document.getElementById("shiftsliders").appendChild(
                 document.createElement("div"));
             var div_Manager = document.createElement('div');
             div_Manager.id = "div_Manager";
             div_Manager.className= "filterselect";
-            document.getElementById("filter").appendChild(div_Manager);
+            document.getElementById("shiftsliders").appendChild(div_Manager);
+            var lab_Manager = document.createElement('div');
+            lab_Manager.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Manager</span>';
+            lab_Manager.className = 'filterlabel';
+            div_Manager.appendChild(lab_Manager);
             sel_Manager = document.createElement('select');
             sel_Manager.multiple = true;
             sel_Manager.size = 10;
@@ -2109,13 +2415,12 @@
             Manager_options_str  += '<option value="Winnie">Winnie</option>';
             sel_Manager.innerHTML = Manager_options_str;
             div_Manager.appendChild(sel_Manager);
-            var lab_Manager = document.createElement('div');
-            lab_Manager.innerHTML = 'Manager';
-            lab_Manager.className = 'filterlabel';
-            div_Manager.appendChild(lab_Manager);
-            var reset_Manager = document.createElement('div');
-            reset_Manager.innerHTML = 'clear filter';
-            reset_Manager.className = 'filterlabel';
+            var reset_Manager = document.createElement('button');
+            reset_Manager.style.float = "right";
+            reset_Manager.innerHTML = 'Clear Filter';
+            //reset_Manager.className = 'filterlabel';
+            reset_Manager.style.width = "auto";
+            reset_Manager.style.display = "inline";
             reset_Manager.onclick = function() {
                 var options = document.getElementById("sel_Manager").options;
                 for (var i=0; i < options.length; i++) {
@@ -2124,12 +2429,16 @@
                 filterFunc();
             };
             div_Manager.appendChild(reset_Manager);
-            document.getElementById("filter").appendChild(
+            document.getElementById("shiftsliders").appendChild(
                 document.createElement("div"));
             var div_Category = document.createElement('div');
             div_Category.id = "div_Category";
             div_Category.className= "filterselect";
-            document.getElementById("filter").appendChild(div_Category);
+            document.getElementById("shiftsliders").appendChild(div_Category);
+            var lab_Category = document.createElement('div');
+            lab_Category.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Category</span>';
+            lab_Category.className = 'filterlabel';
+            div_Category.appendChild(lab_Category);
             sel_Category = document.createElement('select');
             sel_Category.multiple = true;
             sel_Category.size = 2;
@@ -2140,13 +2449,12 @@
             Category_options_str  += '<option value="Support Team">Support Team</option>';
             sel_Category.innerHTML = Category_options_str;
             div_Category.appendChild(sel_Category);
-            var lab_Category = document.createElement('div');
-            lab_Category.innerHTML = 'Category';
-            lab_Category.className = 'filterlabel';
-            div_Category.appendChild(lab_Category);
-            var reset_Category = document.createElement('div');
-            reset_Category.innerHTML = 'clear filter';
-            reset_Category.className = 'filterlabel';
+            var reset_Category = document.createElement('button');
+            reset_Category.style.float = "right";
+            reset_Category.innerHTML = 'Clear Filter';
+            //reset_Category.className = 'filterlabel';
+            reset_Category.style.width = "auto";
+            reset_Category.style.display = "inline";
             reset_Category.onclick = function() {
                 var options = document.getElementById("sel_Category").options;
                 for (var i=0; i < options.length; i++) {
@@ -2174,7 +2482,7 @@
         });
 
         map.on('pm:create', function(e) {
-            layer_headset_2.eachLayer(function(marker) {
+            layer_headsets_1.eachLayer(function(marker) {
                 if (!e.layer.contains(marker.getLatLng())) {
                     marker.remove();
                 }
@@ -2250,6 +2558,20 @@
         }
 
 
+		function myFunction() {
+		document.getElementById("shiftday").disabled = true;
+		document.getElementById("login").disabled = true;
+		document.getElementById("logoff").disabled = true;
+		document.getElementById("firstday").disabled = false;
+		document.getElementById("lastday").disabled = false;
+		}
+		function myFunction1() {
+		document.getElementById("shiftday").disabled = false;
+		document.getElementById("login").disabled = false;
+		document.getElementById("logoff").disabled = false;
+		document.getElementById("firstday").disabled = true;
+		document.getElementById("lastday").disabled = true;
+		}
         </script>
     </body>
 </html>
