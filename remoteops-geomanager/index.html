@@ -166,7 +166,6 @@
                         Staff Layers
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
                     </h1>
-                    <br>
                     <span style="font-size:15px;font-weight:bold">Filter by Workday:</span>
 
                     <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
@@ -1350,13 +1349,13 @@
         .title += 'Search for a place';
         
         var baseMaps = {
-            '<span title="Sunday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Sunday()">Sunday</span>': layer_sunday_9,
-            '<span title="Monday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Monday()">Monday</span>': layer_monday_8,
-            '<span title="Tuesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Tuesday()">Tuesday</span>': layer_tuesday_7,
-            '<span title="Wednesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Wednesday()">Wednesday</span>': layer_wednesday_6,
-            '<span title="Thursday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Thursday()">Thursday</span>': layer_thursday_5,
-            '<span title="Friday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Friday()">Friday</span>': layer_friday_4,
-            '<span title="Saturday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="Saturday()">Saturday</span>': layer_saturday_3
+            '<span title="Sunday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Sun&quot;)">Sunday</span>': layer_sunday_9,
+            '<span title="Monday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Mon&quot;)">Monday</span>': layer_monday_8,
+            '<span title="Tuesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Tue&quot;)">Tuesday</span>': layer_tuesday_7,
+            '<span title="Wednesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Wed&quot;)">Wednesday</span>': layer_wednesday_6,
+            '<span title="Thursday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Thur&quot;)">Thursday</span>': layer_thursday_5,
+            '<span title="Friday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Fri&quot;)">Friday</span>': layer_friday_4,
+            '<span title="Saturday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Sat&quot;)">Saturday</span>': layer_saturday_3
         };
         var layer = L.control.layers(baseMaps, {}, {
             collapsed: false
@@ -1369,34 +1368,13 @@
         }
         setParent(htmlObject, a);
 
-        var overlaysTree1 = [
-            //{label: '<img src="legend/sunday_9.png" /> sunday', layer: layer_sunday_9},
-            //{label: '<img src="legend/monday_8.png" /> monday', layer: layer_monday_8},
-            //{label: '<img src="legend/tuesday_7.png" /> tuesday', layer: layer_tuesday_7},
-            //{label: '<img src="legend/wednesday_6.png" /> wednesday', layer: layer_wednesday_6},
-            //{label: '<img src="legend/thursday_5.png" /> thursday', layer: layer_thursday_5},
-            //{label: '<img src="legend/friday_4.png" /> friday', layer: layer_friday_4},
-            //{label: '<img src="legend/saturday_3.png" /> saturday', layer: layer_saturday_3},
-            //{label: "OpenStreetMap", layer: layer_OpenStreetMap_0},
-        ]
-        var lay = L.control.layers.tree(null, overlaysTree1,{
-            //namedToggle: true,
-            //selectorBack: false,
-            //closedSymbol: '&#8862; &#x1f5c0;',
-            //openedSymbol: '&#8863; &#x1f5c1;',
-            //collapseAll: 'Collapse all',
-            //expandAll: 'Expand all',
-            collapsed: false, 
-        });
-        //lay.addTo(map);
-
-        var overlaysTree2 = [
+        var overlaysTree = [
             {label: '<span title="Overview of Headsets Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction1()">Headsets and Adaptors</span>', layer: layer_headsets_1},
             {label: '<span title="Overview of Routers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Connection Routers</span>', layer: layer_search_2},
             {label: '<span title="Overview of Computers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Computers</span>', layer: layer_search_2},
             {label: '<span title="Overview of Office Seats Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Office Seats</span>', layer: layer_search_2},
         ]
-        var lay = L.control.layers.tree(null, overlaysTree2,{
+        var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
             //selectorBack: false,
             //closedSymbol: '&#8862; &#x1f5c0;',
@@ -1407,7 +1385,6 @@
         });
         lay.addTo(map);
 
-        
         var equipment_type = document.createElement('div');
         equipment_type.id = "equipment_type";
         document.getElementById("filter").appendChild(
@@ -1437,25 +1414,33 @@
         col1.style.display = "inline-block";
         var col2 = document.createElement('div');
         col2.className="col3";
-        col2.id = "filter";
+        col2.id = "shiftsliders";
         col2.style.display = "inline-block";
         mapDiv.parentNode.insertBefore(row, mapDiv);
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"IssueDate": "date",
+        var Filters = {
+        "IssueDate": "date",
         "ReturnDate": "date",
         "SunLogin": "real",
-        "SatLogin": "real",
-        "ThurLogin": "real",
         "SunLogoff": "real",
-        "TuesLogin": "real",
-        "ThurLogoff": "real",
+        "MonLogin": "real",
         "MonLogoff": "real",
+        "TueLogin": "real",
         "TueLogoff": "real",
+        "WedLogin": "real",
+        "WedLogoff": "real",
+        "ThurLogin": "real",
+        "ThurLogoff": "real",
+        "FriLogin": "real",
         "FriLogoff": "real",
-        "MonLogin": "real","WedLogoff": "real","FriLogin": "real","WedLogin": "real","SatLogoff": "real","Office": "str","Manager": "str","Category": "str"};
-        function filterFunc() {
+        "SatLogin": "real",
+        "SatLogoff": "real",
+        "Office": "str",
+        "Manager": "str",
+        "Category": "str"};
+        function filterFunc() { 
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
             features = this[lyr["options"]["dataVar"]].features.slice(0);
@@ -1813,7 +1798,7 @@
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SunLogins = document.createElement("div");
             div_SunLogins.id = "div_SunLogins";
-            //div_SunLogins.style.display = "none";
+            div_SunLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SunLogins);
             var lab_SunLogin = document.createElement('div');
             lab_SunLogin.innerHTML  = 'SunLogin: <span id="val_SunLogin"></span>';
@@ -1850,10 +1835,10 @@
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SunLogoffs = document.createElement("div");
             div_SunLogoffs.id = "div_SunLogoffs";
-            //div_SunLogoffs.style.display = "none";
+            div_SunLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SunLogoffs);
             var lab_SunLogoff = document.createElement('div');
-            lab_SunLogoff.innerHTML  = 'SunLogoff: <span id="val_SunLogoff"></span>';
+            lab_SunLogoff.innerHTML  = '<br>SunLogoff: <span id="val_SunLogoff"></span>';
             lab_SunLogoff.className = 'filterlabel';
             document.getElementById("div_SunLogoffs").appendChild(lab_SunLogoff);
             var div_SunLogoff = document.createElement("div");
@@ -1882,265 +1867,6 @@
             sel_SunLogoff.noUiSlider.on('update', function (values) {
             val_SunLogoff = document.getElementById('val_SunLogoff');
             val_SunLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_SatLogins = document.createElement("div");
-            div_SatLogins.id = "div_SatLogins";
-            div_SatLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SatLogins);
-            var lab_SatLogin = document.createElement('div');
-            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
-            lab_SatLogin.className = 'filterlabel';
-            document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
-            var div_SatLogin = document.createElement("div");
-            div_SatLogin.id = "div_SatLogin";
-            div_SatLogin.className = "slider";
-            document.getElementById("div_SatLogins").appendChild(div_SatLogin);
-            var reset_SatLogin = document.createElement('button');
-            reset_SatLogin.style.float = "right";
-            reset_SatLogin.innerHTML = 'Clear Filter';
-            //reset_SatLogin.className = 'filterlabel';
-            reset_SatLogin.style.width = "auto";
-            reset_SatLogin.style.display = "inline";
-            reset_SatLogin.onclick = function() {
-                sel_SatLogin.noUiSlider.reset();
-            };
-            document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
-            var sel_SatLogin = document.getElementById('div_SatLogin');
-            noUiSlider.create(sel_SatLogin, {
-                connect: true,
-                start: [7.21, 7.83],
-                range: {
-                min: 7.21,
-                max: 7.83
-                }
-            });
-            sel_SatLogin.noUiSlider.on('update', function (values) {
-            val_SatLogin = document.getElementById('val_SatLogin');
-            val_SatLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_ThurLogins = document.createElement("div");
-            div_ThurLogins.id = "div_ThurLogins";
-            div_ThurLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_ThurLogins);
-            var lab_ThurLogin = document.createElement('div');
-            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
-            lab_ThurLogin.className = 'filterlabel';
-            document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
-            var div_ThurLogin = document.createElement("div");
-            div_ThurLogin.id = "div_ThurLogin";
-            div_ThurLogin.className = "slider";
-            document.getElementById("div_ThurLogins").appendChild(div_ThurLogin);
-            var reset_ThurLogin = document.createElement('button');
-            reset_ThurLogin.style.float = "right";
-            reset_ThurLogin.innerHTML = 'Clear Filter';
-            //reset_ThurLogin.className = 'filterlabel';
-            reset_ThurLogin.style.width = "auto";
-            reset_ThurLogin.style.display = "inline";
-            reset_ThurLogin.onclick = function() {
-                sel_ThurLogin.noUiSlider.reset();
-            };
-            document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
-            var sel_ThurLogin = document.getElementById('div_ThurLogin');
-            noUiSlider.create(sel_ThurLogin, {
-                connect: true,
-                start: [5.21, 5.83],
-                range: {
-                min: 5.21,
-                max: 5.83
-                }
-            });
-            sel_ThurLogin.noUiSlider.on('update', function (values) {
-            val_ThurLogin = document.getElementById('val_ThurLogin');
-            val_ThurLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_TuesLogins = document.createElement("div");
-            div_TuesLogins.id = "div_TuesLogins";
-            div_TuesLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_TuesLogins);
-            var lab_TuesLogin = document.createElement('div');
-            lab_TuesLogin.innerHTML  = 'TuesLogin: <span id="val_TuesLogin"></span>';
-            lab_TuesLogin.className = 'filterlabel';
-            document.getElementById("div_TuesLogins").appendChild(lab_TuesLogin);
-            var div_TuesLogin = document.createElement("div");
-            div_TuesLogin.id = "div_TuesLogin";
-            div_TuesLogin.className = "slider";
-            document.getElementById("div_TuesLogins").appendChild(div_TuesLogin);
-            var reset_TuesLogin = document.createElement('button');
-            reset_TuesLogin.style.float = "right";
-            reset_TuesLogin.innerHTML = 'Clear Filter';
-            //reset_TuesLogin.className = 'filterlabel';
-            reset_TuesLogin.style.width = "auto";
-            reset_TuesLogin.style.display = "inline";
-            reset_TuesLogin.onclick = function() {
-                sel_TuesLogin.noUiSlider.reset();
-            };
-            document.getElementById("div_TuesLogins").appendChild(reset_TuesLogin);
-            var sel_TuesLogin = document.getElementById('div_TuesLogin');
-            noUiSlider.create(sel_TuesLogin, {
-                connect: true,
-                start: [3.21, 3.83],
-                range: {
-                min: 3.21,
-                max: 3.83
-                }
-            });
-            sel_TuesLogin.noUiSlider.on('update', function (values) {
-            val_TuesLogin = document.getElementById('val_TuesLogin');
-            val_TuesLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_ThurLogoffs = document.createElement("div");
-            div_ThurLogoffs.id = "div_ThurLogoffs";
-            div_ThurLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
-            var lab_ThurLogoff = document.createElement('div');
-            lab_ThurLogoff.innerHTML  = 'ThurLogoff: <span id="val_ThurLogoff"></span>';
-            lab_ThurLogoff.className = 'filterlabel';
-            document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
-            var div_ThurLogoff = document.createElement("div");
-            div_ThurLogoff.id = "div_ThurLogoff";
-            div_ThurLogoff.className = "slider";
-            document.getElementById("div_ThurLogoffs").appendChild(div_ThurLogoff);
-            var reset_ThurLogoff = document.createElement('button');
-            reset_ThurLogoff.style.float = "right";
-            reset_ThurLogoff.innerHTML = 'Clear Filter';
-            //reset_ThurLogoff.className = 'filterlabel';
-            reset_ThurLogoff.style.width = "auto";
-            reset_ThurLogoff.style.display = "inline";
-            reset_ThurLogoff.onclick = function() {
-                sel_ThurLogoff.noUiSlider.reset();
-            };
-            document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
-            var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
-            noUiSlider.create(sel_ThurLogoff, {
-                connect: true,
-                start: [5.58, 6.21],
-                range: {
-                min: 5.58,
-                max: 6.21
-                }
-            });
-            sel_ThurLogoff.noUiSlider.on('update', function (values) {
-            val_ThurLogoff = document.getElementById('val_ThurLogoff');
-            val_ThurLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_MonLogoffs = document.createElement("div");
-            div_MonLogoffs.id = "div_MonLogoffs";
-            div_MonLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
-            var lab_MonLogoff = document.createElement('div');
-            lab_MonLogoff.innerHTML  = 'MonLogoff: <span id="val_MonLogoff"></span>';
-            lab_MonLogoff.className = 'filterlabel';
-            document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
-            var div_MonLogoff = document.createElement("div");
-            div_MonLogoff.id = "div_MonLogoff";
-            div_MonLogoff.className = "slider";
-            document.getElementById("div_MonLogoffs").appendChild(div_MonLogoff);
-            var reset_MonLogoff = document.createElement('button');
-            reset_MonLogoff.style.float = "right";
-            reset_MonLogoff.innerHTML = 'Clear Filter';
-            //reset_MonLogoff.className = 'filterlabel';
-            reset_MonLogoff.style.width = "auto";
-            reset_MonLogoff.style.display = "inline";
-            reset_MonLogoff.onclick = function() {
-                sel_MonLogoff.noUiSlider.reset();
-            };
-            document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
-            var sel_MonLogoff = document.getElementById('div_MonLogoff');
-            noUiSlider.create(sel_MonLogoff, {
-                connect: true,
-                start: [2.58, 3.21],
-                range: {
-                min: 2.58,
-                max: 3.21
-                }
-            });
-            sel_MonLogoff.noUiSlider.on('update', function (values) {
-            val_MonLogoff = document.getElementById('val_MonLogoff');
-            val_MonLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_TueLogoffs = document.createElement("div");
-            div_TueLogoffs.id = "div_TueLogoffs";
-            div_TueLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
-            var lab_TueLogoff = document.createElement('div');
-            lab_TueLogoff.innerHTML  = 'TueLogoff: <span id="val_TueLogoff"></span>';
-            lab_TueLogoff.className = 'filterlabel';
-            document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
-            var div_TueLogoff = document.createElement("div");
-            div_TueLogoff.id = "div_TueLogoff";
-            div_TueLogoff.className = "slider";
-            document.getElementById("div_TueLogoffs").appendChild(div_TueLogoff);
-            var reset_TueLogoff = document.createElement('button');
-            reset_TueLogoff.style.float = "right";
-            reset_TueLogoff.innerHTML = 'Clear Filter';
-            //reset_TueLogoff.className = 'filterlabel';
-            reset_TueLogoff.style.width = "auto";
-            reset_TueLogoff.style.display = "inline";
-            reset_TueLogoff.onclick = function() {
-                sel_TueLogoff.noUiSlider.reset();
-            };
-            document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
-            var sel_TueLogoff = document.getElementById('div_TueLogoff');
-            noUiSlider.create(sel_TueLogoff, {
-                connect: true,
-                start: [3.58, 4.21],
-                range: {
-                min: 3.58,
-                max: 4.21
-                }
-            });
-            sel_TueLogoff.noUiSlider.on('update', function (values) {
-            val_TueLogoff = document.getElementById('val_TueLogoff');
-            val_TueLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_FriLogoffs = document.createElement("div");
-            div_FriLogoffs.id = "div_FriLogoffs";
-            div_FriLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
-            var lab_FriLogoff = document.createElement('div');
-            lab_FriLogoff.innerHTML  = 'FriLogoff: <span id="val_FriLogoff"></span>';
-            lab_FriLogoff.className = 'filterlabel';
-            document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
-            var div_FriLogoff = document.createElement("div");
-            div_FriLogoff.id = "div_FriLogoff";
-            div_FriLogoff.className = "slider";
-            document.getElementById("div_FriLogoffs").appendChild(div_FriLogoff);
-            var reset_FriLogoff = document.createElement('button');
-            reset_FriLogoff.style.float = "right";
-            reset_FriLogoff.innerHTML = 'Clear Filter';
-            //reset_FriLogoff.className = 'filterlabel';
-            reset_FriLogoff.style.width = "auto";
-            reset_FriLogoff.style.display = "inline";
-            reset_FriLogoff.onclick = function() {
-                sel_FriLogoff.noUiSlider.reset();
-            };
-            document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
-            var sel_FriLogoff = document.getElementById('div_FriLogoff');
-            noUiSlider.create(sel_FriLogoff, {
-                connect: true,
-                start: [6.58, 7.21],
-                range: {
-                min: 6.58,
-                max: 7.21
-                }
-            });
-            sel_FriLogoff.noUiSlider.on('update', function (values) {
-            val_FriLogoff = document.getElementById('val_FriLogoff');
-            val_FriLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
@@ -2181,77 +1907,114 @@
                 filterFunc()
             });
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_WedLogoffs = document.createElement("div");
-            div_WedLogoffs.id = "div_WedLogoffs";
-            div_WedLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
-            var lab_WedLogoff = document.createElement('div');
-            lab_WedLogoff.innerHTML  = 'WedLogoff: <span id="val_WedLogoff"></span>';
-            lab_WedLogoff.className = 'filterlabel';
-            document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
-            var div_WedLogoff = document.createElement("div");
-            div_WedLogoff.id = "div_WedLogoff";
-            div_WedLogoff.className = "slider";
-            document.getElementById("div_WedLogoffs").appendChild(div_WedLogoff);
-            var reset_WedLogoff = document.createElement('button');
-            reset_WedLogoff.style.float = "right";
-            reset_WedLogoff.innerHTML = 'Clear Filter';
-            //reset_WedLogoff.className = 'filterlabel';
-            reset_WedLogoff.style.width = "auto";
-            reset_WedLogoff.style.display = "inline";
-            reset_WedLogoff.onclick = function() {
-                sel_WedLogoff.noUiSlider.reset();
+            var div_MonLogoffs = document.createElement("div");
+            div_MonLogoffs.id = "div_MonLogoffs";
+            div_MonLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
+            var lab_MonLogoff = document.createElement('div');
+            lab_MonLogoff.innerHTML  = '<br>MonLogoff: <span id="val_MonLogoff"></span>';
+            lab_MonLogoff.className = 'filterlabel';
+            document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
+            var div_MonLogoff = document.createElement("div");
+            div_MonLogoff.id = "div_MonLogoff";
+            div_MonLogoff.className = "slider";
+            document.getElementById("div_MonLogoffs").appendChild(div_MonLogoff);
+            var reset_MonLogoff = document.createElement('button');
+            reset_MonLogoff.style.float = "right";
+            reset_MonLogoff.innerHTML = 'Clear Filter';
+            //reset_MonLogoff.className = 'filterlabel';
+            reset_MonLogoff.style.width = "auto";
+            reset_MonLogoff.style.display = "inline";
+            reset_MonLogoff.onclick = function() {
+                sel_MonLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
-            var sel_WedLogoff = document.getElementById('div_WedLogoff');
-            noUiSlider.create(sel_WedLogoff, {
+            document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
+            var sel_MonLogoff = document.getElementById('div_MonLogoff');
+            noUiSlider.create(sel_MonLogoff, {
                 connect: true,
-                start: [4.58, 5.21],
+                start: [2.58, 3.21],
                 range: {
-                min: 4.58,
-                max: 5.21
+                min: 2.58,
+                max: 3.21
                 }
             });
-            sel_WedLogoff.noUiSlider.on('update', function (values) {
-            val_WedLogoff = document.getElementById('val_WedLogoff');
-            val_WedLogoff.innerHTML = values.join(' - ');
+            sel_MonLogoff.noUiSlider.on('update', function (values) {
+            val_MonLogoff = document.getElementById('val_MonLogoff');
+            val_MonLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_FriLogins = document.createElement("div");
-            div_FriLogins.id = "div_FriLogins";
-            div_FriLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_FriLogins);
-            var lab_FriLogin = document.createElement('div');
-            lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
-            lab_FriLogin.className = 'filterlabel';
-            document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
-            var div_FriLogin = document.createElement("div");
-            div_FriLogin.id = "div_FriLogin";
-            div_FriLogin.className = "slider";
-            document.getElementById("div_FriLogins").appendChild(div_FriLogin);
-            var reset_FriLogin = document.createElement('button');
-            reset_FriLogin.style.float = "right";
-            reset_FriLogin.innerHTML = 'Clear Filter';
-            //reset_FriLogin.className = 'filterlabel';
-            reset_FriLogin.style.width = "auto";
-            reset_FriLogin.style.display = "inline";
-            reset_FriLogin.onclick = function() {
-                sel_FriLogin.noUiSlider.reset();
+            var div_TueLogins = document.createElement("div");
+            div_TueLogins.id = "div_TueLogins";
+            div_TueLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_TueLogins);
+            var lab_TueLogin = document.createElement('div');
+            lab_TueLogin.innerHTML  = 'TueLogin: <span id="val_TueLogin"></span>';
+            lab_TueLogin.className = 'filterlabel';
+            document.getElementById("div_TueLogins").appendChild(lab_TueLogin);
+            var div_TueLogin = document.createElement("div");
+            div_TueLogin.id = "div_TueLogin";
+            div_TueLogin.className = "slider";
+            document.getElementById("div_TueLogins").appendChild(div_TueLogin);
+            var reset_TueLogin = document.createElement('button');
+            reset_TueLogin.style.float = "right";
+            reset_TueLogin.innerHTML = 'Clear Filter';
+            //reset_TueLogin.className = 'filterlabel';
+            reset_TueLogin.style.width = "auto";
+            reset_TueLogin.style.display = "inline";
+            reset_TueLogin.onclick = function() {
+                sel_TueLogin.noUiSlider.reset();
             };
-            document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
-            var sel_FriLogin = document.getElementById('div_FriLogin');
-            noUiSlider.create(sel_FriLogin, {
+            document.getElementById("div_TueLogins").appendChild(reset_TueLogin);
+            var sel_TueLogin = document.getElementById('div_TueLogin');
+            noUiSlider.create(sel_TueLogin, {
                 connect: true,
-                start: [6.21, 6.83],
+                start: [3.21, 3.83],
                 range: {
-                min: 6.21,
-                max: 6.83
+                min: 3.21,
+                max: 3.83
                 }
             });
-            sel_FriLogin.noUiSlider.on('update', function (values) {
-            val_FriLogin = document.getElementById('val_FriLogin');
-            val_FriLogin.innerHTML = values.join(' - ');
+            sel_TueLogin.noUiSlider.on('update', function (values) {
+            val_TueLogin = document.getElementById('val_TueLogin');
+            val_TueLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_TueLogoffs = document.createElement("div");
+            div_TueLogoffs.id = "div_TueLogoffs";
+            div_TueLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
+            var lab_TueLogoff = document.createElement('div');
+            lab_TueLogoff.innerHTML  = '<br>TueLogoff: <span id="val_TueLogoff"></span>';
+            lab_TueLogoff.className = 'filterlabel';
+            document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
+            var div_TueLogoff = document.createElement("div");
+            div_TueLogoff.id = "div_TueLogoff";
+            div_TueLogoff.className = "slider";
+            document.getElementById("div_TueLogoffs").appendChild(div_TueLogoff);
+            var reset_TueLogoff = document.createElement('button');
+            reset_TueLogoff.style.float = "right";
+            reset_TueLogoff.innerHTML = 'Clear Filter';
+            //reset_TueLogoff.className = 'filterlabel';
+            reset_TueLogoff.style.width = "auto";
+            reset_TueLogoff.style.display = "inline";
+            reset_TueLogoff.onclick = function() {
+                sel_TueLogoff.noUiSlider.reset();
+            };
+            document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
+            var sel_TueLogoff = document.getElementById('div_TueLogoff');
+            noUiSlider.create(sel_TueLogoff, {
+                connect: true,
+                start: [3.58, 4.21],
+                range: {
+                min: 3.58,
+                max: 4.21
+                }
+            });
+            sel_TueLogoff.noUiSlider.on('update', function (values) {
+            val_TueLogoff = document.getElementById('val_TueLogoff');
+            val_TueLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
@@ -2292,12 +2055,234 @@
                 filterFunc()
             });
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_WedLogoffs = document.createElement("div");
+            div_WedLogoffs.id = "div_WedLogoffs";
+            div_WedLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
+            var lab_WedLogoff = document.createElement('div');
+            lab_WedLogoff.innerHTML  = '<br>WedLogoff: <span id="val_WedLogoff"></span>';
+            lab_WedLogoff.className = 'filterlabel';
+            document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
+            var div_WedLogoff = document.createElement("div");
+            div_WedLogoff.id = "div_WedLogoff";
+            div_WedLogoff.className = "slider";
+            document.getElementById("div_WedLogoffs").appendChild(div_WedLogoff);
+            var reset_WedLogoff = document.createElement('button');
+            reset_WedLogoff.style.float = "right";
+            reset_WedLogoff.innerHTML = 'Clear Filter';
+            //reset_WedLogoff.className = 'filterlabel';
+            reset_WedLogoff.style.width = "auto";
+            reset_WedLogoff.style.display = "inline";
+            reset_WedLogoff.onclick = function() {
+                sel_WedLogoff.noUiSlider.reset();
+            };
+            document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
+            var sel_WedLogoff = document.getElementById('div_WedLogoff');
+            noUiSlider.create(sel_WedLogoff, {
+                connect: true,
+                start: [4.58, 5.21],
+                range: {
+                min: 4.58,
+                max: 5.21
+                }
+            });
+            sel_WedLogoff.noUiSlider.on('update', function (values) {
+            val_WedLogoff = document.getElementById('val_WedLogoff');
+            val_WedLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_ThurLogins = document.createElement("div");
+            div_ThurLogins.id = "div_ThurLogins";
+            div_ThurLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_ThurLogins);
+            var lab_ThurLogin = document.createElement('div');
+            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
+            lab_ThurLogin.className = 'filterlabel';
+            document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
+            var div_ThurLogin = document.createElement("div");
+            div_ThurLogin.id = "div_ThurLogin";
+            div_ThurLogin.className = "slider";
+            document.getElementById("div_ThurLogins").appendChild(div_ThurLogin);
+            var reset_ThurLogin = document.createElement('button');
+            reset_ThurLogin.style.float = "right";
+            reset_ThurLogin.innerHTML = 'Clear Filter';
+            //reset_ThurLogin.className = 'filterlabel';
+            reset_ThurLogin.style.width = "auto";
+            reset_ThurLogin.style.display = "inline";
+            reset_ThurLogin.onclick = function() {
+                sel_ThurLogin.noUiSlider.reset();
+            };
+            document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
+            var sel_ThurLogin = document.getElementById('div_ThurLogin');
+            noUiSlider.create(sel_ThurLogin, {
+                connect: true,
+                start: [5.21, 5.83],
+                range: {
+                min: 5.21,
+                max: 5.83
+                }
+            });
+            sel_ThurLogin.noUiSlider.on('update', function (values) {
+            val_ThurLogin = document.getElementById('val_ThurLogin');
+            val_ThurLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_ThurLogoffs = document.createElement("div");
+            div_ThurLogoffs.id = "div_ThurLogoffs";
+            div_ThurLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
+            var lab_ThurLogoff = document.createElement('div');
+            lab_ThurLogoff.innerHTML  = '<br>ThurLogoff: <span id="val_ThurLogoff"></span>';
+            lab_ThurLogoff.className = 'filterlabel';
+            document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
+            var div_ThurLogoff = document.createElement("div");
+            div_ThurLogoff.id = "div_ThurLogoff";
+            div_ThurLogoff.className = "slider";
+            document.getElementById("div_ThurLogoffs").appendChild(div_ThurLogoff);
+            var reset_ThurLogoff = document.createElement('button');
+            reset_ThurLogoff.style.float = "right";
+            reset_ThurLogoff.innerHTML = 'Clear Filter';
+            //reset_ThurLogoff.className = 'filterlabel';
+            reset_ThurLogoff.style.width = "auto";
+            reset_ThurLogoff.style.display = "inline";
+            reset_ThurLogoff.onclick = function() {
+                sel_ThurLogoff.noUiSlider.reset();
+            };
+            document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
+            var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
+            noUiSlider.create(sel_ThurLogoff, {
+                connect: true,
+                start: [5.58, 6.21],
+                range: {
+                min: 5.58,
+                max: 6.21
+                }
+            });
+            sel_ThurLogoff.noUiSlider.on('update', function (values) {
+            val_ThurLogoff = document.getElementById('val_ThurLogoff');
+            val_ThurLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_FriLogins = document.createElement("div");
+            div_FriLogins.id = "div_FriLogins";
+            div_FriLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_FriLogins);
+            var lab_FriLogin = document.createElement('div');
+            lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
+            lab_FriLogin.className = 'filterlabel';
+            document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
+            var div_FriLogin = document.createElement("div");
+            div_FriLogin.id = "div_FriLogin";
+            div_FriLogin.className = "slider";
+            document.getElementById("div_FriLogins").appendChild(div_FriLogin);
+            var reset_FriLogin = document.createElement('button');
+            reset_FriLogin.style.float = "right";
+            reset_FriLogin.innerHTML = 'Clear Filter';
+            //reset_FriLogin.className = 'filterlabel';
+            reset_FriLogin.style.width = "auto";
+            reset_FriLogin.style.display = "inline";
+            reset_FriLogin.onclick = function() {
+                sel_FriLogin.noUiSlider.reset();
+            };
+            document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
+            var sel_FriLogin = document.getElementById('div_FriLogin');
+            noUiSlider.create(sel_FriLogin, {
+                connect: true,
+                start: [6.21, 6.83],
+                range: {
+                min: 6.21,
+                max: 6.83
+                }
+            });
+            sel_FriLogin.noUiSlider.on('update', function (values) {
+            val_FriLogin = document.getElementById('val_FriLogin');
+            val_FriLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_FriLogoffs = document.createElement("div");
+            div_FriLogoffs.id = "div_FriLogoffs";
+            div_FriLogoffs.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
+            var lab_FriLogoff = document.createElement('div');
+            lab_FriLogoff.innerHTML  = '<br>FriLogoff: <span id="val_FriLogoff"></span>';
+            lab_FriLogoff.className = 'filterlabel';
+            document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
+            var div_FriLogoff = document.createElement("div");
+            div_FriLogoff.id = "div_FriLogoff";
+            div_FriLogoff.className = "slider";
+            document.getElementById("div_FriLogoffs").appendChild(div_FriLogoff);
+            var reset_FriLogoff = document.createElement('button');
+            reset_FriLogoff.style.float = "right";
+            reset_FriLogoff.innerHTML = 'Clear Filter';
+            //reset_FriLogoff.className = 'filterlabel';
+            reset_FriLogoff.style.width = "auto";
+            reset_FriLogoff.style.display = "inline";
+            reset_FriLogoff.onclick = function() {
+                sel_FriLogoff.noUiSlider.reset();
+            };
+            document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
+            var sel_FriLogoff = document.getElementById('div_FriLogoff');
+            noUiSlider.create(sel_FriLogoff, {
+                connect: true,
+                start: [6.58, 7.21],
+                range: {
+                min: 6.58,
+                max: 7.21
+                }
+            });
+            sel_FriLogoff.noUiSlider.on('update', function (values) {
+            val_FriLogoff = document.getElementById('val_FriLogoff');
+            val_FriLogoff.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+            var div_SatLogins = document.createElement("div");
+            div_SatLogins.id = "div_SatLogins";
+            div_SatLogins.style.display = "none";
+            document.getElementById("shiftsliders").appendChild(div_SatLogins);
+            var lab_SatLogin = document.createElement('div');
+            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
+            lab_SatLogin.className = 'filterlabel';
+            document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
+            var div_SatLogin = document.createElement("div");
+            div_SatLogin.id = "div_SatLogin";
+            div_SatLogin.className = "slider";
+            document.getElementById("div_SatLogins").appendChild(div_SatLogin);
+            var reset_SatLogin = document.createElement('button');
+            reset_SatLogin.style.float = "right";
+            reset_SatLogin.innerHTML = 'Clear Filter';
+            //reset_SatLogin.className = 'filterlabel';
+            reset_SatLogin.style.width = "auto";
+            reset_SatLogin.style.display = "inline";
+            reset_SatLogin.onclick = function() {
+                sel_SatLogin.noUiSlider.reset();
+            };
+            document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
+            var sel_SatLogin = document.getElementById('div_SatLogin');
+            noUiSlider.create(sel_SatLogin, {
+                connect: true,
+                start: [7.21, 7.83],
+                range: {
+                min: 7.21,
+                max: 7.83
+                }
+            });
+            sel_SatLogin.noUiSlider.on('update', function (values) {
+            val_SatLogin = document.getElementById('val_SatLogin');
+            val_SatLogin.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SatLogoffs = document.createElement("div");
             div_SatLogoffs.id = "div_SatLogoffs";
             div_SatLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SatLogoffs);
             var lab_SatLogoff = document.createElement('div');
-            lab_SatLogoff.innerHTML  = 'SatLogoff: <span id="val_SatLogoff"></span>';
+            lab_SatLogoff.innerHTML  = '<br>SatLogoff: <span id="val_SatLogoff"></span>';
             lab_SatLogoff.className = 'filterlabel';
             document.getElementById("div_SatLogoffs").appendChild(lab_SatLogoff);
             var div_SatLogoff = document.createElement("div");
@@ -2328,6 +2313,7 @@
             val_SatLogoff.innerHTML = values.join(' - ');
                 filterFunc()
             });
+            
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_Office = document.createElement('div');
             div_Office.id = "div_Office";
@@ -2343,7 +2329,7 @@
             div_Office.appendChild(lab_Office);
             sel_Office = document.createElement('select');
             sel_Office.multiple = true;
-            sel_Office.size = 4;
+            sel_Office.size = 6;
             sel_Office.id = "sel_Office";
             var Office_options_str = "<option value='' unselected></option>";
             sel_Office.onchange = function(){filterFunc()};
@@ -2557,21 +2543,30 @@
             alert(bool)
         }
 
+        function setDayVisibility(day) {
+        // Remove the map layer
+        map.removeLayer(layer_headsets_1);
+        
+        // Days of the week
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+        
+        // Loop through all days and update display
+        days.forEach(d => {
+            const loginsElement = document.getElementById(`div_${d}Logins`);
+            const logoffsElement = document.getElementById(`div_${d}Logoffs`);
+            
+            if (d === day) {
+                // For the current day, set display to "revert"
+                loginsElement.style.display = "revert";
+                logoffsElement.style.display = "revert";
+            } else {
+                // For other days, set display to "none"
+                loginsElement.style.display = "none";
+                logoffsElement.style.display = "none";
+            }
+        });
+    }
 
-		function myFunction() {
-		document.getElementById("shiftday").disabled = true;
-		document.getElementById("login").disabled = true;
-		document.getElementById("logoff").disabled = true;
-		document.getElementById("firstday").disabled = false;
-		document.getElementById("lastday").disabled = false;
-		}
-		function myFunction1() {
-		document.getElementById("shiftday").disabled = false;
-		document.getElementById("login").disabled = false;
-		document.getElementById("logoff").disabled = false;
-		document.getElementById("firstday").disabled = true;
-		document.getElementById("lastday").disabled = true;
-		}
         </script>
     </body>
 </html>
