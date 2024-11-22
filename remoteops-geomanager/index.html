@@ -166,6 +166,7 @@
                         Staff Layers
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
                     </h1>
+                    <br>
                     <span style="font-size:15px;font-weight:bold">Filter by Workday:</span>
 
                     <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
@@ -1792,7 +1793,31 @@
             lab_SpaceStyle.className = 'filterlabel';
             document.getElementById("div_SpaceStyle").appendChild(lab_SpaceStyle);
 
+// Function to convert decimal hour to time format (HH:MM 24-hour format)
+function decimalToTime(decimal) {
+    // Map the range from 1.00 to 2.25 into a total minutes period
+    var totalMinutes = (decimal - 1.00) * 1800 / 1.25; // 1800 minutes divided by 1.25 to scale the range to 30 hours
+    var totalHours = totalMinutes / 60; // Convert minutes to hours
+    var hours = Math.floor(totalHours); // Get the whole hours
+    var minutes = Math.round((totalHours - hours) * 60); // Get the remaining minutes
+    
+    // Handle the time calculation for values beyond 23:59 (next day)
+    if (hours >= 24) {
+        hours = hours % 24; // This ensures that after 24 hours, it starts again at 00:00
+    }
 
+    // Determine the period (AM/PM)
+    var period = (hours >= 12) ? 'PM' : 'AM';
+
+    // Convert to 12-hour format (1-12)
+    hours = hours % 12; // Convert hours to 12-hour format
+    hours = hours ? hours : 12; // '0' becomes 12 (for midnight)
+
+    // Format the minutes to always display two digits
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return hours + ':' + minutes + ' ' + period;
+}
 
 
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
@@ -1801,7 +1826,7 @@
             div_SunLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SunLogins);
             var lab_SunLogin = document.createElement('div');
-            lab_SunLogin.innerHTML  = 'SunLogin: <span id="val_SunLogin"></span>';
+            lab_SunLogin.innerHTML  = 'Sunday Login: <span id="val_SunLogin"></span>';
             lab_SunLogin.className = 'filterlabel';
             document.getElementById("div_SunLogins").appendChild(lab_SunLogin);
             var div_SunLogin = document.createElement("div");
@@ -1810,6 +1835,7 @@
             document.getElementById("div_SunLogins").appendChild(div_SunLogin);
             var reset_SunLogin = document.createElement('button');
             reset_SunLogin.style.float = "right";
+            reset_SunLogin.style.margin = "2px";
             reset_SunLogin.innerHTML = 'Clear Filter';
             //reset_SunLogin.className = 'filterlabel';
             reset_SunLogin.style.width = "auto";
@@ -1817,28 +1843,52 @@
             reset_SunLogin.onclick = function() {
                 sel_SunLogin.noUiSlider.reset();
             };
-            document.getElementById("div_SunLogins").appendChild(reset_SunLogin);
-            var sel_SunLogin = document.getElementById('div_SunLogin');
-            noUiSlider.create(sel_SunLogin, {
-                connect: true,
-                start: [1.21, 1.83],
-                range: {
-                min: 1.21,
-                max: 1.83
-                }
-            });
-            sel_SunLogin.noUiSlider.on('update', function (values) {
-            val_SunLogin = document.getElementById('val_SunLogin');
-            val_SunLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+            //document.getElementById("div_SunLogins").appendChild(reset_SunLogin);
+var sel_SunLogin = document.getElementById('div_SunLogin');
+noUiSlider.create(sel_SunLogin, {
+    connect: true,
+    start: [1.00, 2.25],
+    pips: {
+        mode: 'values',
+        values: [1.00, 1.25, 1.50, 1.75, 2.00, 2.25],
+        density: 3.5,
+        format: wNumb({
+            decimals: 2,
+        })
+    },
+    range: {
+        min: 1.00,
+        max: 2.25
+    }
+});
+
+
+
+
+
+sel_SunLogin.noUiSlider.on('update', function (values) {
+    var val_SunLogin = document.getElementById('val_SunLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_SunLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
+
+
+
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SunLogoffs = document.createElement("div");
             div_SunLogoffs.id = "div_SunLogoffs";
             div_SunLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SunLogoffs);
             var lab_SunLogoff = document.createElement('div');
-            lab_SunLogoff.innerHTML  = '<br>SunLogoff: <span id="val_SunLogoff"></span>';
+            lab_SunLogoff.innerHTML  = '<br><br>Sunday Logoff: <span id="val_SunLogoff"></span>';
             lab_SunLogoff.className = 'filterlabel';
             document.getElementById("div_SunLogoffs").appendChild(lab_SunLogoff);
             var div_SunLogoff = document.createElement("div");
@@ -1854,28 +1904,47 @@
             reset_SunLogoff.onclick = function() {
                 sel_SunLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_SunLogoffs").appendChild(reset_SunLogoff);
+            //document.getElementById("div_SunLogoffs").appendChild(reset_SunLogoff);
             var sel_SunLogoff = document.getElementById('div_SunLogoff');
             noUiSlider.create(sel_SunLogoff, {
                 connect: true,
-                start: [1.54, 2.21],
+                start: [1.00, 2.25],
+                pips: {
+                    mode: 'values',
+                    values: [1.00, 1.25, 1.50, 1.75, 2.00, 2.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 1.54,
-                max: 2.21
+                min: 1.00,
+                max: 2.25
                 }
             });
-            sel_SunLogoff.noUiSlider.on('update', function (values) {
-            val_SunLogoff = document.getElementById('val_SunLogoff');
-            val_SunLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+
+sel_SunLogoff.noUiSlider.on('update', function (values) {
+    var val_SunLogoff = document.getElementById('val_SunLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_SunLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
+
+
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_MonLogins = document.createElement("div");
             div_MonLogins.id = "div_MonLogins";
             div_MonLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_MonLogins);
             var lab_MonLogin = document.createElement('div');
-            lab_MonLogin.innerHTML  = 'MonLogin: <span id="val_MonLogin"></span>';
+            lab_MonLogin.innerHTML  = 'Monday Login: <span id="val_MonLogin"></span>';
             lab_MonLogin.className = 'filterlabel';
             document.getElementById("div_MonLogins").appendChild(lab_MonLogin);
             var div_MonLogin = document.createElement("div");
@@ -1891,28 +1960,45 @@
             reset_MonLogin.onclick = function() {
                 sel_MonLogin.noUiSlider.reset();
             };
-            document.getElementById("div_MonLogins").appendChild(reset_MonLogin);
+            //document.getElementById("div_MonLogins").appendChild(reset_MonLogin);
             var sel_MonLogin = document.getElementById('div_MonLogin');
             noUiSlider.create(sel_MonLogin, {
                 connect: true,
-                start: [2.21, 2.83],
+                start: [2.00, 3.25],
+                pips: {
+                    mode: 'values',
+                    values: [2.00, 2.25, 2.50, 2.75, 3.00, 3.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 2.21,
-                max: 2.83
+                min: 2.00,
+                max: 3.25
                 }
             });
             sel_MonLogin.noUiSlider.on('update', function (values) {
-            val_MonLogin = document.getElementById('val_MonLogin');
-            val_MonLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+    var val_MonLogin = document.getElementById('val_MonLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_MonLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
+
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_MonLogoffs = document.createElement("div");
             div_MonLogoffs.id = "div_MonLogoffs";
             div_MonLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
             var lab_MonLogoff = document.createElement('div');
-            lab_MonLogoff.innerHTML  = '<br>MonLogoff: <span id="val_MonLogoff"></span>';
+            lab_MonLogoff.innerHTML  = '<br><br>Monday Logoff: <span id="val_MonLogoff"></span>';
             lab_MonLogoff.className = 'filterlabel';
             document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
             var div_MonLogoff = document.createElement("div");
@@ -1928,28 +2014,44 @@
             reset_MonLogoff.onclick = function() {
                 sel_MonLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
+            //document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
             var sel_MonLogoff = document.getElementById('div_MonLogoff');
             noUiSlider.create(sel_MonLogoff, {
                 connect: true,
-                start: [2.58, 3.21],
+                start: [2.00, 3.25],
+                pips: {
+                    mode: 'values',
+                    values: [2.00, 2.25, 2.50, 2.75, 3.00, 3.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 2.58,
-                max: 3.21
+                min: 2.00,
+                max: 3.25
                 }
             });
-            sel_MonLogoff.noUiSlider.on('update', function (values) {
-            val_MonLogoff = document.getElementById('val_MonLogoff');
-            val_MonLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_MonLogoff.noUiSlider.on('update', function (values) {
+    var val_MonLogoff = document.getElementById('val_MonLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_MonLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_TueLogins = document.createElement("div");
             div_TueLogins.id = "div_TueLogins";
             div_TueLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_TueLogins);
             var lab_TueLogin = document.createElement('div');
-            lab_TueLogin.innerHTML  = 'TueLogin: <span id="val_TueLogin"></span>';
+            lab_TueLogin.innerHTML  = 'Tuesday Login: <span id="val_TueLogin"></span>';
             lab_TueLogin.className = 'filterlabel';
             document.getElementById("div_TueLogins").appendChild(lab_TueLogin);
             var div_TueLogin = document.createElement("div");
@@ -1965,28 +2067,44 @@
             reset_TueLogin.onclick = function() {
                 sel_TueLogin.noUiSlider.reset();
             };
-            document.getElementById("div_TueLogins").appendChild(reset_TueLogin);
+            //document.getElementById("div_TueLogins").appendChild(reset_TueLogin);
             var sel_TueLogin = document.getElementById('div_TueLogin');
             noUiSlider.create(sel_TueLogin, {
                 connect: true,
-                start: [3.21, 3.83],
+                start: [3.00, 4.25],
+                pips: {
+                    mode: 'values',
+                    values: [3.00, 3.25, 3.50, 3.75, 4.00, 4.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 3.21,
-                max: 3.83
+                min: 3.00,
+                max: 4.25
                 }
             });
             sel_TueLogin.noUiSlider.on('update', function (values) {
-            val_TueLogin = document.getElementById('val_TueLogin');
-            val_TueLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+    var val_TueLogin = document.getElementById('val_TueLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_TueLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_TueLogoffs = document.createElement("div");
             div_TueLogoffs.id = "div_TueLogoffs";
             div_TueLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
             var lab_TueLogoff = document.createElement('div');
-            lab_TueLogoff.innerHTML  = '<br>TueLogoff: <span id="val_TueLogoff"></span>';
+            lab_TueLogoff.innerHTML  = '<br><br>Tuesday Logoff: <span id="val_TueLogoff"></span>';
             lab_TueLogoff.className = 'filterlabel';
             document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
             var div_TueLogoff = document.createElement("div");
@@ -2002,28 +2120,44 @@
             reset_TueLogoff.onclick = function() {
                 sel_TueLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
+            //document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
             var sel_TueLogoff = document.getElementById('div_TueLogoff');
             noUiSlider.create(sel_TueLogoff, {
                 connect: true,
-                start: [3.58, 4.21],
+                start: [3.00, 4.25],
+                pips: {
+                    mode: 'values',
+                    values: [3.00, 3.25, 3.50, 3.75, 4.00, 4.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 3.58,
-                max: 4.21
+                min: 3.00,
+                max: 4.25
                 }
             });
-            sel_TueLogoff.noUiSlider.on('update', function (values) {
-            val_TueLogoff = document.getElementById('val_TueLogoff');
-            val_TueLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_TueLogoff.noUiSlider.on('update', function (values) {
+    var val_TueLogoff = document.getElementById('val_TueLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_TueLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_WedLogins = document.createElement("div");
             div_WedLogins.id = "div_WedLogins";
             div_WedLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_WedLogins);
             var lab_WedLogin = document.createElement('div');
-            lab_WedLogin.innerHTML  = 'WedLogin: <span id="val_WedLogin"></span>';
+            lab_WedLogin.innerHTML  = 'Wednesday Login: <span id="val_WedLogin"></span>';
             lab_WedLogin.className = 'filterlabel';
             document.getElementById("div_WedLogins").appendChild(lab_WedLogin);
             var div_WedLogin = document.createElement("div");
@@ -2039,28 +2173,44 @@
             reset_WedLogin.onclick = function() {
                 sel_WedLogin.noUiSlider.reset();
             };
-            document.getElementById("div_WedLogins").appendChild(reset_WedLogin);
+            //document.getElementById("div_WedLogins").appendChild(reset_WedLogin);
             var sel_WedLogin = document.getElementById('div_WedLogin');
             noUiSlider.create(sel_WedLogin, {
                 connect: true,
-                start: [4.21, 4.83],
+                start: [4.00, 5.25],
+                pips: {
+                    mode: 'values',
+                    values: [4.00, 4.25, 4.50, 4.75, 5.00, 5.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 4.21,
-                max: 4.83
+                min: 4.00,
+                max: 5.25
                 }
             });
-            sel_WedLogin.noUiSlider.on('update', function (values) {
-            val_WedLogin = document.getElementById('val_WedLogin');
-            val_WedLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_WedLogin.noUiSlider.on('update', function (values) {
+    var val_WedLogin = document.getElementById('val_WedLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_WedLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_WedLogoffs = document.createElement("div");
             div_WedLogoffs.id = "div_WedLogoffs";
             div_WedLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
             var lab_WedLogoff = document.createElement('div');
-            lab_WedLogoff.innerHTML  = '<br>WedLogoff: <span id="val_WedLogoff"></span>';
+            lab_WedLogoff.innerHTML  = '<br><br>Wednesday Logoff: <span id="val_WedLogoff"></span>';
             lab_WedLogoff.className = 'filterlabel';
             document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
             var div_WedLogoff = document.createElement("div");
@@ -2076,28 +2226,44 @@
             reset_WedLogoff.onclick = function() {
                 sel_WedLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
+            //document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
             var sel_WedLogoff = document.getElementById('div_WedLogoff');
             noUiSlider.create(sel_WedLogoff, {
                 connect: true,
-                start: [4.58, 5.21],
+                start: [4.00, 5.25],
+                pips: {
+                    mode: 'values',
+                    values: [4.00, 4.25, 4.50, 4.75, 5.00, 5.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 4.58,
-                max: 5.21
+                min: 4.00,
+                max: 5.25
                 }
             });
-            sel_WedLogoff.noUiSlider.on('update', function (values) {
-            val_WedLogoff = document.getElementById('val_WedLogoff');
-            val_WedLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_WedLogoff.noUiSlider.on('update', function (values) {
+    var val_WedLogoff = document.getElementById('val_WedLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_WedLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_ThurLogins = document.createElement("div");
             div_ThurLogins.id = "div_ThurLogins";
             div_ThurLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_ThurLogins);
             var lab_ThurLogin = document.createElement('div');
-            lab_ThurLogin.innerHTML  = 'ThurLogin: <span id="val_ThurLogin"></span>';
+            lab_ThurLogin.innerHTML  = 'Thursday Login: <span id="val_ThurLogin"></span>';
             lab_ThurLogin.className = 'filterlabel';
             document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
             var div_ThurLogin = document.createElement("div");
@@ -2113,28 +2279,44 @@
             reset_ThurLogin.onclick = function() {
                 sel_ThurLogin.noUiSlider.reset();
             };
-            document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
+            //document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
             var sel_ThurLogin = document.getElementById('div_ThurLogin');
             noUiSlider.create(sel_ThurLogin, {
                 connect: true,
-                start: [5.21, 5.83],
+                start: [5.00, 6.25],
+                pips: {
+                    mode: 'values',
+                    values: [5.00, 5.25, 5.50, 5.75, 6.00, 6.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 5.21,
-                max: 5.83
+                min: 5.00,
+                max: 6.25
                 }
             });
-            sel_ThurLogin.noUiSlider.on('update', function (values) {
-            val_ThurLogin = document.getElementById('val_ThurLogin');
-            val_ThurLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_ThurLogin.noUiSlider.on('update', function (values) {
+    var val_ThurLogin = document.getElementById('val_ThurLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_ThurLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_ThurLogoffs = document.createElement("div");
             div_ThurLogoffs.id = "div_ThurLogoffs";
             div_ThurLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
             var lab_ThurLogoff = document.createElement('div');
-            lab_ThurLogoff.innerHTML  = '<br>ThurLogoff: <span id="val_ThurLogoff"></span>';
+            lab_ThurLogoff.innerHTML  = '<br><br>Thursday Logoff: <span id="val_ThurLogoff"></span>';
             lab_ThurLogoff.className = 'filterlabel';
             document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
             var div_ThurLogoff = document.createElement("div");
@@ -2150,28 +2332,45 @@
             reset_ThurLogoff.onclick = function() {
                 sel_ThurLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
+            //document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
             var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
             noUiSlider.create(sel_ThurLogoff, {
                 connect: true,
-                start: [5.58, 6.21],
+                start: [5.00, 6.25],
+                pips: {
+                    mode: 'values',
+                    values: [5.00, 5.25, 5.50, 5.75, 6.00, 6.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 5.58,
-                max: 6.21
+                min: 5.00,
+                max: 6.25
                 }
             });
-            sel_ThurLogoff.noUiSlider.on('update', function (values) {
-            val_ThurLogoff = document.getElementById('val_ThurLogoff');
-            val_ThurLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_ThurLogoff.noUiSlider.on('update', function (values) {
+    var val_ThurLogoff = document.getElementById('val_ThurLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_ThurLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
+
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_FriLogins = document.createElement("div");
             div_FriLogins.id = "div_FriLogins";
             div_FriLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_FriLogins);
             var lab_FriLogin = document.createElement('div');
-            lab_FriLogin.innerHTML  = 'FriLogin: <span id="val_FriLogin"></span>';
+            lab_FriLogin.innerHTML  = 'Friday Login: <span id="val_FriLogin"></span>';
             lab_FriLogin.className = 'filterlabel';
             document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
             var div_FriLogin = document.createElement("div");
@@ -2187,28 +2386,44 @@
             reset_FriLogin.onclick = function() {
                 sel_FriLogin.noUiSlider.reset();
             };
-            document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
+            //document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
             var sel_FriLogin = document.getElementById('div_FriLogin');
             noUiSlider.create(sel_FriLogin, {
                 connect: true,
-                start: [6.21, 6.83],
+                start: [6.00, 7.25],
+                pips: {
+                    mode: 'values',
+                    values: [6.00, 6.25, 6.50, 6.75, 7.00, 7.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 6.21,
-                max: 6.83
+                min: 6.00,
+                max: 7.25
                 }
             });
-            sel_FriLogin.noUiSlider.on('update', function (values) {
-            val_FriLogin = document.getElementById('val_FriLogin');
-            val_FriLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_FriLogin.noUiSlider.on('update', function (values) {
+    var val_FriLogin = document.getElementById('val_FriLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_FriLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_FriLogoffs = document.createElement("div");
             div_FriLogoffs.id = "div_FriLogoffs";
             div_FriLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
             var lab_FriLogoff = document.createElement('div');
-            lab_FriLogoff.innerHTML  = '<br>FriLogoff: <span id="val_FriLogoff"></span>';
+            lab_FriLogoff.innerHTML  = '<br><br>Friday Logoff: <span id="val_FriLogoff"></span>';
             lab_FriLogoff.className = 'filterlabel';
             document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
             var div_FriLogoff = document.createElement("div");
@@ -2224,28 +2439,45 @@
             reset_FriLogoff.onclick = function() {
                 sel_FriLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
+            //document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
             var sel_FriLogoff = document.getElementById('div_FriLogoff');
             noUiSlider.create(sel_FriLogoff, {
                 connect: true,
-                start: [6.58, 7.21],
+                start: [6.00, 7.25],
+                pips: {
+                    mode: 'values',
+                    values: [6.00, 6.25, 6.50, 6.75, 7.00, 7.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 6.58,
-                max: 7.21
+                min: 6.00,
+                max: 7.25
                 }
             });
-            sel_FriLogoff.noUiSlider.on('update', function (values) {
-            val_FriLogoff = document.getElementById('val_FriLogoff');
-            val_FriLogoff.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_FriLogoff.noUiSlider.on('update', function (values) {
+    var val_FriLogoff = document.getElementById('val_FriLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_FriLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
+
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SatLogins = document.createElement("div");
             div_SatLogins.id = "div_SatLogins";
             div_SatLogins.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SatLogins);
             var lab_SatLogin = document.createElement('div');
-            lab_SatLogin.innerHTML  = 'SatLogin: <span id="val_SatLogin"></span>';
+            lab_SatLogin.innerHTML  = 'Saturday Login: <span id="val_SatLogin"></span>';
             lab_SatLogin.className = 'filterlabel';
             document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
             var div_SatLogin = document.createElement("div");
@@ -2261,28 +2493,44 @@
             reset_SatLogin.onclick = function() {
                 sel_SatLogin.noUiSlider.reset();
             };
-            document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
+            //document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
             var sel_SatLogin = document.getElementById('div_SatLogin');
             noUiSlider.create(sel_SatLogin, {
                 connect: true,
-                start: [7.21, 7.83],
+                start: [7.00, 8.25],
+                pips: {
+                    mode: 'values',
+                    values: [7.00, 7.25, 7.50, 7.75, 8.00, 8.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 7.21,
-                max: 7.83
+                min: 7.00,
+                max: 8.25
                 }
             });
-            sel_SatLogin.noUiSlider.on('update', function (values) {
-            val_SatLogin = document.getElementById('val_SatLogin');
-            val_SatLogin.innerHTML = values.join(' - ');
-                filterFunc()
-            });
+sel_SatLogin.noUiSlider.on('update', function (values) {
+    var val_SatLogin = document.getElementById('val_SatLogin');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_SatLogin.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_SatLogoffs = document.createElement("div");
             div_SatLogoffs.id = "div_SatLogoffs";
             div_SatLogoffs.style.display = "none";
             document.getElementById("shiftsliders").appendChild(div_SatLogoffs);
             var lab_SatLogoff = document.createElement('div');
-            lab_SatLogoff.innerHTML  = '<br>SatLogoff: <span id="val_SatLogoff"></span>';
+            lab_SatLogoff.innerHTML  = '<br><br>Saturday Logoff: <span id="val_SatLogoff"></span>';
             lab_SatLogoff.className = 'filterlabel';
             document.getElementById("div_SatLogoffs").appendChild(lab_SatLogoff);
             var div_SatLogoff = document.createElement("div");
@@ -2298,21 +2546,111 @@
             reset_SatLogoff.onclick = function() {
                 sel_SatLogoff.noUiSlider.reset();
             };
-            document.getElementById("div_SatLogoffs").appendChild(reset_SatLogoff);
+            //document.getElementById("div_SatLogoffs").appendChild(reset_SatLogoff);
             var sel_SatLogoff = document.getElementById('div_SatLogoff');
             noUiSlider.create(sel_SatLogoff, {
                 connect: true,
-                start: [7.58, 8.21],
+                start: [7.00, 8.25],
+                pips: {
+                    mode: 'values',
+                    values: [7.00, 7.25, 7.50, 7.75, 8.00, 8.25],
+                    density: 3.5,
+                    format: wNumb({
+                            decimals: 2,
+                        })
+                },
                 range: {
-                min: 7.58,
-                max: 8.21
+                min: 7.00,
+                max: 8.25
                 }
             });
-            sel_SatLogoff.noUiSlider.on('update', function (values) {
-            val_SatLogoff = document.getElementById('val_SatLogoff');
-            val_SatLogoff.innerHTML = values.join(' - ');
-                filterFunc()
+            
+            document.querySelectorAll('.noUi-value.noUi-value-horizontal.noUi-value-large').forEach(function(element) {
+            var val = parseFloat(element.innerHTML); // Ensure the value is a floating-point number
+            val = recountVal(val); // Call the function with the float value
+            element.innerHTML = val; // Update the element's content
             });
+            function recountVal(val) {
+            // Round the value to two decimal places for precise comparison
+            val = val.toFixed(2);
+            switch (val) {
+                case '1.00':
+                return '12am';
+                case '1.25':
+                return '6am';
+                case '1.50':
+                return '12pm';
+                case '1.75':
+                return '6pm';
+                case '2.00':
+                return '12am';
+                case '2.25':
+                return '6am';
+                case '2.50':
+                return '12pm';
+                case '2.75':
+                return '6pm';
+                case '3.00':
+                return '12am';
+                case '3.25':
+                return '6am';
+                case '3.50':
+                return '12pm';
+                case '3.75':
+                return '6pm';
+                case '4.00':
+                return '12am';
+                case '4.25':
+                return '6am';
+                case '4.50':
+                return '12pm';
+                case '4.75':
+                return '6pm';
+                case '5.00':
+                return '12am';
+                case '5.25':
+                return '6am';
+                case '5.50':
+                return '12pm';
+                case '5.75':
+                return '6pm';
+                case '6.00':
+                return '12am';
+                case '6.25':
+                return '6am';
+                case '6.50':
+                return '12pm';
+                case '6.75':
+                return '6pm';
+                case '7.00':
+                return '12am';
+                case '7.25':
+                return '6am';
+                case '7.50':
+                return '12pm';
+                case '7.75':
+                return '6pm';
+                case '8.00':
+                return '12am';
+                case '8.25':
+                return '6am';
+                }
+            }
+
+            
+sel_SatLogoff.noUiSlider.on('update', function (values) {
+    var val_SatLogoff = document.getElementById('val_SatLogoff');
+    
+    // Convert both start and end values to time format
+    var startTime = decimalToTime(parseFloat(values[0]));
+    var endTime = decimalToTime(parseFloat(values[1]));
+    
+    // Display the converted times in AM/PM format
+    val_SatLogoff.innerHTML = startTime + ' - ' + endTime;
+    
+    // Call the filter function (if needed)
+    filterFunc();
+});
             
             //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
             var div_Office = document.createElement('div');
@@ -2321,7 +2659,7 @@
             document.getElementById("shiftsliders").appendChild(div_Office);
             var header_staffDetails = document.createElement('div');
             header_staffDetails.id = "header_staffDetails";
-            header_staffDetails.innerHTML = '<br><span style="font-size: 15px; font-weight: bold;">Filter by Staff Details:</span>';
+            header_staffDetails.innerHTML = '<br><br><span style="font-size: 15px; font-weight: bold;">Filter by Staff Details:</span>';
             document.getElementById("div_Office").appendChild(header_staffDetails);
             var lab_Office = document.createElement('div');
             lab_Office.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Office</span>';
@@ -2341,6 +2679,7 @@
             div_Office.appendChild(sel_Office);
             var reset_Office = document.createElement('button');
             reset_Office.style.float = "right";
+            reset_Office.style.margin = "2px";
             reset_Office.innerHTML = 'Clear Filter';
             //reset_Office.className = 'filterlabel';
             reset_Office.style.width = "auto";
@@ -2403,6 +2742,7 @@
             div_Manager.appendChild(sel_Manager);
             var reset_Manager = document.createElement('button');
             reset_Manager.style.float = "right";
+            reset_Manager.style.margin = "2px";
             reset_Manager.innerHTML = 'Clear Filter';
             //reset_Manager.className = 'filterlabel';
             reset_Manager.style.width = "auto";
@@ -2437,6 +2777,7 @@
             div_Category.appendChild(sel_Category);
             var reset_Category = document.createElement('button');
             reset_Category.style.float = "right";
+            reset_Category.style.margin = "2px";
             reset_Category.innerHTML = 'Clear Filter';
             //reset_Category.className = 'filterlabel';
             reset_Category.style.width = "auto";
