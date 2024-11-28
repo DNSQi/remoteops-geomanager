@@ -129,6 +129,7 @@
         <script src="js/tailDT.js"></script>
         <script src="js/nouislider.min.js"></script>
         <script src="js/wNumb.js"></script>
+        <script src="js/leaflet.timeline.js"></script>
         <script src="data/headsets_1.js"></script>
         <script src="data/search_2.js"></script>
         <script src="data/saturday_3.js"></script>
@@ -727,13 +728,13 @@
         function style_saturday_3_0() {
             return {
                 pane: 'pane_saturday_3',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(152,125,183,1.0)',
@@ -823,13 +824,13 @@
         function style_friday_4_0() {
             return {
                 pane: 'pane_friday_4',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(190,207,80,1.0)',
@@ -919,13 +920,13 @@
         function style_thursday_5_0() {
             return {
                 pane: 'pane_thursday_5',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(225,89,137,1.0)',
@@ -1016,13 +1017,13 @@
         function style_wednesday_6_0() {
             return {
                 pane: 'pane_wednesday_6',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(229,182,54,1.0)',
@@ -1113,13 +1114,13 @@
         function style_tuesday_7_0() {
             return {
                 pane: 'pane_tuesday_7',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(196,60,57,1.0)',
@@ -1209,13 +1210,13 @@
         function style_monday_8_0() {
             return {
                 pane: 'pane_monday_8',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(190,178,151,1.0)',
@@ -1305,13 +1306,13 @@
         function style_sunday_9_0() {
             return {
                 pane: 'pane_sunday_9',
-                radius: 4.0,
+                radius: 6,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1,
+                weight: 1.5,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(145,82,45,1.0)',
@@ -1847,24 +1848,20 @@ function decimalToTime(decimal) {
 var sel_SunLogin = document.getElementById('div_SunLogin');
 noUiSlider.create(sel_SunLogin, {
     connect: true,
-    start: [1.00, 2.25],
+    start: [1.00, 2.00],
     pips: {
         mode: 'values',
-        values: [1.00, 1.25, 1.50, 1.75, 2.00, 2.25],
-        density: 3.5,
+        values: [1.00, 1.25, 1.50, 1.75, 2.00],
+        density: 4,
         format: wNumb({
             decimals: 2,
         })
     },
     range: {
         min: 1.00,
-        max: 2.25
+        max: 2.00
     }
 });
-
-
-
-
 
 sel_SunLogin.noUiSlider.on('update', function (values) {
     var val_SunLogin = document.getElementById('val_SunLogin');
@@ -1908,17 +1905,17 @@ sel_SunLogin.noUiSlider.on('update', function (values) {
             var sel_SunLogoff = document.getElementById('div_SunLogoff');
             noUiSlider.create(sel_SunLogoff, {
                 connect: true,
-                start: [1.00, 2.25],
+                start: [1.25, 2.25],
                 pips: {
                     mode: 'values',
-                    values: [1.00, 1.25, 1.50, 1.75, 2.00, 2.25],
-                    density: 3.5,
+                    values: [1.25, 1.50, 1.75, 2.00, 2.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 1.00,
+                min: 1.25,
                 max: 2.25
                 }
             });
@@ -1964,18 +1961,18 @@ sel_SunLogoff.noUiSlider.on('update', function (values) {
             var sel_MonLogin = document.getElementById('div_MonLogin');
             noUiSlider.create(sel_MonLogin, {
                 connect: true,
-                start: [2.00, 3.25],
+                start: [2.00, 3.00],
                 pips: {
                     mode: 'values',
-                    values: [2.00, 2.25, 2.50, 2.75, 3.00, 3.25],
-                    density: 3.5,
+                    values: [2.00, 2.25, 2.50, 2.75, 3.00],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 2.00,
-                max: 3.25
+                max: 3.00
                 }
             });
             sel_MonLogin.noUiSlider.on('update', function (values) {
@@ -2018,17 +2015,17 @@ sel_SunLogoff.noUiSlider.on('update', function (values) {
             var sel_MonLogoff = document.getElementById('div_MonLogoff');
             noUiSlider.create(sel_MonLogoff, {
                 connect: true,
-                start: [2.00, 3.25],
+                start: [2.25, 3.25],
                 pips: {
                     mode: 'values',
-                    values: [2.00, 2.25, 2.50, 2.75, 3.00, 3.25],
-                    density: 3.5,
+                    values: [2.25, 2.50, 2.75, 3.00, 3.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 2.00,
+                min: 2.25,
                 max: 3.25
                 }
             });
@@ -2071,18 +2068,18 @@ sel_MonLogoff.noUiSlider.on('update', function (values) {
             var sel_TueLogin = document.getElementById('div_TueLogin');
             noUiSlider.create(sel_TueLogin, {
                 connect: true,
-                start: [3.00, 4.25],
+                start: [3.00, 4.00],
                 pips: {
                     mode: 'values',
-                    values: [3.00, 3.25, 3.50, 3.75, 4.00, 4.25],
-                    density: 3.5,
+                    values: [3.00, 3.25, 3.50, 3.75, 4.00],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 3.00,
-                max: 4.25
+                max: 4.00
                 }
             });
             sel_TueLogin.noUiSlider.on('update', function (values) {
@@ -2124,17 +2121,17 @@ sel_MonLogoff.noUiSlider.on('update', function (values) {
             var sel_TueLogoff = document.getElementById('div_TueLogoff');
             noUiSlider.create(sel_TueLogoff, {
                 connect: true,
-                start: [3.00, 4.25],
+                start: [3.25, 4.25],
                 pips: {
                     mode: 'values',
-                    values: [3.00, 3.25, 3.50, 3.75, 4.00, 4.25],
-                    density: 3.5,
+                    values: [3.25, 3.50, 3.75, 4.00, 4.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 3.00,
+                min: 3.25,
                 max: 4.25
                 }
             });
@@ -2177,18 +2174,18 @@ sel_TueLogoff.noUiSlider.on('update', function (values) {
             var sel_WedLogin = document.getElementById('div_WedLogin');
             noUiSlider.create(sel_WedLogin, {
                 connect: true,
-                start: [4.00, 5.25],
+                start: [4.00, 5.00],
                 pips: {
                     mode: 'values',
-                    values: [4.00, 4.25, 4.50, 4.75, 5.00, 5.25],
-                    density: 3.5,
+                    values: [4.00, 4.25, 4.50, 4.75, 5.00],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 4.00,
-                max: 5.25
+                max: 5.00
                 }
             });
 sel_WedLogin.noUiSlider.on('update', function (values) {
@@ -2230,17 +2227,17 @@ sel_WedLogin.noUiSlider.on('update', function (values) {
             var sel_WedLogoff = document.getElementById('div_WedLogoff');
             noUiSlider.create(sel_WedLogoff, {
                 connect: true,
-                start: [4.00, 5.25],
+                start: [4.25, 5.25],
                 pips: {
                     mode: 'values',
-                    values: [4.00, 4.25, 4.50, 4.75, 5.00, 5.25],
-                    density: 3.5,
+                    values: [4.25, 4.50, 4.75, 5.00, 5.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 4.00,
+                min: 4.25,
                 max: 5.25
                 }
             });
@@ -2283,18 +2280,18 @@ sel_WedLogoff.noUiSlider.on('update', function (values) {
             var sel_ThurLogin = document.getElementById('div_ThurLogin');
             noUiSlider.create(sel_ThurLogin, {
                 connect: true,
-                start: [5.00, 6.25],
+                start: [5.00, 6.00],
                 pips: {
                     mode: 'values',
-                    values: [5.00, 5.25, 5.50, 5.75, 6.00, 6.25],
-                    density: 3.5,
+                    values: [5.00, 5.25, 5.50, 5.75, 6.00],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 5.00,
-                max: 6.25
+                max: 6.00
                 }
             });
 sel_ThurLogin.noUiSlider.on('update', function (values) {
@@ -2336,17 +2333,17 @@ sel_ThurLogin.noUiSlider.on('update', function (values) {
             var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
             noUiSlider.create(sel_ThurLogoff, {
                 connect: true,
-                start: [5.00, 6.25],
+                start: [5.25, 6.25],
                 pips: {
                     mode: 'values',
-                    values: [5.00, 5.25, 5.50, 5.75, 6.00, 6.25],
-                    density: 3.5,
+                    values: [5.25, 5.50, 5.75, 6.00, 6.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 5.00,
+                min: 5.25,
                 max: 6.25
                 }
             });
@@ -2390,18 +2387,18 @@ sel_ThurLogoff.noUiSlider.on('update', function (values) {
             var sel_FriLogin = document.getElementById('div_FriLogin');
             noUiSlider.create(sel_FriLogin, {
                 connect: true,
-                start: [6.00, 7.25],
+                start: [6.00, 7.00],
                 pips: {
                     mode: 'values',
-                    values: [6.00, 6.25, 6.50, 6.75, 7.00, 7.25],
-                    density: 3.5,
+                    values: [6.00, 6.25, 6.50, 6.75, 7.00],
+                    density:4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 6.00,
-                max: 7.25
+                max: 7.00
                 }
             });
 sel_FriLogin.noUiSlider.on('update', function (values) {
@@ -2443,17 +2440,17 @@ sel_FriLogin.noUiSlider.on('update', function (values) {
             var sel_FriLogoff = document.getElementById('div_FriLogoff');
             noUiSlider.create(sel_FriLogoff, {
                 connect: true,
-                start: [6.00, 7.25],
+                start: [6.25, 7.25],
                 pips: {
                     mode: 'values',
-                    values: [6.00, 6.25, 6.50, 6.75, 7.00, 7.25],
-                    density: 3.5,
+                    values: [6.25, 6.50, 6.75, 7.00, 7.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 6.00,
+                min: 6.25,
                 max: 7.25
                 }
             });
@@ -2497,18 +2494,18 @@ sel_FriLogoff.noUiSlider.on('update', function (values) {
             var sel_SatLogin = document.getElementById('div_SatLogin');
             noUiSlider.create(sel_SatLogin, {
                 connect: true,
-                start: [7.00, 8.25],
+                start: [7.00, 8.00],
                 pips: {
                     mode: 'values',
-                    values: [7.00, 7.25, 7.50, 7.75, 8.00, 8.25],
-                    density: 3.5,
+                    values: [7.00, 7.25, 7.50, 7.75, 8.00],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
                 min: 7.00,
-                max: 8.25
+                max: 8.00
                 }
             });
 sel_SatLogin.noUiSlider.on('update', function (values) {
@@ -2550,17 +2547,17 @@ sel_SatLogin.noUiSlider.on('update', function (values) {
             var sel_SatLogoff = document.getElementById('div_SatLogoff');
             noUiSlider.create(sel_SatLogoff, {
                 connect: true,
-                start: [7.00, 8.25],
+                start: [7.25, 8.25],
                 pips: {
                     mode: 'values',
-                    values: [7.00, 7.25, 7.50, 7.75, 8.00, 8.25],
-                    density: 3.5,
+                    values: [7.25, 7.50, 7.75, 8.00, 8.25],
+                    density: 4,
                     format: wNumb({
                             decimals: 2,
                         })
                 },
                 range: {
-                min: 7.00,
+                min: 7.25,
                 max: 8.25
                 }
             });
@@ -2574,66 +2571,14 @@ sel_SatLogin.noUiSlider.on('update', function (values) {
             // Round the value to two decimal places for precise comparison
             val = val.toFixed(2);
             switch (val) {
-                case '1.00':
-                return '12am';
-                case '1.25':
-                return '6am';
-                case '1.50':
-                return '12pm';
-                case '1.75':
-                return '6pm';
-                case '2.00':
-                return '12am';
-                case '2.25':
-                return '6am';
-                case '2.50':
-                return '12pm';
-                case '2.75':
-                return '6pm';
-                case '3.00':
-                return '12am';
-                case '3.25':
-                return '6am';
-                case '3.50':
-                return '12pm';
-                case '3.75':
-                return '6pm';
-                case '4.00':
-                return '12am';
-                case '4.25':
-                return '6am';
-                case '4.50':
-                return '12pm';
-                case '4.75':
-                return '6pm';
-                case '5.00':
-                return '12am';
-                case '5.25':
-                return '6am';
-                case '5.50':
-                return '12pm';
-                case '5.75':
-                return '6pm';
-                case '6.00':
-                return '12am';
-                case '6.25':
-                return '6am';
-                case '6.50':
-                return '12pm';
-                case '6.75':
-                return '6pm';
-                case '7.00':
-                return '12am';
-                case '7.25':
-                return '6am';
-                case '7.50':
-                return '12pm';
-                case '7.75':
-                return '6pm';
-                case '8.00':
-                return '12am';
-                case '8.25':
-                return '6am';
+                case '1.00':return '12am'; case '1.25':return '6am'; case '1.50':return '12pm'; case '1.75':return '6pm';
+                case '2.00':return '12am'; case '2.25':return '6am'; case '2.50':return '12pm'; case '2.75':return '6pm';
+                case '3.00':return '12am'; case '3.25':return '6am'; case '3.50':return '12pm'; case '3.75':return '6pm';
+                case '4.00':return '12am'; case '4.25':return '6am'; case '4.50':return '12pm'; case '4.75':return '6pm';
+                case '5.00':return '12am'; case '5.25':return '6am'; case '5.50':return '12pm'; case '5.75':return '6pm';
+                case '6.00':return '12am'; case '6.25':return '6am'; case '6.50':return '12pm'; case '6.75':return '6pm';
+                case '7.00':return '12am'; case '7.25':return '6am'; case '7.50':return '12pm'; case '7.75':return '6pm';
+                case '8.00':return '12am'; case '8.25':return '6am';
                 }
             }
 
@@ -2907,6 +2852,59 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
             }
         });
     }
+
+
+
+    function style_shiftmaps_1_0() {
+            return {
+                pane: 'pane_shiftmap_1',
+                    shape: 'circle',
+                    radius: 4.0,
+                    opacity: 1,
+                    color: 'rgba(0,0,0,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.5,
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(84,176,74,1.0)',
+                    interactive: true,
+            }
+        }
+
+        var timelineControl = L.timelineSliderControl({
+          formatOutput: function (date) {
+            return new Date(date).toString();
+          },
+        });
+        var timeline = L.timeline(json_wednesday_6, {
+          getInterval: function(feature) {
+      return {
+        start: new Date(feature.properties.start).getTime(),
+        end: new Date(feature.properties.stop).getTime()
+      };
+    },
+          
+    pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_shiftmaps_1_0(feature));
+                //return L.marker(latlng, {icon: L.AwesomeMarkers.icon({
+                //icon: feature.properties.icon, 
+                //icon: 'commenting', 
+                //markerColor: 'green', 
+                //prefix: 'fa', 
+                //iconColor: 'white'
+            //}
+            //)});
+            },
+  }).addTo(map);
+        timelineControl.addTo(map);
+        timelineControl.addTimelines(timeline);
+        timeline.addTo(map);
 
         </script>
     </body>
