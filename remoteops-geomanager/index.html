@@ -683,15 +683,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -701,12 +705,15 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Residence</th>\
                         <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -722,7 +729,9 @@
 			layer.on('popupopen', function(e) {
 				addClassToPopupIfMedia(content, e.popup);
 			});
-			layer.bindPopup(content, { maxHeight: 400 });
+			layer.bindPopup(content, { 
+                maxHeight: 400,
+                autoPan: false });
         }
 
         function style_saturday_3_0() {
@@ -779,15 +788,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -797,12 +810,15 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Residence</th>\
                         <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -875,15 +891,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -893,12 +913,15 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Residence</th>\
                         <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -971,15 +994,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -990,12 +1017,14 @@
                     </tr>\
                     <tr>\
                         <th scope="row">Residence</th>\
-                        <td>' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -1068,15 +1097,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -1087,12 +1120,14 @@
                     </tr>\
                     <tr>\
                         <th scope="row">Residence</th>\
-                        <td>' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -1165,15 +1200,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -1183,12 +1222,15 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Residence</th>\
                         <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -1261,15 +1303,19 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
+            var popupContent = '<div style="font-size:16px; font-family: Arial; width:230;">\
+                <table style="font-size:16px; border:none;">\
                     <tr>\
-                        <th scope="row">Name</th>\
-                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                        <td style="border:none;">\
+                            <img src="images/portrait_placeholder.png" width=85 />\
+                        </td>\
+                        <td style="border:none; white-space:nowrap">\
+                            <span style="font-weight:bold">' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</br>\
+                                ' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</span>\
+                        </td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">EK</th>\
-                        <td>' + (feature.properties['EK'] !== null ? autolinker.link(feature.properties['EK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
+                </table>\
+                <table class="w3-table-all" width="100%" style="font-size:12px" border="1">\
                     <tr>\
                         <th scope="row">Category</th>\
                         <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
@@ -1279,12 +1325,15 @@
                         <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Residence</th>\
                         <td colspan="2">' + (feature.properties['Residence'] !== null ? autolinker.link(feature.properties['Residence'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Latitude</th>\
                         <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">Longitude</th>\
                         <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -2828,30 +2877,57 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
         function toggleFunction(bool) {
             alert(bool)
         }
+        // Store the weekday layers in an object to manage visibility later
+        var weekdayLayers = {
+            "Sun": layer_sunday_9,
+            "Mon": layer_monday_8,
+            "Tue": layer_tuesday_7,
+            "Wed": layer_wednesday_6,
+            "Thur": layer_thursday_5,
+            "Fri": layer_friday_4,
+            "Sat": layer_saturday_3
+        };
 
-        function setDayVisibility(day) {
-        // Remove the map layer
-        map.removeLayer(layer_headsets_1);
-        
-        // Days of the week
-        const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
-        
-        // Loop through all days and update display
-        days.forEach(d => {
-            const loginsElement = document.getElementById(`div_${d}Logins`);
-            const logoffsElement = document.getElementById(`div_${d}Logoffs`);
-            
-            if (d === day) {
-                // For the current day, set display to "revert"
-                loginsElement.style.display = "revert";
-                logoffsElement.style.display = "revert";
-            } else {
-                // For other days, set display to "none"
-                loginsElement.style.display = "none";
-                logoffsElement.style.display = "none";
+        // Function to handle hiding all weekday layers when "Headsets and Adaptors" is clicked
+        function myFunction1() {
+            // Hide weekday layers
+            for (var day in weekdayLayers) {
+                if (weekdayLayers.hasOwnProperty(day)) {
+                    map.removeLayer(weekdayLayers[day]); // Remove each weekday layer from the map
+                }
             }
-        });
-    }
+
+            // Show the "Headsets and Adaptors" layer
+            map.addLayer(layer_headsets_1);
+        }
+
+        // Modify the setDayVisibility function to handle hiding weekday layers when needed
+        function setDayVisibility(day) {
+            // Remove the "Headsets and Adaptors" layer if it's visible
+            map.removeLayer(layer_headsets_1);
+            
+            // Loop through all days and update display for logins/logoffs
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+            
+            days.forEach(d => {
+                const loginsElement = document.getElementById(`div_${d}Logins`);
+                const logoffsElement = document.getElementById(`div_${d}Logoffs`);
+                
+                if (d === day) {
+                    // For the current day, set display to "revert"
+                    loginsElement.style.display = "revert";
+                    logoffsElement.style.display = "revert";
+                } else {
+                    // For other days, set display to "none"
+                    loginsElement.style.display = "none";
+                    logoffsElement.style.display = "none";
+                }
+            });
+
+            // Ensure that the selected day layer is shown on the map
+            map.addLayer(weekdayLayers[day]);
+        }
+
 
 
 
