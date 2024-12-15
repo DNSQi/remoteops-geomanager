@@ -1,24 +1,25 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
-        <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
-        <link rel="stylesheet" href="css/filter.css">
-        <link rel="stylesheet" href="css/nouislider.min.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
-        <link rel="stylesheet" href="css/leaflet-measure.css">
-        <link rel="stylesheet" href="css/leaflet-sidebar.css">
-        <link rel="stylesheet" href="css/leaflet-geoman.css">
-        <link rel="stylesheet" href="css/w3.css">
-        <style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/leaflet-search.css">
+    <link rel="stylesheet" href="css/filter.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+    <link rel="stylesheet" href="css/leaflet-measure.css">
+    <link rel="stylesheet" href="css/leaflet-sidebar.css">
+    <link rel="stylesheet" href="css/leaflet-geoman.css">
+    <link rel="stylesheet" href="css/w3.css">
+    <style>
         #map {
             width: 99vw;
             height: 100vh;
@@ -83,6 +84,10 @@
             border: 2px solid grey;
             width: 60%;
         }
+        
+        .clickable-row { 
+            cursor: pointer; 
+        } 
 
         .save {
             margin: 0;
@@ -104,55 +109,58 @@
             right: 5%;
             font-weight: bold;
         }
-        </style>
-        <title>Geo-Manager</title>
-    </head>
-    <body>
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/L.Control.Layers.Tree.min.js"></script>
-        <script src="js/leaflet-geoman.min.js"></script>
-        <script src="js/turf.min.js"></script>
-        <script src="js/multiselect-dropdown.js"></script>
-        <script src="js/leaflet-sidebar.js"></script>
-        <script src="js/leaflet-svg-shape-markers.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
-        <script src="js/leaflet-measure.js"></script>
-        <script src="js/leaflet-search.js"></script>
-        <script src="js/tailDT.js"></script>
-        <script src="js/nouislider.min.js"></script>
-        <script src="js/wNumb.js"></script>
-        <script src="js/leaflet.timeline.js"></script>
-        <script src="data/headsets_1.js"></script>
-        <script src="data/search_2.js"></script>
-        <script src="data/saturday_3.js"></script>
-        <script src="data/friday_4.js"></script>
-        <script src="data/thursday_5.js"></script>
-        <script src="data/wednesday_6.js"></script>
-        <script src="data/tuesday_7.js"></script>
-        <script src="data/monday_8.js"></script>
-        <script src="data/sunday_9.js"></script>
+    </style>
+    <title>Geo-Manager</title>
+</head>
 
-        
+<body>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/L.Control.Layers.Tree.min.js"></script>
+    <script src="js/leaflet-geoman.min.js"></script>
+    <script src="js/turf.min.js"></script>
+    <script src="js/multiselect-dropdown.js"></script>
+    <script src="js/leaflet-sidebar.js"></script>
+    <script src="js/leaflet-svg-shape-markers.min.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+    <script src="js/leaflet-measure.js"></script>
+    <script src="js/leaflet-search.js"></script>
+    <script src="js/tailDT.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/wNumb.js"></script>
+    <script src="js/leaflet.timeline.js"></script>
+    <script src="data/headsets_1.js"></script>
+    <script src="data/search_2.js"></script>
+    <script src="data/saturday_3.js"></script>
+    <script src="data/friday_4.js"></script>
+    <script src="data/thursday_5.js"></script>
+    <script src="data/wednesday_6.js"></script>
+    <script src="data/tuesday_7.js"></script>
+    <script src="data/monday_8.js"></script>
+    <script src="data/sunday_9.js"></script>
+
+
     <div id="map">
         <div id="sidebar" class="sidebar collapsed">
             <!-- Nav tabs -->
             <div class="sidebar-tabs">
                 <ul role="tablist">
-                    <li class="disabled"><a href="#shiftslider" role="tab"><i class="fa fa-list-ul"></i></a></li>
+                    <li class="diabled"><a href="#shiftslider" role="tab"><i class="fa fa-list-ul"></i></a></li>
                     <li class="disabled"><a href="#void" role="tab"></a></li>
-                    <li title="View Staff Filters"><a href="#shiftsliders" role="tab"><i class="fa fa-users"></i></a></li>
+                    <li title="View Staff Filters"><a href="#shiftsliders" role="tab"><i class="fa fa-users"></i></a>
+                    </li>
                     <li class="disabled"><a href="#void" role="tab"></a></li>
-                    <li title="View Equipment Filters"><a href="#filter" role="tab"><i class="fa fa-filter"></i></a></li>
+                    <li title="View Equipment Filters"><a href="#filter" role="tab"><i class="fa fa-filter"></i></a>
+                    </li>
                     <li class="disabled"><a href="#void" role="tab"></a></li>
-                    <li class="disabled"><a href="#select" role="tab"><i class="fa fa-users"></i></a></li>
+                    <li title="View\Edit Selected Staff Details"><a href="#select" role="tab"><i class="fa fa-users"></i></a></li>
                 </ul>
 
                 <ul role="tablist">
@@ -164,13 +172,14 @@
             <div class="sidebar-content" id="sidebar-content">
                 <div class="sidebar-pane" id="shiftsliders">
                     <h1 class="sidebar-header" style="font-weight:bold">
-                        Staff Layers
+                        Staff Shifts Layers
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
                     </h1>
                     <br>
                     <span style="font-size:15px;font-weight:bold">Filter by Workday:</span>
 
-                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;"
+                            class="fa fa-caret-right"></button></span>
                 </div>
                 <div class="sidebar-pane" id="shiftslider">
                     <h1 class="sidebar-header" style="font-weight:bold">
@@ -191,7 +200,8 @@
                     </table>
                     </p>
                     <p>
-                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;"
+                                class="fa fa-caret-right"></button></span>
                 </div>
 
                 <div class="sidebar-pane" id="filter">
@@ -201,7 +211,8 @@
                     </h1>
                     <br>
                     <span style="font-size:15px;font-weight:bold">Filter by Type of Equipment:</span>
-                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                    <span class="sidebar-close"><button style="float:left;height:100%;border:none;"
+                            class="fa fa-caret-right"></button></span>
                 </div>
 
                 <div class="sidebar-pane" id="select">
@@ -210,12 +221,46 @@
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
                     </h1>
                     <p>
-                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;"
+                                class="fa fa-caret-right"></button></span>
                     <form action="save.php" method="POST">
                         <table id="table" class="w3-table-all" style="width:100%; border:none;">
                             <tr>
-                                <th colspan="2" style="font-size:14px;padding: 1px 1px;">Click on a Marker on the Map to
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="font-size:14px;border:none;padding: 1px 1px;text-align: center;">Draw a Shape on the Map to View the
+                                    Staff List</th>
+                            </tr>
+                            <tr>
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="font-size:14px;border:none;padding: 1px 1px;text-align: center;">or</th>
+                            </tr>
+                            <tr>
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="font-size:14px;border:none;padding: 1px 1px;text-align: center;">Click on a Marker on the Map to
                                     View or Edit the Details</th>
+                            </tr>
+                            <tr>
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="font-size:14px;border:none;padding: 1px 1px;text-align: center;">or</th>
+                            </tr>
+                            <tr>
+                                <th style="padding: 1px 1px;border:none"></th>
+                                <th style="padding: 1px 1px;border:none"></th>
+                            </tr>
+                            <tr class="clickable-row">
+                                <th colspan="2" onclick="setTableVisibility()" style="font-size:14px;padding: 1px 1px;text-align: center;">Click here to Add New Staff Details</th>
                             </tr>
                             <tr>
                                 <th style="padding: 1px 1px;border:none"></th>
@@ -232,47 +277,48 @@
                         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
                     </h1>
                     <p>
-                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;" class="fa fa-caret-right"></button></span>
+                        <span class="sidebar-close"><button style="float:left;height:100%;border:none;"
+                                class="fa fa-caret-right"></button></span>
                 </div>
             </div>
         </div>
     </div>
 
 
-        <script>
+    <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
 
             if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
-              highlightLayer.setStyle({
-                color: '#ffff00',
-              });
+                highlightLayer.setStyle({
+                    color: '#ffff00',
+                });
             } else {
-              highlightLayer.setStyle({
-                fillColor: '#ffff00',
-                fillOpacity: 1
-              });
+                highlightLayer.setStyle({
+                    fillColor: '#ffff00',
+                    fillOpacity: 1
+                });
             }
             highlightLayer.openPopup();
         }
         var map = L.map('map', {
-            zoomControl:false, 
-            maxZoom:28, 
-            minZoom:1
+            zoomControl: false,
+            maxZoom: 28,
+            minZoom: 1
         }).fitBounds([
-            [-1.5496848530723661,36.66185474824449],
-            [-1.155665462047198,37.376257339256426]
+            [-1.5496848530723661, 36.66185474824449],
+            [-1.155665462047198, 37.376257339256426]
         ]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/DNSQi" target="_blank">DNSQi</a>');
         map.attributionControl.setPosition('bottomleft');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
 
         var refresh = L.control({
             position: 'topleft'
         });
-        refresh.onAdd = function(map) {
+        refresh.onAdd = function (map) {
             var div = L.DomUtil.create('div');
             div.innerHTML =
                 `<input type="button" id="refresh" 
@@ -284,32 +330,32 @@
 
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
-         var tempDiv = document.createElement('div');
-         tempDiv.innerHTML = content;
-         var rows = tempDiv.querySelectorAll('tr');
-         for (var i = 0; i < rows.length; i++) {
-             var td = rows[i].querySelector('td.visible-with-data');
-             var key = td ? td.id : '';
-             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
-                 rows[i].parentNode.removeChild(rows[i]);
-             }
-         }
-         return tempDiv.innerHTML;
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var rows = tempDiv.querySelectorAll('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var td = rows[i].querySelector('td.visible-with-data');
+                var key = td ? td.id : '';
+                if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                    rows[i].parentNode.removeChild(rows[i]);
+                }
+            }
+            return tempDiv.innerHTML;
         }
         // add class to format popup if it contains media
-		function addClassToPopupIfMedia(content, popup) {
-			var tempDiv = document.createElement('div');
-			tempDiv.innerHTML = content;
-			if (tempDiv.querySelector('td img')) {
-				popup._contentNode.classList.add('media');
-					// Delay to force the redraw
-					setTimeout(function() {
-						popup.update();
-					}, 10);
-			} else {
-				popup._contentNode.classList.remove('media');
-			}
-		}
+        function addClassToPopupIfMedia(content, popup) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            if (tempDiv.querySelector('td img')) {
+                popup._contentNode.classList.add('media');
+                // Delay to force the redraw
+                setTimeout(function () {
+                    popup.update();
+                }, 10);
+            } else {
+                popup._contentNode.classList.remove('media');
+            }
+        }
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
@@ -339,8 +385,8 @@
         });
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
-        
-        
+
+
         // add Leaflet-Sidebar controls with some options to the map 
         var sidebar = L.control.sidebar('sidebar', {
             position: 'right'
@@ -351,6 +397,7 @@
         map.pm.addControls({
             position: 'topleft',
             drawMarker: false,
+            drawRectangle: false,
             drawCircle: true,
             drawText: false,
             drawCircleMarker: false,
@@ -358,12 +405,95 @@
             editMode: false,
             cutPolygon: false,
             rotateMode: false,
+            removalMode: false,
+            dragMode: false,
         });
 
+        function setTableVisibility() {
+        var addStaff =
+                            "<table>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Staff No</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "staffno" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">UserName</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "username" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Name</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "names" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Category</th>\n" +
+                            "<td style=" + "padding:0px;" + "><select style=" + "width:100%;border:none;" + " name=" + "category" + "><option value='' selected disabled> - Select Category of Staff - </option><option value='CEE'>CEE</option><option value='Support'>Support</option></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Office</th>\n" +
+                            "<td style=" + "padding:0px;" + "><select style=" + "width:100%;border:none;" + " name=" + "office" + "><option value='' selected disabled> - Select Office Location - </option><option value='Eldoret'>Eldoret</option><option value='Machakos'>Machakos</option><option value='Nairobi'>Nairobi</option><option value='Thika'>Thika</option></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Team Leader</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "tlead" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Manager</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "manager" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Route</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "route" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Sub-Route</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "sroute" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Residence</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "reside" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Phone No.</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "phone" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;hidden;" + ">Coordinates</th>\n" +
+                            "<td style=" + "padding:0px;" + "><table style=" + "width:100%;border:none;font-weight:normal;padding:0px;" + ">\n" +
+                            "<tr><th style=" + "padding:0px;" + "border:none;" + ">Latitude:</th>\n" +
+                            "<td style=" + "width:40%;border:none;padding:0px;><input style=" + "width:100%;border:none;" + " name=" + "lat" + " value='" + "'></td>" +
+                            "<th style=" + "padding:0px;border:none;" + ">Long:</th>\n" +
+                            "<td style=" + "width:40%;border:none;padding:0px;><input style=" + "width:100%;border:none;" + " name=" + "lng" + " value='" + "'></td></tr></table></th>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Headset Name</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "hname" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Headset Serial</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "hserial" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Adaptor Serial</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input style=" + "width:100%;border:none;" + " name=" + "aserial" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Issue Date</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input type=" + "date" + " style=" + "width:100%;border:none;" + " name=" + "idate" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "<tr>\n" +
+                            "<th style=" + "font-size:14px;padding:0px;" + ">Return Date</th>\n" +
+                            "<td style=" + "padding:0px;" + "><input type=" + "date" + " style=" + "width:100%;border:none;" + " name=" + "rdate" + " value='" + "'></td>\n" +
+                            "</tr>\n" +
+                            "</table>" +
+                            "<input type=" + "button" + " style=" + "font-size:10px;" + " value=" + "Clear" + " class=" + "delete" + ">" +
+                            "<button type=" + "submit" + " name=" + "save" + " style=" + "font-size:10px;" + " class=" + "save" + ">Save</button>" +
+                            "<input type=" + "button" + " style=" + "font-size:10px;" + " value=" + "Export" + " class=" + "export" + ">";
+                        (document.querySelector("#sidebar #sidebar-content #select #table").innerHTML = addStaff);
+                    };
 
         function pop_headsets_1(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -372,13 +502,13 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
                 },
                 mouseover: highlightFeature,
-                mousedown: function(e) {
+                mousedown: function (e) {
                     if (layer.options.shape) {
                         var demo2 =
                             "<table>\n" +
@@ -473,7 +603,7 @@
                         return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
                     }
                     // close sidebar when press esc
-                    document.addEventListener("keydown", function(event) {
+                    document.addEventListener("keydown", function (event) {
                         if (event.key === "Escape") {
                             sidebar.close();
                         }
@@ -535,58 +665,58 @@
             };
             // Start of if blocks and style check logic
             if (exp_headsets_1rule0_eval_expression(context)) {
-                  return {
-                pane: 'pane_headsets_1',
-                shape: 'circle',
-                radius: 6,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.5,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(84,176,74,1.0)',
-                interactive: true,
-            };
-                }
-                else if (exp_headsets_1rule1_eval_expression(context)) {
-                  return {
-                pane: 'pane_headsets_1',
-                shape: 'diamond',
-                radius: 7.5,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.5,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(255,127,0,1.0)',
-                interactive: true,
-            };
-                }
-                else if (exp_headsets_1rule2_eval_expression(context)) {
-                  return {
-                pane: 'pane_headsets_1',
-                shape: 'triangle',
-                radius: 6.5,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.5,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(227,26,28,1.0)',
-                interactive: true,
-            };
-                }
+                return {
+                    pane: 'pane_headsets_1',
+                    shape: 'circle',
+                    radius: 6,
+                    opacity: 1,
+                    color: 'rgba(0,0,0,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.5,
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(84,176,74,1.0)',
+                    interactive: true,
+                };
+            }
+            else if (exp_headsets_1rule1_eval_expression(context)) {
+                return {
+                    pane: 'pane_headsets_1',
+                    shape: 'diamond',
+                    radius: 7.5,
+                    opacity: 1,
+                    color: 'rgba(0,0,0,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.5,
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,127,0,1.0)',
+                    interactive: true,
+                };
+            }
+            else if (exp_headsets_1rule2_eval_expression(context)) {
+                return {
+                    pane: 'pane_headsets_1',
+                    shape: 'triangle',
+                    radius: 6.5,
+                    opacity: 1,
+                    color: 'rgba(0,0,0,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.5,
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(227,26,28,1.0)',
+                    interactive: true,
+                };
+            }
             else {
-                return {fill: false, stroke: false};
+                return { fill: false, stroke: false };
             }
         }
         map.createPane('pane_headsets_1');
@@ -608,10 +738,10 @@
             },
         });
         bounds_group.addLayer(layer_headsets_1);
-        map.addLayer(layer_headsets_1);
+        //map.addLayer(layer_headsets_1);
         function pop_search_2(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -620,7 +750,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -633,10 +763,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_search_2_0() {
@@ -667,7 +797,7 @@
         bounds_group.addLayer(layer_search_2);
         function pop_saturday_3(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -676,7 +806,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -726,12 +856,13 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { 
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, {
                 maxHeight: 400,
-                autoPan: false });
+                autoPan: false
+            });
         }
 
         function style_saturday_3_0() {
@@ -772,7 +903,7 @@
         //map.addLayer(layer_saturday_3);
         function pop_friday_4(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -781,7 +912,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -831,10 +962,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_friday_4_0() {
@@ -875,7 +1006,7 @@
         //map.addLayer(layer_friday_4);
         function pop_thursday_5(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -884,7 +1015,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -934,10 +1065,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_thursday_5_0() {
@@ -978,7 +1109,7 @@
         //map.addLayer(layer_thursday_5);
         function pop_wednesday_6(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -987,7 +1118,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -1037,10 +1168,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_wednesday_6_0() {
@@ -1081,7 +1212,7 @@
         //map.addLayer(layer_wednesday_6);
         function pop_tuesday_7(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -1090,7 +1221,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -1140,10 +1271,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_tuesday_7_0() {
@@ -1184,7 +1315,7 @@
         //map.addLayer(layer_tuesday_7);
         function pop_monday_8(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -1193,7 +1324,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -1243,10 +1374,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_monday_8_0() {
@@ -1287,7 +1418,7 @@
         //map.addLayer(layer_monday_8);
         function pop_sunday_9(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (var i in e.target._eventParents) {
                         if (typeof e.target._eventParents[i].resetStyle === 'function') {
                             e.target._eventParents[i].resetStyle(e.target);
@@ -1296,7 +1427,7 @@
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
+                        layer.eachLayer(function (feature) {
                             feature.closePopup()
                         });
                     }
@@ -1346,10 +1477,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_sunday_9_0() {
@@ -1395,18 +1526,18 @@
             title: 'Testing'
         }).addTo(map);
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
+            .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
-        
+            .title += 'Search for a place';
+
         var baseMaps = {
-            '<span title="Sunday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Sun&quot;)">Sunday</span>': layer_sunday_9,
-            '<span title="Monday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Mon&quot;)">Monday</span>': layer_monday_8,
-            '<span title="Tuesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Tue&quot;)">Tuesday</span>': layer_tuesday_7,
-            '<span title="Wednesday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Wed&quot;)">Wednesday</span>': layer_wednesday_6,
-            '<span title="Thursday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Thur&quot;)">Thursday</span>': layer_thursday_5,
-            '<span title="Friday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Fri&quot;)">Friday</span>': layer_friday_4,
-            '<span title="Saturday Staff Rota" style="font-size: 12px; font-weight: bold;" onclick="setDayVisibility(&quot;Sat&quot;)">Saturday</span>': layer_saturday_3
+            '<span title="Sun" style="font-size: 12px; font-weight: bold;">Sunday</span>': layer_sunday_9,
+            '<span title="Mon" style="font-size: 12px; font-weight: bold;">Monday</span>': layer_monday_8,
+            '<span title="Tue" style="font-size: 12px; font-weight: bold;">Tuesday</span>': layer_tuesday_7,
+            '<span title="Wed" style="font-size: 12px; font-weight: bold;">Wednesday</span>': layer_wednesday_6,
+            '<span title="Thur" style="font-size: 12px; font-weight: bold;">Thursday</span>': layer_thursday_5,
+            '<span title="Fri" style="font-size: 12px; font-weight: bold;">Friday</span>': layer_friday_4,
+            '<span title="Sat" style="font-size: 12px; font-weight: bold;">Saturday</span>': layer_saturday_3
         };
         var layer = L.control.layers(baseMaps, {}, {
             collapsed: false
@@ -1420,19 +1551,19 @@
         setParent(htmlObject, a);
 
         var overlaysTree = [
-            {label: '<span title="Overview of Headsets Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction1()">Headsets and Adaptors</span>', layer: layer_headsets_1},
-            {label: '<span title="Overview of Routers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Connection Routers</span>', layer: layer_search_2},
-            {label: '<span title="Overview of Computers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Computers</span>', layer: layer_search_2},
-            {label: '<span title="Overview of Office Seats Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Office Seats</span>', layer: layer_search_2},
+            { label: '<span title="Overview of Headsets Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="setHdstVisibility()">Headsets and Adaptors</span>', layer: layer_headsets_1 },
+            { label: '<span title="Overview of Routers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Connection Routers</span>', layer: layer_search_2 },
+            { label: '<span title="Overview of Computers Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Computers</span>', layer: layer_search_2 },
+            { label: '<span title="Overview of Office Seats Issued to Staff" style="font-size: 14px; font-weight: bold;" onclick="myFunction()">Office Seats</span>', layer: layer_search_2 },
         ]
-        var lay = L.control.layers.tree(null, overlaysTree,{
+        var lay = L.control.layers.tree(null, overlaysTree, {
             //namedToggle: true,
             //selectorBack: false,
             //closedSymbol: '&#8862; &#x1f5c0;',
             //openedSymbol: '&#8863; &#x1f5c1;',
             //collapseAll: 'Collapse all',
             //expandAll: 'Expand all',
-            collapsed: false, 
+            collapsed: false,
         });
         lay.addTo(map);
 
@@ -1449,22 +1580,23 @@
             layer: layer_search_2,
             initial: false,
             hideMarkerOnCollapse: true,
-            propertyName: 'NameEK'}));
+            propertyName: 'NameEK'
+        }));
         document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
+            ' fa fa-binoculars';
         var mapDiv = document.getElementById('map');
         var row = document.createElement('div');
-        row.className="row";
-        row.id="all";
+        row.className = "row";
+        row.id = "all";
         row.style.height = "100%";
         var col1 = document.createElement('div');
-        col1.className="col9";
+        col1.className = "col9";
         col1.id = "mapWindow";
         col1.style.height = "99%";
         col1.style.width = "80%";
         col1.style.display = "inline-block";
         var col2 = document.createElement('div');
-        col2.className="col3";
+        col2.className = "col3";
         col2.id = "shiftsliders";
         col2.style.display = "inline-block";
         mapDiv.parentNode.insertBefore(row, mapDiv);
@@ -1472,113 +1604,114 @@
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
         var Filters = {
-        "IssueDate": "date",
-        "ReturnDate": "date",
-        "SunLogin": "real",
-        "SunLogoff": "real",
-        "MonLogin": "real",
-        "MonLogoff": "real",
-        "TueLogin": "real",
-        "TueLogoff": "real",
-        "WedLogin": "real",
-        "WedLogoff": "real",
-        "ThurLogin": "real",
-        "ThurLogoff": "real",
-        "FriLogin": "real",
-        "FriLogoff": "real",
-        "SatLogin": "real",
-        "SatLogoff": "real",
-        "Office": "str",
-        "Manager": "str",
-        "Category": "str"};
-        function filterFunc() { 
-          map.eachLayer(function(lyr){
-          if ("options" in lyr && "dataVar" in lyr["options"]){
-            features = this[lyr["options"]["dataVar"]].features.slice(0);
-            try{
-              for (key in Filters){
-                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
-                if (Filters[key] == "str" || Filters[key] == "bool"){
-                  var selection = [];
-                  var options = document.getElementById("sel_" + keyS).options
-                  for (var i=0; i < options.length; i++) {
-                    if (options[i].selected) selection.push(options[i].value);
-                  }
-                    try{
-                      if (key in features[0].properties){
-                        for (i = features.length - 1;
-                          i >= 0; --i){
-                          if (selection.indexOf(
-                          features[i].properties[key])<0
-                          && selection.length>0) {
-                          features.splice(i,1);
-                          }
+            "IssueDate": "date",
+            "ReturnDate": "date",
+            "SunLogin": "real",
+            "SunLogoff": "real",
+            "MonLogin": "real",
+            "MonLogoff": "real",
+            "TueLogin": "real",
+            "TueLogoff": "real",
+            "WedLogin": "real",
+            "WedLogoff": "real",
+            "ThurLogin": "real",
+            "ThurLogoff": "real",
+            "FriLogin": "real",
+            "FriLogoff": "real",
+            "SatLogin": "real",
+            "SatLogoff": "real",
+            "Office": "str",
+            "Manager": "str",
+            "Category": "str"
+        };
+        function filterFunc() {
+            map.eachLayer(function (lyr) {
+                if ("options" in lyr && "dataVar" in lyr["options"]) {
+                    features = this[lyr["options"]["dataVar"]].features.slice(0);
+                    try {
+                        for (key in Filters) {
+                            keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                            if (Filters[key] == "str" || Filters[key] == "bool") {
+                                var selection = [];
+                                var options = document.getElementById("sel_" + keyS).options
+                                for (var i = 0; i < options.length; i++) {
+                                    if (options[i].selected) selection.push(options[i].value);
+                                }
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1;
+                                            i >= 0; --i) {
+                                            if (selection.indexOf(
+                                                features[i].properties[key]) < 0
+                                                && selection.length > 0) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "int") {
+                                sliderVals = document.getElementById(
+                                    "div_" + keyS).noUiSlider.get();
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (parseInt(features[i].properties[key])
+                                                < sliderVals[0]
+                                                || parseInt(features[i].properties[key])
+                                                > sliderVals[1]) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "real") {
+                                sliderVals = document.getElementById(
+                                    "div_" + keyS).noUiSlider.get();
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (features[i].properties[key]
+                                                < sliderVals[0]
+                                                || features[i].properties[key]
+                                                > sliderVals[1]) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "date"
+                                || Filters[key] == "datetime"
+                                || Filters[key] == "time") {
+                                try {
+                                    if (key in features[0].properties) {
+                                        HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                                        startdate = document.getElementById("dat_" +
+                                            HTMLkey + "_date1").value.replace(" ", "T");
+                                        enddate = document.getElementById("dat_" +
+                                            HTMLkey + "_date2").value.replace(" ", "T");
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (features[i].properties[key] < startdate
+                                                || features[i].properties[key] > enddate) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
                         }
-                      }
-                    } catch(err){
-                  }
+                    } catch (err) {
+                    }
+                    this[lyr["options"]["layerName"]].clearLayers();
+                    this[lyr["options"]["layerName"]].addData(features);
                 }
-                if (Filters[key] == "int"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (parseInt(features[i].properties[key])
-                          < sliderVals[0]
-                          || parseInt(features[i].properties[key])
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "real"){
-                  sliderVals =  document.getElementById(
-                    "div_" + keyS).noUiSlider.get();
-                  try{
-                    if (key in features[0].properties){
-                    for (i = features.length - 1; i >= 0; --i){
-                      if (features[i].properties[key]
-                          < sliderVals[0]
-                          || features[i].properties[key]
-                          > sliderVals[1]){
-                            features.splice(i,1);
-                          }
-                        }
-                      }
-                    } catch(err){
-                    }
-                  }
-                if (Filters[key] == "date"
-                  || Filters[key] == "datetime"
-                  || Filters[key] == "time"){
-                  try{
-                    if (key in features[0].properties){
-                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
-                      startdate = document.getElementById("dat_" +
-                        HTMLkey + "_date1").value.replace(" ", "T");
-                      enddate = document.getElementById("dat_" +
-                        HTMLkey + "_date2").value.replace(" ", "T");
-                      for (i = features.length - 1; i >= 0; --i){
-                        if (features[i].properties[key] < startdate
-                          || features[i].properties[key] > enddate){
-                          features.splice(i,1);
-                        }
-                      }
-                    }
-                  } catch(err){
-                  }
-                }
-              }
-            } catch(err){
-            }
-          this[lyr["options"]["layerName"]].clearLayers();
-          this[lyr["options"]["layerName"]].addData(features);
-          }
-          })
+            })
         }
         document.getElementById("filter").appendChild(
             document.createElement("div"));
@@ -1605,7 +1738,7 @@
         reset_IssueDate_date1.style.float = "right";
         reset_IssueDate_date1.innerHTML = "Clear Filter";
         reset_IssueDate_date1.className = 'resetfilter';
-        reset_IssueDate_date1.onclick = function() {
+        reset_IssueDate_date1.onclick = function () {
             tail.DateTime("#dat_IssueDate_date1", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1622,7 +1755,7 @@
         }
         document.getElementById("div_IssueDate_date1").appendChild(
             reset_IssueDate_date1);
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             tail.DateTime("#dat_IssueDate_date1", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1650,10 +1783,10 @@
             }).selectDate(new Date());
             tail.DateTime("#dat_IssueDate_date2").reload()
             filterFunc()
-            dat_IssueDate_date1.onchange = function() {
+            dat_IssueDate_date1.onchange = function () {
                 filterFunc()
             };
-            dat_IssueDate_date2.onchange = function() {
+            dat_IssueDate_date2.onchange = function () {
                 filterFunc()
             };
         });
@@ -1675,7 +1808,7 @@
         reset_IssueDate_date2.style.float = "right";
         reset_IssueDate_date2.innerHTML = "Clear Filter";
         reset_IssueDate_date2.className = 'resetfilter';
-        reset_IssueDate_date2.onclick = function() {
+        reset_IssueDate_date2.onclick = function () {
             tail.DateTime("#dat_IssueDate_date2", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1692,7 +1825,7 @@
         }
         document.getElementById("div_IssueDate_date2").appendChild(
             reset_IssueDate_date2);
-        
+
         document.getElementById("filter").appendChild(document.createElement("div"));
         var div_IssueDate_date3 = document.createElement("div");
         div_IssueDate_date3.id = "div_IssueDate_date3";
@@ -1709,7 +1842,7 @@
         reset_IssueDate_date3.name = "radio";
         reset_IssueDate_date3.style.width = "auto";
         reset_IssueDate_date3.style.display = "inline";
-        reset_IssueDate_date3.onclick = function() {
+        reset_IssueDate_date3.onclick = function () {
             tail.DateTime("#dat_IssueDate_date1", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1753,7 +1886,7 @@
         reset_IssueDate_date4.name = "radio";
         reset_IssueDate_date4.style.width = "auto";
         reset_IssueDate_date4.style.display = "inline";
-        reset_IssueDate_date4.onclick = function() {
+        reset_IssueDate_date4.onclick = function () {
             tail.DateTime("#dat_IssueDate_date1", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1799,7 +1932,7 @@
         reset_IssueDate_date5.name = "radio";
         reset_IssueDate_date5.style.width = "auto";
         reset_IssueDate_date5.style.display = "inline";
-        reset_IssueDate_date5.onclick = function() {
+        reset_IssueDate_date5.onclick = function () {
             tail.DateTime("#dat_IssueDate_date1", {
                 dateStart: 1640995200000,
                 //dateEnd: 1693429200000,
@@ -1835,975 +1968,975 @@
 
 
         var div_SpaceStyle = document.createElement("div");
-            div_SpaceStyle.id = "div_SpaceStyle";
-            //div_SpaceStyle.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SpaceStyle);
-            var lab_SpaceStyle = document.createElement('div');
-            lab_SpaceStyle.innerHTML  = '<br><br><br><br><br><br><br><br><br><br>';
-            lab_SpaceStyle.className = 'filterlabel';
-            document.getElementById("div_SpaceStyle").appendChild(lab_SpaceStyle);
+        div_SpaceStyle.id = "div_SpaceStyle";
+        //div_SpaceStyle.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_SpaceStyle);
+        var lab_SpaceStyle = document.createElement('div');
+        lab_SpaceStyle.innerHTML = '<br><br><br><br><br><br><br><br><br><br>';
+        lab_SpaceStyle.className = 'filterlabel';
+        document.getElementById("div_SpaceStyle").appendChild(lab_SpaceStyle);
 
-// Function to convert decimal hour to time format (HH:MM 24-hour format)
-function decimalToTime(decimal) {
-    // Map the range from 1.00 to 2.25 into a total minutes period
-    var totalMinutes = (decimal - 1.00) * 1800 / 1.25; // 1800 minutes divided by 1.25 to scale the range to 30 hours
-    var totalHours = totalMinutes / 60; // Convert minutes to hours
-    var hours = Math.floor(totalHours); // Get the whole hours
-    var minutes = Math.round((totalHours - hours) * 60); // Get the remaining minutes
-    
-    // Handle the time calculation for values beyond 23:59 (next day)
-    if (hours >= 24) {
-        hours = hours % 24; // This ensures that after 24 hours, it starts again at 00:00
-    }
+        // Function to convert decimal hour to time format (HH:MM 24-hour format)
+        function decimalToTime(decimal) {
+            // Map the range from 1.00 to 2.25 into a total minutes period
+            var totalMinutes = (decimal - 1.00) * 1800 / 1.25; // 1800 minutes divided by 1.25 to scale the range to 30 hours
+            var totalHours = totalMinutes / 60; // Convert minutes to hours
+            var hours = Math.floor(totalHours); // Get the whole hours
+            var minutes = Math.round((totalHours - hours) * 60); // Get the remaining minutes
 
-    // Determine the period (AM/PM)
-    var period = (hours >= 12) ? 'PM' : 'AM';
+            // Handle the time calculation for values beyond 23:59 (next day)
+            if (hours >= 24) {
+                hours = hours % 24; // This ensures that after 24 hours, it starts again at 00:00
+            }
 
-    // Convert to 12-hour format (1-12)
-    hours = hours % 12; // Convert hours to 12-hour format
-    hours = hours ? hours : 12; // '0' becomes 12 (for midnight)
+            // Determine the period (AM/PM)
+            var period = (hours >= 12) ? 'PM' : 'AM';
 
-    // Format the minutes to always display two digits
-    minutes = minutes < 10 ? '0' + minutes : minutes;
+            // Convert to 12-hour format (1-12)
+            hours = hours % 12; // Convert hours to 12-hour format
+            hours = hours ? hours : 12; // '0' becomes 12 (for midnight)
 
-    return hours + ':' + minutes + ' ' + period;
-}
+            // Format the minutes to always display two digits
+            minutes = minutes < 10 ? '0' + minutes : minutes;
 
-
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_SunLogins = document.createElement("div");
-            div_SunLogins.id = "div_SunLogins";
-            div_SunLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SunLogins);
-            var lab_SunLogin = document.createElement('div');
-            lab_SunLogin.innerHTML  = 'Sunday Login: <span id="val_SunLogin"></span>';
-            lab_SunLogin.className = 'filterlabel';
-            document.getElementById("div_SunLogins").appendChild(lab_SunLogin);
-            var div_SunLogin = document.createElement("div");
-            div_SunLogin.id = "div_SunLogin";
-            div_SunLogin.className = "slider";
-            document.getElementById("div_SunLogins").appendChild(div_SunLogin);
-            var reset_SunLogin = document.createElement('button');
-            reset_SunLogin.style.float = "right";
-            reset_SunLogin.style.margin = "2px";
-            reset_SunLogin.innerHTML = 'Clear Filter';
-            //reset_SunLogin.className = 'filterlabel';
-            reset_SunLogin.style.width = "auto";
-            reset_SunLogin.style.display = "inline";
-            reset_SunLogin.onclick = function() {
-                sel_SunLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_SunLogins").appendChild(reset_SunLogin);
-var sel_SunLogin = document.getElementById('div_SunLogin');
-noUiSlider.create(sel_SunLogin, {
-    connect: true,
-    start: [1.00, 2.00],
-    pips: {
-        mode: 'values',
-        values: [1.00, 1.25, 1.50, 1.75, 2.00],
-        density: 4,
-        format: wNumb({
-            decimals: 2,
-        })
-    },
-    range: {
-        min: 1.00,
-        max: 2.00
-    }
-});
-
-sel_SunLogin.noUiSlider.on('update', function (values) {
-    var val_SunLogin = document.getElementById('val_SunLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_SunLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
+            return hours + ':' + minutes + ' ' + period;
+        }
 
 
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_SunLogins = document.createElement("div");
+        div_SunLogins.id = "div_SunLogins";
+        div_SunLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_SunLogins);
+        var lab_SunLogin = document.createElement('div');
+        lab_SunLogin.innerHTML = 'Sunday Login: <span id="val_SunLogin"></span>';
+        lab_SunLogin.className = 'filterlabel';
+        document.getElementById("div_SunLogins").appendChild(lab_SunLogin);
+        var div_SunLogin = document.createElement("div");
+        div_SunLogin.id = "div_SunLogin";
+        div_SunLogin.className = "slider";
+        document.getElementById("div_SunLogins").appendChild(div_SunLogin);
+        var reset_SunLogin = document.createElement('button');
+        reset_SunLogin.style.float = "right";
+        reset_SunLogin.style.margin = "2px";
+        reset_SunLogin.innerHTML = 'Clear Filter';
+        //reset_SunLogin.className = 'filterlabel';
+        reset_SunLogin.style.width = "auto";
+        reset_SunLogin.style.display = "inline";
+        reset_SunLogin.onclick = function () {
+            sel_SunLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_SunLogins").appendChild(reset_SunLogin);
+        var sel_SunLogin = document.getElementById('div_SunLogin');
+        noUiSlider.create(sel_SunLogin, {
+            connect: true,
+            start: [1.00, 2.00],
+            pips: {
+                mode: 'values',
+                values: [1.00, 1.25, 1.50, 1.75, 2.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
+                min: 1.00,
+                max: 2.00
+            }
+        });
 
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_SunLogoffs = document.createElement("div");
-            div_SunLogoffs.id = "div_SunLogoffs";
-            div_SunLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SunLogoffs);
-            var lab_SunLogoff = document.createElement('div');
-            lab_SunLogoff.innerHTML  = '<br><br>Sunday Logoff: <span id="val_SunLogoff"></span>';
-            lab_SunLogoff.className = 'filterlabel';
-            document.getElementById("div_SunLogoffs").appendChild(lab_SunLogoff);
-            var div_SunLogoff = document.createElement("div");
-            div_SunLogoff.id = "div_SunLogoff";
-            div_SunLogoff.className = "slider";
-            document.getElementById("div_SunLogoffs").appendChild(div_SunLogoff);
-            var reset_SunLogoff = document.createElement('button');
-            reset_SunLogoff.style.float = "right";
-            reset_SunLogoff.innerHTML = 'Clear Filter';
-            //reset_SunLogoff.className = 'filterlabel';
-            reset_SunLogoff.style.width = "auto";
-            reset_SunLogoff.style.display = "inline";
-            reset_SunLogoff.onclick = function() {
-                sel_SunLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_SunLogoffs").appendChild(reset_SunLogoff);
-            var sel_SunLogoff = document.getElementById('div_SunLogoff');
-            noUiSlider.create(sel_SunLogoff, {
-                connect: true,
-                start: [1.25, 2.25],
-                pips: {
-                    mode: 'values',
-                    values: [1.25, 1.50, 1.75, 2.00, 2.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+        sel_SunLogin.noUiSlider.on('update', function (values) {
+            var val_SunLogin = document.getElementById('val_SunLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_SunLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+
+
+
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_SunLogoffs = document.createElement("div");
+        div_SunLogoffs.id = "div_SunLogoffs";
+        div_SunLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_SunLogoffs);
+        var lab_SunLogoff = document.createElement('div');
+        lab_SunLogoff.innerHTML = '<br><br>Sunday Logoff: <span id="val_SunLogoff"></span>';
+        lab_SunLogoff.className = 'filterlabel';
+        document.getElementById("div_SunLogoffs").appendChild(lab_SunLogoff);
+        var div_SunLogoff = document.createElement("div");
+        div_SunLogoff.id = "div_SunLogoff";
+        div_SunLogoff.className = "slider";
+        document.getElementById("div_SunLogoffs").appendChild(div_SunLogoff);
+        var reset_SunLogoff = document.createElement('button');
+        reset_SunLogoff.style.float = "right";
+        reset_SunLogoff.innerHTML = 'Clear Filter';
+        //reset_SunLogoff.className = 'filterlabel';
+        reset_SunLogoff.style.width = "auto";
+        reset_SunLogoff.style.display = "inline";
+        reset_SunLogoff.onclick = function () {
+            sel_SunLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_SunLogoffs").appendChild(reset_SunLogoff);
+        var sel_SunLogoff = document.getElementById('div_SunLogoff');
+        noUiSlider.create(sel_SunLogoff, {
+            connect: true,
+            start: [1.25, 2.25],
+            pips: {
+                mode: 'values',
+                values: [1.25, 1.50, 1.75, 2.00, 2.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 1.25,
                 max: 2.25
-                }
-            });
+            }
+        });
 
-sel_SunLogoff.noUiSlider.on('update', function (values) {
-    var val_SunLogoff = document.getElementById('val_SunLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_SunLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
+        sel_SunLogoff.noUiSlider.on('update', function (values) {
+            var val_SunLogoff = document.getElementById('val_SunLogoff');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_SunLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
 
 
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_MonLogins = document.createElement("div");
-            div_MonLogins.id = "div_MonLogins";
-            div_MonLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_MonLogins);
-            var lab_MonLogin = document.createElement('div');
-            lab_MonLogin.innerHTML  = 'Monday Login: <span id="val_MonLogin"></span>';
-            lab_MonLogin.className = 'filterlabel';
-            document.getElementById("div_MonLogins").appendChild(lab_MonLogin);
-            var div_MonLogin = document.createElement("div");
-            div_MonLogin.id = "div_MonLogin";
-            div_MonLogin.className = "slider";
-            document.getElementById("div_MonLogins").appendChild(div_MonLogin);
-            var reset_MonLogin = document.createElement('button');
-            reset_MonLogin.style.float = "right";
-            reset_MonLogin.innerHTML = 'Clear Filter';
-            //reset_MonLogin.className = 'filterlabel';
-            reset_MonLogin.style.width = "auto";
-            reset_MonLogin.style.display = "inline";
-            reset_MonLogin.onclick = function() {
-                sel_MonLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_MonLogins").appendChild(reset_MonLogin);
-            var sel_MonLogin = document.getElementById('div_MonLogin');
-            noUiSlider.create(sel_MonLogin, {
-                connect: true,
-                start: [2.00, 3.00],
-                pips: {
-                    mode: 'values',
-                    values: [2.00, 2.25, 2.50, 2.75, 3.00],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_MonLogins = document.createElement("div");
+        div_MonLogins.id = "div_MonLogins";
+        div_MonLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_MonLogins);
+        var lab_MonLogin = document.createElement('div');
+        lab_MonLogin.innerHTML = 'Monday Login: <span id="val_MonLogin"></span>';
+        lab_MonLogin.className = 'filterlabel';
+        document.getElementById("div_MonLogins").appendChild(lab_MonLogin);
+        var div_MonLogin = document.createElement("div");
+        div_MonLogin.id = "div_MonLogin";
+        div_MonLogin.className = "slider";
+        document.getElementById("div_MonLogins").appendChild(div_MonLogin);
+        var reset_MonLogin = document.createElement('button');
+        reset_MonLogin.style.float = "right";
+        reset_MonLogin.innerHTML = 'Clear Filter';
+        //reset_MonLogin.className = 'filterlabel';
+        reset_MonLogin.style.width = "auto";
+        reset_MonLogin.style.display = "inline";
+        reset_MonLogin.onclick = function () {
+            sel_MonLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_MonLogins").appendChild(reset_MonLogin);
+        var sel_MonLogin = document.getElementById('div_MonLogin');
+        noUiSlider.create(sel_MonLogin, {
+            connect: true,
+            start: [2.00, 3.00],
+            pips: {
+                mode: 'values',
+                values: [2.00, 2.25, 2.50, 2.75, 3.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 2.00,
                 max: 3.00
-                }
-            });
-            sel_MonLogin.noUiSlider.on('update', function (values) {
-    var val_MonLogin = document.getElementById('val_MonLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_MonLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
+            }
+        });
+        sel_MonLogin.noUiSlider.on('update', function (values) {
+            var val_MonLogin = document.getElementById('val_MonLogin');
 
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_MonLogoffs = document.createElement("div");
-            div_MonLogoffs.id = "div_MonLogoffs";
-            div_MonLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
-            var lab_MonLogoff = document.createElement('div');
-            lab_MonLogoff.innerHTML  = '<br><br>Monday Logoff: <span id="val_MonLogoff"></span>';
-            lab_MonLogoff.className = 'filterlabel';
-            document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
-            var div_MonLogoff = document.createElement("div");
-            div_MonLogoff.id = "div_MonLogoff";
-            div_MonLogoff.className = "slider";
-            document.getElementById("div_MonLogoffs").appendChild(div_MonLogoff);
-            var reset_MonLogoff = document.createElement('button');
-            reset_MonLogoff.style.float = "right";
-            reset_MonLogoff.innerHTML = 'Clear Filter';
-            //reset_MonLogoff.className = 'filterlabel';
-            reset_MonLogoff.style.width = "auto";
-            reset_MonLogoff.style.display = "inline";
-            reset_MonLogoff.onclick = function() {
-                sel_MonLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
-            var sel_MonLogoff = document.getElementById('div_MonLogoff');
-            noUiSlider.create(sel_MonLogoff, {
-                connect: true,
-                start: [2.25, 3.25],
-                pips: {
-                    mode: 'values',
-                    values: [2.25, 2.50, 2.75, 3.00, 3.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_MonLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_MonLogoffs = document.createElement("div");
+        div_MonLogoffs.id = "div_MonLogoffs";
+        div_MonLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_MonLogoffs);
+        var lab_MonLogoff = document.createElement('div');
+        lab_MonLogoff.innerHTML = '<br><br>Monday Logoff: <span id="val_MonLogoff"></span>';
+        lab_MonLogoff.className = 'filterlabel';
+        document.getElementById("div_MonLogoffs").appendChild(lab_MonLogoff);
+        var div_MonLogoff = document.createElement("div");
+        div_MonLogoff.id = "div_MonLogoff";
+        div_MonLogoff.className = "slider";
+        document.getElementById("div_MonLogoffs").appendChild(div_MonLogoff);
+        var reset_MonLogoff = document.createElement('button');
+        reset_MonLogoff.style.float = "right";
+        reset_MonLogoff.innerHTML = 'Clear Filter';
+        //reset_MonLogoff.className = 'filterlabel';
+        reset_MonLogoff.style.width = "auto";
+        reset_MonLogoff.style.display = "inline";
+        reset_MonLogoff.onclick = function () {
+            sel_MonLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_MonLogoffs").appendChild(reset_MonLogoff);
+        var sel_MonLogoff = document.getElementById('div_MonLogoff');
+        noUiSlider.create(sel_MonLogoff, {
+            connect: true,
+            start: [2.25, 3.25],
+            pips: {
+                mode: 'values',
+                values: [2.25, 2.50, 2.75, 3.00, 3.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 2.25,
                 max: 3.25
-                }
-            });
-sel_MonLogoff.noUiSlider.on('update', function (values) {
-    var val_MonLogoff = document.getElementById('val_MonLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_MonLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_TueLogins = document.createElement("div");
-            div_TueLogins.id = "div_TueLogins";
-            div_TueLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_TueLogins);
-            var lab_TueLogin = document.createElement('div');
-            lab_TueLogin.innerHTML  = 'Tuesday Login: <span id="val_TueLogin"></span>';
-            lab_TueLogin.className = 'filterlabel';
-            document.getElementById("div_TueLogins").appendChild(lab_TueLogin);
-            var div_TueLogin = document.createElement("div");
-            div_TueLogin.id = "div_TueLogin";
-            div_TueLogin.className = "slider";
-            document.getElementById("div_TueLogins").appendChild(div_TueLogin);
-            var reset_TueLogin = document.createElement('button');
-            reset_TueLogin.style.float = "right";
-            reset_TueLogin.innerHTML = 'Clear Filter';
-            //reset_TueLogin.className = 'filterlabel';
-            reset_TueLogin.style.width = "auto";
-            reset_TueLogin.style.display = "inline";
-            reset_TueLogin.onclick = function() {
-                sel_TueLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_TueLogins").appendChild(reset_TueLogin);
-            var sel_TueLogin = document.getElementById('div_TueLogin');
-            noUiSlider.create(sel_TueLogin, {
-                connect: true,
-                start: [3.00, 4.00],
-                pips: {
-                    mode: 'values',
-                    values: [3.00, 3.25, 3.50, 3.75, 4.00],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_MonLogoff.noUiSlider.on('update', function (values) {
+            var val_MonLogoff = document.getElementById('val_MonLogoff');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_MonLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_TueLogins = document.createElement("div");
+        div_TueLogins.id = "div_TueLogins";
+        div_TueLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_TueLogins);
+        var lab_TueLogin = document.createElement('div');
+        lab_TueLogin.innerHTML = 'Tuesday Login: <span id="val_TueLogin"></span>';
+        lab_TueLogin.className = 'filterlabel';
+        document.getElementById("div_TueLogins").appendChild(lab_TueLogin);
+        var div_TueLogin = document.createElement("div");
+        div_TueLogin.id = "div_TueLogin";
+        div_TueLogin.className = "slider";
+        document.getElementById("div_TueLogins").appendChild(div_TueLogin);
+        var reset_TueLogin = document.createElement('button');
+        reset_TueLogin.style.float = "right";
+        reset_TueLogin.innerHTML = 'Clear Filter';
+        //reset_TueLogin.className = 'filterlabel';
+        reset_TueLogin.style.width = "auto";
+        reset_TueLogin.style.display = "inline";
+        reset_TueLogin.onclick = function () {
+            sel_TueLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_TueLogins").appendChild(reset_TueLogin);
+        var sel_TueLogin = document.getElementById('div_TueLogin');
+        noUiSlider.create(sel_TueLogin, {
+            connect: true,
+            start: [3.00, 4.00],
+            pips: {
+                mode: 'values',
+                values: [3.00, 3.25, 3.50, 3.75, 4.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 3.00,
                 max: 4.00
-                }
-            });
-            sel_TueLogin.noUiSlider.on('update', function (values) {
-    var val_TueLogin = document.getElementById('val_TueLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_TueLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_TueLogoffs = document.createElement("div");
-            div_TueLogoffs.id = "div_TueLogoffs";
-            div_TueLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
-            var lab_TueLogoff = document.createElement('div');
-            lab_TueLogoff.innerHTML  = '<br><br>Tuesday Logoff: <span id="val_TueLogoff"></span>';
-            lab_TueLogoff.className = 'filterlabel';
-            document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
-            var div_TueLogoff = document.createElement("div");
-            div_TueLogoff.id = "div_TueLogoff";
-            div_TueLogoff.className = "slider";
-            document.getElementById("div_TueLogoffs").appendChild(div_TueLogoff);
-            var reset_TueLogoff = document.createElement('button');
-            reset_TueLogoff.style.float = "right";
-            reset_TueLogoff.innerHTML = 'Clear Filter';
-            //reset_TueLogoff.className = 'filterlabel';
-            reset_TueLogoff.style.width = "auto";
-            reset_TueLogoff.style.display = "inline";
-            reset_TueLogoff.onclick = function() {
-                sel_TueLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
-            var sel_TueLogoff = document.getElementById('div_TueLogoff');
-            noUiSlider.create(sel_TueLogoff, {
-                connect: true,
-                start: [3.25, 4.25],
-                pips: {
-                    mode: 'values',
-                    values: [3.25, 3.50, 3.75, 4.00, 4.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_TueLogin.noUiSlider.on('update', function (values) {
+            var val_TueLogin = document.getElementById('val_TueLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_TueLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_TueLogoffs = document.createElement("div");
+        div_TueLogoffs.id = "div_TueLogoffs";
+        div_TueLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_TueLogoffs);
+        var lab_TueLogoff = document.createElement('div');
+        lab_TueLogoff.innerHTML = '<br><br>Tuesday Logoff: <span id="val_TueLogoff"></span>';
+        lab_TueLogoff.className = 'filterlabel';
+        document.getElementById("div_TueLogoffs").appendChild(lab_TueLogoff);
+        var div_TueLogoff = document.createElement("div");
+        div_TueLogoff.id = "div_TueLogoff";
+        div_TueLogoff.className = "slider";
+        document.getElementById("div_TueLogoffs").appendChild(div_TueLogoff);
+        var reset_TueLogoff = document.createElement('button');
+        reset_TueLogoff.style.float = "right";
+        reset_TueLogoff.innerHTML = 'Clear Filter';
+        //reset_TueLogoff.className = 'filterlabel';
+        reset_TueLogoff.style.width = "auto";
+        reset_TueLogoff.style.display = "inline";
+        reset_TueLogoff.onclick = function () {
+            sel_TueLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_TueLogoffs").appendChild(reset_TueLogoff);
+        var sel_TueLogoff = document.getElementById('div_TueLogoff');
+        noUiSlider.create(sel_TueLogoff, {
+            connect: true,
+            start: [3.25, 4.25],
+            pips: {
+                mode: 'values',
+                values: [3.25, 3.50, 3.75, 4.00, 4.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 3.25,
                 max: 4.25
-                }
-            });
-sel_TueLogoff.noUiSlider.on('update', function (values) {
-    var val_TueLogoff = document.getElementById('val_TueLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_TueLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_WedLogins = document.createElement("div");
-            div_WedLogins.id = "div_WedLogins";
-            div_WedLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_WedLogins);
-            var lab_WedLogin = document.createElement('div');
-            lab_WedLogin.innerHTML  = 'Wednesday Login: <span id="val_WedLogin"></span>';
-            lab_WedLogin.className = 'filterlabel';
-            document.getElementById("div_WedLogins").appendChild(lab_WedLogin);
-            var div_WedLogin = document.createElement("div");
-            div_WedLogin.id = "div_WedLogin";
-            div_WedLogin.className = "slider";
-            document.getElementById("div_WedLogins").appendChild(div_WedLogin);
-            var reset_WedLogin = document.createElement('button');
-            reset_WedLogin.style.float = "right";
-            reset_WedLogin.innerHTML = 'Clear Filter';
-            //reset_WedLogin.className = 'filterlabel';
-            reset_WedLogin.style.width = "auto";
-            reset_WedLogin.style.display = "inline";
-            reset_WedLogin.onclick = function() {
-                sel_WedLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_WedLogins").appendChild(reset_WedLogin);
-            var sel_WedLogin = document.getElementById('div_WedLogin');
-            noUiSlider.create(sel_WedLogin, {
-                connect: true,
-                start: [4.00, 5.00],
-                pips: {
-                    mode: 'values',
-                    values: [4.00, 4.25, 4.50, 4.75, 5.00],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_TueLogoff.noUiSlider.on('update', function (values) {
+            var val_TueLogoff = document.getElementById('val_TueLogoff');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_TueLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_WedLogins = document.createElement("div");
+        div_WedLogins.id = "div_WedLogins";
+        div_WedLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_WedLogins);
+        var lab_WedLogin = document.createElement('div');
+        lab_WedLogin.innerHTML = 'Wednesday Login: <span id="val_WedLogin"></span>';
+        lab_WedLogin.className = 'filterlabel';
+        document.getElementById("div_WedLogins").appendChild(lab_WedLogin);
+        var div_WedLogin = document.createElement("div");
+        div_WedLogin.id = "div_WedLogin";
+        div_WedLogin.className = "slider";
+        document.getElementById("div_WedLogins").appendChild(div_WedLogin);
+        var reset_WedLogin = document.createElement('button');
+        reset_WedLogin.style.float = "right";
+        reset_WedLogin.innerHTML = 'Clear Filter';
+        //reset_WedLogin.className = 'filterlabel';
+        reset_WedLogin.style.width = "auto";
+        reset_WedLogin.style.display = "inline";
+        reset_WedLogin.onclick = function () {
+            sel_WedLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_WedLogins").appendChild(reset_WedLogin);
+        var sel_WedLogin = document.getElementById('div_WedLogin');
+        noUiSlider.create(sel_WedLogin, {
+            connect: true,
+            start: [4.00, 5.00],
+            pips: {
+                mode: 'values',
+                values: [4.00, 4.25, 4.50, 4.75, 5.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 4.00,
                 max: 5.00
-                }
-            });
-sel_WedLogin.noUiSlider.on('update', function (values) {
-    var val_WedLogin = document.getElementById('val_WedLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_WedLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_WedLogoffs = document.createElement("div");
-            div_WedLogoffs.id = "div_WedLogoffs";
-            div_WedLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
-            var lab_WedLogoff = document.createElement('div');
-            lab_WedLogoff.innerHTML  = '<br><br>Wednesday Logoff: <span id="val_WedLogoff"></span>';
-            lab_WedLogoff.className = 'filterlabel';
-            document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
-            var div_WedLogoff = document.createElement("div");
-            div_WedLogoff.id = "div_WedLogoff";
-            div_WedLogoff.className = "slider";
-            document.getElementById("div_WedLogoffs").appendChild(div_WedLogoff);
-            var reset_WedLogoff = document.createElement('button');
-            reset_WedLogoff.style.float = "right";
-            reset_WedLogoff.innerHTML = 'Clear Filter';
-            //reset_WedLogoff.className = 'filterlabel';
-            reset_WedLogoff.style.width = "auto";
-            reset_WedLogoff.style.display = "inline";
-            reset_WedLogoff.onclick = function() {
-                sel_WedLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
-            var sel_WedLogoff = document.getElementById('div_WedLogoff');
-            noUiSlider.create(sel_WedLogoff, {
-                connect: true,
-                start: [4.25, 5.25],
-                pips: {
-                    mode: 'values',
-                    values: [4.25, 4.50, 4.75, 5.00, 5.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_WedLogin.noUiSlider.on('update', function (values) {
+            var val_WedLogin = document.getElementById('val_WedLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_WedLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_WedLogoffs = document.createElement("div");
+        div_WedLogoffs.id = "div_WedLogoffs";
+        div_WedLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_WedLogoffs);
+        var lab_WedLogoff = document.createElement('div');
+        lab_WedLogoff.innerHTML = '<br><br>Wednesday Logoff: <span id="val_WedLogoff"></span>';
+        lab_WedLogoff.className = 'filterlabel';
+        document.getElementById("div_WedLogoffs").appendChild(lab_WedLogoff);
+        var div_WedLogoff = document.createElement("div");
+        div_WedLogoff.id = "div_WedLogoff";
+        div_WedLogoff.className = "slider";
+        document.getElementById("div_WedLogoffs").appendChild(div_WedLogoff);
+        var reset_WedLogoff = document.createElement('button');
+        reset_WedLogoff.style.float = "right";
+        reset_WedLogoff.innerHTML = 'Clear Filter';
+        //reset_WedLogoff.className = 'filterlabel';
+        reset_WedLogoff.style.width = "auto";
+        reset_WedLogoff.style.display = "inline";
+        reset_WedLogoff.onclick = function () {
+            sel_WedLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_WedLogoffs").appendChild(reset_WedLogoff);
+        var sel_WedLogoff = document.getElementById('div_WedLogoff');
+        noUiSlider.create(sel_WedLogoff, {
+            connect: true,
+            start: [4.25, 5.25],
+            pips: {
+                mode: 'values',
+                values: [4.25, 4.50, 4.75, 5.00, 5.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 4.25,
                 max: 5.25
-                }
-            });
-sel_WedLogoff.noUiSlider.on('update', function (values) {
-    var val_WedLogoff = document.getElementById('val_WedLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_WedLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_ThurLogins = document.createElement("div");
-            div_ThurLogins.id = "div_ThurLogins";
-            div_ThurLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_ThurLogins);
-            var lab_ThurLogin = document.createElement('div');
-            lab_ThurLogin.innerHTML  = 'Thursday Login: <span id="val_ThurLogin"></span>';
-            lab_ThurLogin.className = 'filterlabel';
-            document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
-            var div_ThurLogin = document.createElement("div");
-            div_ThurLogin.id = "div_ThurLogin";
-            div_ThurLogin.className = "slider";
-            document.getElementById("div_ThurLogins").appendChild(div_ThurLogin);
-            var reset_ThurLogin = document.createElement('button');
-            reset_ThurLogin.style.float = "right";
-            reset_ThurLogin.innerHTML = 'Clear Filter';
-            //reset_ThurLogin.className = 'filterlabel';
-            reset_ThurLogin.style.width = "auto";
-            reset_ThurLogin.style.display = "inline";
-            reset_ThurLogin.onclick = function() {
-                sel_ThurLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
-            var sel_ThurLogin = document.getElementById('div_ThurLogin');
-            noUiSlider.create(sel_ThurLogin, {
-                connect: true,
-                start: [5.00, 6.00],
-                pips: {
-                    mode: 'values',
-                    values: [5.00, 5.25, 5.50, 5.75, 6.00],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_WedLogoff.noUiSlider.on('update', function (values) {
+            var val_WedLogoff = document.getElementById('val_WedLogoff');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_WedLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_ThurLogins = document.createElement("div");
+        div_ThurLogins.id = "div_ThurLogins";
+        div_ThurLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_ThurLogins);
+        var lab_ThurLogin = document.createElement('div');
+        lab_ThurLogin.innerHTML = 'Thursday Login: <span id="val_ThurLogin"></span>';
+        lab_ThurLogin.className = 'filterlabel';
+        document.getElementById("div_ThurLogins").appendChild(lab_ThurLogin);
+        var div_ThurLogin = document.createElement("div");
+        div_ThurLogin.id = "div_ThurLogin";
+        div_ThurLogin.className = "slider";
+        document.getElementById("div_ThurLogins").appendChild(div_ThurLogin);
+        var reset_ThurLogin = document.createElement('button');
+        reset_ThurLogin.style.float = "right";
+        reset_ThurLogin.innerHTML = 'Clear Filter';
+        //reset_ThurLogin.className = 'filterlabel';
+        reset_ThurLogin.style.width = "auto";
+        reset_ThurLogin.style.display = "inline";
+        reset_ThurLogin.onclick = function () {
+            sel_ThurLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_ThurLogins").appendChild(reset_ThurLogin);
+        var sel_ThurLogin = document.getElementById('div_ThurLogin');
+        noUiSlider.create(sel_ThurLogin, {
+            connect: true,
+            start: [5.00, 6.00],
+            pips: {
+                mode: 'values',
+                values: [5.00, 5.25, 5.50, 5.75, 6.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 5.00,
                 max: 6.00
-                }
-            });
-sel_ThurLogin.noUiSlider.on('update', function (values) {
-    var val_ThurLogin = document.getElementById('val_ThurLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_ThurLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_ThurLogoffs = document.createElement("div");
-            div_ThurLogoffs.id = "div_ThurLogoffs";
-            div_ThurLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
-            var lab_ThurLogoff = document.createElement('div');
-            lab_ThurLogoff.innerHTML  = '<br><br>Thursday Logoff: <span id="val_ThurLogoff"></span>';
-            lab_ThurLogoff.className = 'filterlabel';
-            document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
-            var div_ThurLogoff = document.createElement("div");
-            div_ThurLogoff.id = "div_ThurLogoff";
-            div_ThurLogoff.className = "slider";
-            document.getElementById("div_ThurLogoffs").appendChild(div_ThurLogoff);
-            var reset_ThurLogoff = document.createElement('button');
-            reset_ThurLogoff.style.float = "right";
-            reset_ThurLogoff.innerHTML = 'Clear Filter';
-            //reset_ThurLogoff.className = 'filterlabel';
-            reset_ThurLogoff.style.width = "auto";
-            reset_ThurLogoff.style.display = "inline";
-            reset_ThurLogoff.onclick = function() {
-                sel_ThurLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
-            var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
-            noUiSlider.create(sel_ThurLogoff, {
-                connect: true,
-                start: [5.25, 6.25],
-                pips: {
-                    mode: 'values',
-                    values: [5.25, 5.50, 5.75, 6.00, 6.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_ThurLogin.noUiSlider.on('update', function (values) {
+            var val_ThurLogin = document.getElementById('val_ThurLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_ThurLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_ThurLogoffs = document.createElement("div");
+        div_ThurLogoffs.id = "div_ThurLogoffs";
+        div_ThurLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_ThurLogoffs);
+        var lab_ThurLogoff = document.createElement('div');
+        lab_ThurLogoff.innerHTML = '<br><br>Thursday Logoff: <span id="val_ThurLogoff"></span>';
+        lab_ThurLogoff.className = 'filterlabel';
+        document.getElementById("div_ThurLogoffs").appendChild(lab_ThurLogoff);
+        var div_ThurLogoff = document.createElement("div");
+        div_ThurLogoff.id = "div_ThurLogoff";
+        div_ThurLogoff.className = "slider";
+        document.getElementById("div_ThurLogoffs").appendChild(div_ThurLogoff);
+        var reset_ThurLogoff = document.createElement('button');
+        reset_ThurLogoff.style.float = "right";
+        reset_ThurLogoff.innerHTML = 'Clear Filter';
+        //reset_ThurLogoff.className = 'filterlabel';
+        reset_ThurLogoff.style.width = "auto";
+        reset_ThurLogoff.style.display = "inline";
+        reset_ThurLogoff.onclick = function () {
+            sel_ThurLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_ThurLogoffs").appendChild(reset_ThurLogoff);
+        var sel_ThurLogoff = document.getElementById('div_ThurLogoff');
+        noUiSlider.create(sel_ThurLogoff, {
+            connect: true,
+            start: [5.25, 6.25],
+            pips: {
+                mode: 'values',
+                values: [5.25, 5.50, 5.75, 6.00, 6.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 5.25,
                 max: 6.25
-                }
-            });
-sel_ThurLogoff.noUiSlider.on('update', function (values) {
-    var val_ThurLogoff = document.getElementById('val_ThurLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_ThurLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
+            }
+        });
+        sel_ThurLogoff.noUiSlider.on('update', function (values) {
+            var val_ThurLogoff = document.getElementById('val_ThurLogoff');
 
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_FriLogins = document.createElement("div");
-            div_FriLogins.id = "div_FriLogins";
-            div_FriLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_FriLogins);
-            var lab_FriLogin = document.createElement('div');
-            lab_FriLogin.innerHTML  = 'Friday Login: <span id="val_FriLogin"></span>';
-            lab_FriLogin.className = 'filterlabel';
-            document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
-            var div_FriLogin = document.createElement("div");
-            div_FriLogin.id = "div_FriLogin";
-            div_FriLogin.className = "slider";
-            document.getElementById("div_FriLogins").appendChild(div_FriLogin);
-            var reset_FriLogin = document.createElement('button');
-            reset_FriLogin.style.float = "right";
-            reset_FriLogin.innerHTML = 'Clear Filter';
-            //reset_FriLogin.className = 'filterlabel';
-            reset_FriLogin.style.width = "auto";
-            reset_FriLogin.style.display = "inline";
-            reset_FriLogin.onclick = function() {
-                sel_FriLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
-            var sel_FriLogin = document.getElementById('div_FriLogin');
-            noUiSlider.create(sel_FriLogin, {
-                connect: true,
-                start: [6.00, 7.00],
-                pips: {
-                    mode: 'values',
-                    values: [6.00, 6.25, 6.50, 6.75, 7.00],
-                    density:4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_ThurLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_FriLogins = document.createElement("div");
+        div_FriLogins.id = "div_FriLogins";
+        div_FriLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_FriLogins);
+        var lab_FriLogin = document.createElement('div');
+        lab_FriLogin.innerHTML = 'Friday Login: <span id="val_FriLogin"></span>';
+        lab_FriLogin.className = 'filterlabel';
+        document.getElementById("div_FriLogins").appendChild(lab_FriLogin);
+        var div_FriLogin = document.createElement("div");
+        div_FriLogin.id = "div_FriLogin";
+        div_FriLogin.className = "slider";
+        document.getElementById("div_FriLogins").appendChild(div_FriLogin);
+        var reset_FriLogin = document.createElement('button');
+        reset_FriLogin.style.float = "right";
+        reset_FriLogin.innerHTML = 'Clear Filter';
+        //reset_FriLogin.className = 'filterlabel';
+        reset_FriLogin.style.width = "auto";
+        reset_FriLogin.style.display = "inline";
+        reset_FriLogin.onclick = function () {
+            sel_FriLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_FriLogins").appendChild(reset_FriLogin);
+        var sel_FriLogin = document.getElementById('div_FriLogin');
+        noUiSlider.create(sel_FriLogin, {
+            connect: true,
+            start: [6.00, 7.00],
+            pips: {
+                mode: 'values',
+                values: [6.00, 6.25, 6.50, 6.75, 7.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 6.00,
                 max: 7.00
-                }
-            });
-sel_FriLogin.noUiSlider.on('update', function (values) {
-    var val_FriLogin = document.getElementById('val_FriLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_FriLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_FriLogoffs = document.createElement("div");
-            div_FriLogoffs.id = "div_FriLogoffs";
-            div_FriLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
-            var lab_FriLogoff = document.createElement('div');
-            lab_FriLogoff.innerHTML  = '<br><br>Friday Logoff: <span id="val_FriLogoff"></span>';
-            lab_FriLogoff.className = 'filterlabel';
-            document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
-            var div_FriLogoff = document.createElement("div");
-            div_FriLogoff.id = "div_FriLogoff";
-            div_FriLogoff.className = "slider";
-            document.getElementById("div_FriLogoffs").appendChild(div_FriLogoff);
-            var reset_FriLogoff = document.createElement('button');
-            reset_FriLogoff.style.float = "right";
-            reset_FriLogoff.innerHTML = 'Clear Filter';
-            //reset_FriLogoff.className = 'filterlabel';
-            reset_FriLogoff.style.width = "auto";
-            reset_FriLogoff.style.display = "inline";
-            reset_FriLogoff.onclick = function() {
-                sel_FriLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
-            var sel_FriLogoff = document.getElementById('div_FriLogoff');
-            noUiSlider.create(sel_FriLogoff, {
-                connect: true,
-                start: [6.25, 7.25],
-                pips: {
-                    mode: 'values',
-                    values: [6.25, 6.50, 6.75, 7.00, 7.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_FriLogin.noUiSlider.on('update', function (values) {
+            var val_FriLogin = document.getElementById('val_FriLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_FriLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_FriLogoffs = document.createElement("div");
+        div_FriLogoffs.id = "div_FriLogoffs";
+        div_FriLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_FriLogoffs);
+        var lab_FriLogoff = document.createElement('div');
+        lab_FriLogoff.innerHTML = '<br><br>Friday Logoff: <span id="val_FriLogoff"></span>';
+        lab_FriLogoff.className = 'filterlabel';
+        document.getElementById("div_FriLogoffs").appendChild(lab_FriLogoff);
+        var div_FriLogoff = document.createElement("div");
+        div_FriLogoff.id = "div_FriLogoff";
+        div_FriLogoff.className = "slider";
+        document.getElementById("div_FriLogoffs").appendChild(div_FriLogoff);
+        var reset_FriLogoff = document.createElement('button');
+        reset_FriLogoff.style.float = "right";
+        reset_FriLogoff.innerHTML = 'Clear Filter';
+        //reset_FriLogoff.className = 'filterlabel';
+        reset_FriLogoff.style.width = "auto";
+        reset_FriLogoff.style.display = "inline";
+        reset_FriLogoff.onclick = function () {
+            sel_FriLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_FriLogoffs").appendChild(reset_FriLogoff);
+        var sel_FriLogoff = document.getElementById('div_FriLogoff');
+        noUiSlider.create(sel_FriLogoff, {
+            connect: true,
+            start: [6.25, 7.25],
+            pips: {
+                mode: 'values',
+                values: [6.25, 6.50, 6.75, 7.00, 7.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 6.25,
                 max: 7.25
-                }
-            });
-sel_FriLogoff.noUiSlider.on('update', function (values) {
-    var val_FriLogoff = document.getElementById('val_FriLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_FriLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
+            }
+        });
+        sel_FriLogoff.noUiSlider.on('update', function (values) {
+            var val_FriLogoff = document.getElementById('val_FriLogoff');
 
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_SatLogins = document.createElement("div");
-            div_SatLogins.id = "div_SatLogins";
-            div_SatLogins.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SatLogins);
-            var lab_SatLogin = document.createElement('div');
-            lab_SatLogin.innerHTML  = 'Saturday Login: <span id="val_SatLogin"></span>';
-            lab_SatLogin.className = 'filterlabel';
-            document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
-            var div_SatLogin = document.createElement("div");
-            div_SatLogin.id = "div_SatLogin";
-            div_SatLogin.className = "slider";
-            document.getElementById("div_SatLogins").appendChild(div_SatLogin);
-            var reset_SatLogin = document.createElement('button');
-            reset_SatLogin.style.float = "right";
-            reset_SatLogin.innerHTML = 'Clear Filter';
-            //reset_SatLogin.className = 'filterlabel';
-            reset_SatLogin.style.width = "auto";
-            reset_SatLogin.style.display = "inline";
-            reset_SatLogin.onclick = function() {
-                sel_SatLogin.noUiSlider.reset();
-            };
-            //document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
-            var sel_SatLogin = document.getElementById('div_SatLogin');
-            noUiSlider.create(sel_SatLogin, {
-                connect: true,
-                start: [7.00, 8.00],
-                pips: {
-                    mode: 'values',
-                    values: [7.00, 7.25, 7.50, 7.75, 8.00],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_FriLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_SatLogins = document.createElement("div");
+        div_SatLogins.id = "div_SatLogins";
+        div_SatLogins.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_SatLogins);
+        var lab_SatLogin = document.createElement('div');
+        lab_SatLogin.innerHTML = 'Saturday Login: <span id="val_SatLogin"></span>';
+        lab_SatLogin.className = 'filterlabel';
+        document.getElementById("div_SatLogins").appendChild(lab_SatLogin);
+        var div_SatLogin = document.createElement("div");
+        div_SatLogin.id = "div_SatLogin";
+        div_SatLogin.className = "slider";
+        document.getElementById("div_SatLogins").appendChild(div_SatLogin);
+        var reset_SatLogin = document.createElement('button');
+        reset_SatLogin.style.float = "right";
+        reset_SatLogin.innerHTML = 'Clear Filter';
+        //reset_SatLogin.className = 'filterlabel';
+        reset_SatLogin.style.width = "auto";
+        reset_SatLogin.style.display = "inline";
+        reset_SatLogin.onclick = function () {
+            sel_SatLogin.noUiSlider.reset();
+        };
+        //document.getElementById("div_SatLogins").appendChild(reset_SatLogin);
+        var sel_SatLogin = document.getElementById('div_SatLogin');
+        noUiSlider.create(sel_SatLogin, {
+            connect: true,
+            start: [7.00, 8.00],
+            pips: {
+                mode: 'values',
+                values: [7.00, 7.25, 7.50, 7.75, 8.00],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 7.00,
                 max: 8.00
-                }
-            });
-sel_SatLogin.noUiSlider.on('update', function (values) {
-    var val_SatLogin = document.getElementById('val_SatLogin');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_SatLogin.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_SatLogoffs = document.createElement("div");
-            div_SatLogoffs.id = "div_SatLogoffs";
-            div_SatLogoffs.style.display = "none";
-            document.getElementById("shiftsliders").appendChild(div_SatLogoffs);
-            var lab_SatLogoff = document.createElement('div');
-            lab_SatLogoff.innerHTML  = '<br><br>Saturday Logoff: <span id="val_SatLogoff"></span>';
-            lab_SatLogoff.className = 'filterlabel';
-            document.getElementById("div_SatLogoffs").appendChild(lab_SatLogoff);
-            var div_SatLogoff = document.createElement("div");
-            div_SatLogoff.id = "div_SatLogoff";
-            div_SatLogoff.className = "slider";
-            document.getElementById("div_SatLogoffs").appendChild(div_SatLogoff);
-            var reset_SatLogoff = document.createElement('button');
-            reset_SatLogoff.style.float = "right";
-            reset_SatLogoff.innerHTML = 'Clear Filter';
-            //reset_SatLogoff.className = 'filterlabel';
-            reset_SatLogoff.style.width = "auto";
-            reset_SatLogoff.style.display = "inline";
-            reset_SatLogoff.onclick = function() {
-                sel_SatLogoff.noUiSlider.reset();
-            };
-            //document.getElementById("div_SatLogoffs").appendChild(reset_SatLogoff);
-            var sel_SatLogoff = document.getElementById('div_SatLogoff');
-            noUiSlider.create(sel_SatLogoff, {
-                connect: true,
-                start: [7.25, 8.25],
-                pips: {
-                    mode: 'values',
-                    values: [7.25, 7.50, 7.75, 8.00, 8.25],
-                    density: 4,
-                    format: wNumb({
-                            decimals: 2,
-                        })
-                },
-                range: {
+            }
+        });
+        sel_SatLogin.noUiSlider.on('update', function (values) {
+            var val_SatLogin = document.getElementById('val_SatLogin');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_SatLogin.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_SatLogoffs = document.createElement("div");
+        div_SatLogoffs.id = "div_SatLogoffs";
+        div_SatLogoffs.style.display = "none";
+        document.getElementById("shiftsliders").appendChild(div_SatLogoffs);
+        var lab_SatLogoff = document.createElement('div');
+        lab_SatLogoff.innerHTML = '<br><br>Saturday Logoff: <span id="val_SatLogoff"></span>';
+        lab_SatLogoff.className = 'filterlabel';
+        document.getElementById("div_SatLogoffs").appendChild(lab_SatLogoff);
+        var div_SatLogoff = document.createElement("div");
+        div_SatLogoff.id = "div_SatLogoff";
+        div_SatLogoff.className = "slider";
+        document.getElementById("div_SatLogoffs").appendChild(div_SatLogoff);
+        var reset_SatLogoff = document.createElement('button');
+        reset_SatLogoff.style.float = "right";
+        reset_SatLogoff.innerHTML = 'Clear Filter';
+        //reset_SatLogoff.className = 'filterlabel';
+        reset_SatLogoff.style.width = "auto";
+        reset_SatLogoff.style.display = "inline";
+        reset_SatLogoff.onclick = function () {
+            sel_SatLogoff.noUiSlider.reset();
+        };
+        //document.getElementById("div_SatLogoffs").appendChild(reset_SatLogoff);
+        var sel_SatLogoff = document.getElementById('div_SatLogoff');
+        noUiSlider.create(sel_SatLogoff, {
+            connect: true,
+            start: [7.25, 8.25],
+            pips: {
+                mode: 'values',
+                values: [7.25, 7.50, 7.75, 8.00, 8.25],
+                density: 4,
+                format: wNumb({
+                    decimals: 2,
+                })
+            },
+            range: {
                 min: 7.25,
                 max: 8.25
-                }
-            });
-            
-            document.querySelectorAll('.noUi-value.noUi-value-horizontal.noUi-value-large').forEach(function(element) {
+            }
+        });
+
+        document.querySelectorAll('.noUi-value.noUi-value-horizontal.noUi-value-large').forEach(function (element) {
             var val = parseFloat(element.innerHTML); // Ensure the value is a floating-point number
             val = recountVal(val); // Call the function with the float value
             element.innerHTML = val; // Update the element's content
-            });
-            function recountVal(val) {
+        });
+        function recountVal(val) {
             // Round the value to two decimal places for precise comparison
             val = val.toFixed(2);
             switch (val) {
-                case '1.00':return '12am'; case '1.25':return '6am'; case '1.50':return '12pm'; case '1.75':return '6pm';
-                case '2.00':return '12am'; case '2.25':return '6am'; case '2.50':return '12pm'; case '2.75':return '6pm';
-                case '3.00':return '12am'; case '3.25':return '6am'; case '3.50':return '12pm'; case '3.75':return '6pm';
-                case '4.00':return '12am'; case '4.25':return '6am'; case '4.50':return '12pm'; case '4.75':return '6pm';
-                case '5.00':return '12am'; case '5.25':return '6am'; case '5.50':return '12pm'; case '5.75':return '6pm';
-                case '6.00':return '12am'; case '6.25':return '6am'; case '6.50':return '12pm'; case '6.75':return '6pm';
-                case '7.00':return '12am'; case '7.25':return '6am'; case '7.50':return '12pm'; case '7.75':return '6pm';
-                case '8.00':return '12am'; case '8.25':return '6am';
-                }
+                case '1.00': return '12am'; case '1.25': return '6am'; case '1.50': return '12pm'; case '1.75': return '6pm';
+                case '2.00': return '12am'; case '2.25': return '6am'; case '2.50': return '12pm'; case '2.75': return '6pm';
+                case '3.00': return '12am'; case '3.25': return '6am'; case '3.50': return '12pm'; case '3.75': return '6pm';
+                case '4.00': return '12am'; case '4.25': return '6am'; case '4.50': return '12pm'; case '4.75': return '6pm';
+                case '5.00': return '12am'; case '5.25': return '6am'; case '5.50': return '12pm'; case '5.75': return '6pm';
+                case '6.00': return '12am'; case '6.25': return '6am'; case '6.50': return '12pm'; case '6.75': return '6pm';
+                case '7.00': return '12am'; case '7.25': return '6am'; case '7.50': return '12pm'; case '7.75': return '6pm';
+                case '8.00': return '12am'; case '8.25': return '6am';
             }
-
-            
-sel_SatLogoff.noUiSlider.on('update', function (values) {
-    var val_SatLogoff = document.getElementById('val_SatLogoff');
-    
-    // Convert both start and end values to time format
-    var startTime = decimalToTime(parseFloat(values[0]));
-    var endTime = decimalToTime(parseFloat(values[1]));
-    
-    // Display the converted times in AM/PM format
-    val_SatLogoff.innerHTML = startTime + ' - ' + endTime;
-    
-    // Call the filter function (if needed)
-    filterFunc();
-});
-            
-            //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
-            var div_Office = document.createElement('div');
-            div_Office.id = "div_Office";
-            div_Office.className= "filterselect";
-            document.getElementById("shiftsliders").appendChild(div_Office);
-            var header_staffDetails = document.createElement('div');
-            header_staffDetails.id = "header_staffDetails";
-            header_staffDetails.innerHTML = '<br><br><span style="font-size: 15px; font-weight: bold;">Filter by Staff Details:</span>';
-            document.getElementById("div_Office").appendChild(header_staffDetails);
-            var lab_Office = document.createElement('div');
-            lab_Office.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Office</span>';
-            lab_Office.className = 'filterlabel';
-            div_Office.appendChild(lab_Office);
-            sel_Office = document.createElement('select');
-            sel_Office.multiple = true;
-            sel_Office.size = 6;
-            sel_Office.id = "sel_Office";
-            var Office_options_str = "<option value='' unselected></option>";
-            sel_Office.onchange = function(){filterFunc()};
-            Office_options_str  += '<option value="Eldoret">Eldoret</option>';
-            Office_options_str  += '<option value="Machakos">Machakos</option>';
-            Office_options_str  += '<option value="Nairobi">Nairobi</option>';
-            Office_options_str  += '<option value="Thika">Thika</option>';
-            sel_Office.innerHTML = Office_options_str;
-            div_Office.appendChild(sel_Office);
-            var reset_Office = document.createElement('button');
-            reset_Office.style.float = "right";
-            reset_Office.style.margin = "2px";
-            reset_Office.innerHTML = 'Clear Filter';
-            //reset_Office.className = 'filterlabel';
-            reset_Office.style.width = "auto";
-            reset_Office.style.display = "inline";
-            reset_Office.onclick = function() {
-                var options = document.getElementById("sel_Office").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_Office.appendChild(reset_Office);
-            document.getElementById("shiftsliders").appendChild(
-                document.createElement("div"));
-            var div_Manager = document.createElement('div');
-            div_Manager.id = "div_Manager";
-            div_Manager.className= "filterselect";
-            document.getElementById("shiftsliders").appendChild(div_Manager);
-            var lab_Manager = document.createElement('div');
-            lab_Manager.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Manager</span>';
-            lab_Manager.className = 'filterlabel';
-            div_Manager.appendChild(lab_Manager);
-            sel_Manager = document.createElement('select');
-            sel_Manager.multiple = true;
-            sel_Manager.size = 10;
-            sel_Manager.id = "sel_Manager";
-            var Manager_options_str = "<option value='' unselected></option>";
-            sel_Manager.onchange = function(){filterFunc()};
-            Manager_options_str  += '<option value="Andrew">Andrew</option>';
-            Manager_options_str  += '<option value="Anne">Anne</option>';
-            Manager_options_str  += '<option value="Augustine">Augustine</option>';
-            Manager_options_str  += '<option value="Beatrice">Beatrice</option>';
-            Manager_options_str  += '<option value="Bernard">Bernard</option>';
-            Manager_options_str  += '<option value="Catherine">Catherine</option>';
-            Manager_options_str  += '<option value="Daudi">Daudi</option>';
-            Manager_options_str  += '<option value="Dennis">Dennis</option>';
-            Manager_options_str  += '<option value="Edward">Edward</option>';
-            Manager_options_str  += '<option value="Elijah">Elijah</option>';
-            Manager_options_str  += '<option value="Elizabeth">Elizabeth</option>';
-            Manager_options_str  += '<option value="Emmanuel">Emmanuel</option>';
-            Manager_options_str  += '<option value="Franklin">Franklin</option>';
-            Manager_options_str  += '<option value="Georgette">Georgette</option>';
-            Manager_options_str  += '<option value="James">James</option>';
-            Manager_options_str  += '<option value="Jessica">Jessica</option>';
-            Manager_options_str  += '<option value="Lillian">Lillian</option>';
-            Manager_options_str  += '<option value="Lucy">Lucy</option>';
-            Manager_options_str  += '<option value="Moses">Moses</option>';
-            Manager_options_str  += '<option value="Paul">Paul</option>';
-            Manager_options_str  += '<option value="Peter">Peter</option>';
-            Manager_options_str  += '<option value="Philemon">Philemon</option>';
-            Manager_options_str  += '<option value="Samson">Samson</option>';
-            Manager_options_str  += '<option value="Simon">Simon</option>';
-            Manager_options_str  += '<option value="Stella">Stella</option>';
-            Manager_options_str  += '<option value="Susan">Susan</option>';
-            Manager_options_str  += '<option value="Vincent">Vincent</option>';
-            Manager_options_str  += '<option value="Wilfred">Wilfred</option>';
-            Manager_options_str  += '<option value="Wilson">Wilson</option>';
-            Manager_options_str  += '<option value="Winnie">Winnie</option>';
-            sel_Manager.innerHTML = Manager_options_str;
-            div_Manager.appendChild(sel_Manager);
-            var reset_Manager = document.createElement('button');
-            reset_Manager.style.float = "right";
-            reset_Manager.style.margin = "2px";
-            reset_Manager.innerHTML = 'Clear Filter';
-            //reset_Manager.className = 'filterlabel';
-            reset_Manager.style.width = "auto";
-            reset_Manager.style.display = "inline";
-            reset_Manager.onclick = function() {
-                var options = document.getElementById("sel_Manager").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_Manager.appendChild(reset_Manager);
-            document.getElementById("shiftsliders").appendChild(
-                document.createElement("div"));
-            var div_Category = document.createElement('div');
-            div_Category.id = "div_Category";
-            div_Category.className= "filterselect";
-            document.getElementById("shiftsliders").appendChild(div_Category);
-            var lab_Category = document.createElement('div');
-            lab_Category.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Category</span>';
-            lab_Category.className = 'filterlabel';
-            div_Category.appendChild(lab_Category);
-            sel_Category = document.createElement('select');
-            sel_Category.multiple = true;
-            sel_Category.size = 2;
-            sel_Category.id = "sel_Category";
-            var Category_options_str = "<option value='' unselected></option>";
-            sel_Category.onchange = function(){filterFunc()};
-            Category_options_str  += '<option value="CCR">CCR</option>';
-            Category_options_str  += '<option value="Support Team">Support Team</option>';
-            sel_Category.innerHTML = Category_options_str;
-            div_Category.appendChild(sel_Category);
-            var reset_Category = document.createElement('button');
-            reset_Category.style.float = "right";
-            reset_Category.style.margin = "2px";
-            reset_Category.innerHTML = 'Clear Filter';
-            //reset_Category.className = 'filterlabel';
-            reset_Category.style.width = "auto";
-            reset_Category.style.display = "inline";
-            reset_Category.onclick = function() {
-                var options = document.getElementById("sel_Category").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_Category.appendChild(reset_Category);
+        }
 
 
-            L.Polygon.include({
-            contains: function(latLng) {
+        sel_SatLogoff.noUiSlider.on('update', function (values) {
+            var val_SatLogoff = document.getElementById('val_SatLogoff');
+
+            // Convert both start and end values to time format
+            var startTime = decimalToTime(parseFloat(values[0]));
+            var endTime = decimalToTime(parseFloat(values[1]));
+
+            // Display the converted times in AM/PM format
+            val_SatLogoff.innerHTML = startTime + ' - ' + endTime;
+
+            // Call the filter function (if needed)
+            filterFunc();
+        });
+
+        //document.getElementById("shiftsliders").appendChild(document.createElement("div"));
+        var div_Office = document.createElement('div');
+        div_Office.id = "div_Office";
+        div_Office.className = "filterselect";
+        document.getElementById("shiftsliders").appendChild(div_Office);
+        var header_staffDetails = document.createElement('div');
+        header_staffDetails.id = "header_staffDetails";
+        header_staffDetails.innerHTML = '<br><br><span style="font-size: 15px; font-weight: bold;">Filter by Staff Details:</span>';
+        document.getElementById("div_Office").appendChild(header_staffDetails);
+        var lab_Office = document.createElement('div');
+        lab_Office.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Office</span>';
+        lab_Office.className = 'filterlabel';
+        div_Office.appendChild(lab_Office);
+        sel_Office = document.createElement('select');
+        sel_Office.multiple = true;
+        sel_Office.size = 6;
+        sel_Office.id = "sel_Office";
+        var Office_options_str = "<option value='' unselected></option>";
+        sel_Office.onchange = function () { filterFunc() };
+        Office_options_str += '<option value="Eldoret">Eldoret</option>';
+        Office_options_str += '<option value="Machakos">Machakos</option>';
+        Office_options_str += '<option value="Nairobi">Nairobi</option>';
+        Office_options_str += '<option value="Thika">Thika</option>';
+        sel_Office.innerHTML = Office_options_str;
+        div_Office.appendChild(sel_Office);
+        var reset_Office = document.createElement('button');
+        reset_Office.style.float = "right";
+        reset_Office.style.margin = "2px";
+        reset_Office.innerHTML = 'Clear Filter';
+        //reset_Office.className = 'filterlabel';
+        reset_Office.style.width = "auto";
+        reset_Office.style.display = "inline";
+        reset_Office.onclick = function () {
+            var options = document.getElementById("sel_Office").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_Office.appendChild(reset_Office);
+        document.getElementById("shiftsliders").appendChild(
+            document.createElement("div"));
+        var div_Manager = document.createElement('div');
+        div_Manager.id = "div_Manager";
+        div_Manager.className = "filterselect";
+        document.getElementById("shiftsliders").appendChild(div_Manager);
+        var lab_Manager = document.createElement('div');
+        lab_Manager.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Manager</span>';
+        lab_Manager.className = 'filterlabel';
+        div_Manager.appendChild(lab_Manager);
+        sel_Manager = document.createElement('select');
+        sel_Manager.multiple = true;
+        sel_Manager.size = 10;
+        sel_Manager.id = "sel_Manager";
+        var Manager_options_str = "<option value='' unselected></option>";
+        sel_Manager.onchange = function () { filterFunc() };
+        Manager_options_str += '<option value="Andrew">Andrew</option>';
+        Manager_options_str += '<option value="Anne">Anne</option>';
+        Manager_options_str += '<option value="Augustine">Augustine</option>';
+        Manager_options_str += '<option value="Beatrice">Beatrice</option>';
+        Manager_options_str += '<option value="Bernard">Bernard</option>';
+        Manager_options_str += '<option value="Catherine">Catherine</option>';
+        Manager_options_str += '<option value="Daudi">Daudi</option>';
+        Manager_options_str += '<option value="Dennis">Dennis</option>';
+        Manager_options_str += '<option value="Edward">Edward</option>';
+        Manager_options_str += '<option value="Elijah">Elijah</option>';
+        Manager_options_str += '<option value="Elizabeth">Elizabeth</option>';
+        Manager_options_str += '<option value="Emmanuel">Emmanuel</option>';
+        Manager_options_str += '<option value="Franklin">Franklin</option>';
+        Manager_options_str += '<option value="Georgette">Georgette</option>';
+        Manager_options_str += '<option value="James">James</option>';
+        Manager_options_str += '<option value="Jessica">Jessica</option>';
+        Manager_options_str += '<option value="Lillian">Lillian</option>';
+        Manager_options_str += '<option value="Lucy">Lucy</option>';
+        Manager_options_str += '<option value="Moses">Moses</option>';
+        Manager_options_str += '<option value="Paul">Paul</option>';
+        Manager_options_str += '<option value="Peter">Peter</option>';
+        Manager_options_str += '<option value="Philemon">Philemon</option>';
+        Manager_options_str += '<option value="Samson">Samson</option>';
+        Manager_options_str += '<option value="Simon">Simon</option>';
+        Manager_options_str += '<option value="Stella">Stella</option>';
+        Manager_options_str += '<option value="Susan">Susan</option>';
+        Manager_options_str += '<option value="Vincent">Vincent</option>';
+        Manager_options_str += '<option value="Wilfred">Wilfred</option>';
+        Manager_options_str += '<option value="Wilson">Wilson</option>';
+        Manager_options_str += '<option value="Winnie">Winnie</option>';
+        sel_Manager.innerHTML = Manager_options_str;
+        div_Manager.appendChild(sel_Manager);
+        var reset_Manager = document.createElement('button');
+        reset_Manager.style.float = "right";
+        reset_Manager.style.margin = "2px";
+        reset_Manager.innerHTML = 'Clear Filter';
+        //reset_Manager.className = 'filterlabel';
+        reset_Manager.style.width = "auto";
+        reset_Manager.style.display = "inline";
+        reset_Manager.onclick = function () {
+            var options = document.getElementById("sel_Manager").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_Manager.appendChild(reset_Manager);
+        document.getElementById("shiftsliders").appendChild(
+            document.createElement("div"));
+        var div_Category = document.createElement('div');
+        div_Category.id = "div_Category";
+        div_Category.className = "filterselect";
+        document.getElementById("shiftsliders").appendChild(div_Category);
+        var lab_Category = document.createElement('div');
+        lab_Category.innerHTML = '<span style="font-size: 12px; font-weight: bold;">Category</span>';
+        lab_Category.className = 'filterlabel';
+        div_Category.appendChild(lab_Category);
+        sel_Category = document.createElement('select');
+        sel_Category.multiple = true;
+        sel_Category.size = 2;
+        sel_Category.id = "sel_Category";
+        var Category_options_str = "<option value='' unselected></option>";
+        sel_Category.onchange = function () { filterFunc() };
+        Category_options_str += '<option value="CCR">CCR</option>';
+        Category_options_str += '<option value="Support Team">Support Team</option>';
+        sel_Category.innerHTML = Category_options_str;
+        div_Category.appendChild(sel_Category);
+        var reset_Category = document.createElement('button');
+        reset_Category.style.float = "right";
+        reset_Category.style.margin = "2px";
+        reset_Category.innerHTML = 'Clear Filter';
+        //reset_Category.className = 'filterlabel';
+        reset_Category.style.width = "auto";
+        reset_Category.style.display = "inline";
+        reset_Category.onclick = function () {
+            var options = document.getElementById("sel_Category").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_Category.appendChild(reset_Category);
+
+
+        L.Polygon.include({
+            contains: function (latLng) {
                 return turf.inside(new L.Marker(latLng).toGeoJSON(), this.toGeoJSON());
             }
         });
         L.Rectangle.include({
-            contains: function(latLng) {
+            contains: function (latLng) {
                 return this.getBounds().contains(latLng);
             }
         });
         L.Circle.include({
-            contains: function(latLng) {
+            contains: function (latLng) {
                 return this.getLatLng().distanceTo(latLng) < this.getRadius();
             }
         });
 
-        map.on('pm:create', function(e) {
-            layer_headsets_1.eachLayer(function(marker) {
+        map.on('pm:create', function (e) {
+            layer_headsets_1.eachLayer(function (marker) {
                 if (!e.layer.contains(marker.getLatLng())) {
                     marker.remove();
                 }
@@ -2813,7 +2946,7 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
         map.on('pm:drawend', e => {
             e.target.eachLayer(layer => {
                 if (layer.options.shape) {
-                    document.getElementsByClassName("leaflet-interactive")[0].addEventListener("mouseover", function() {
+                    document.getElementsByClassName("leaflet-interactive")[0].addEventListener("mouseover", function () {
                         var demo1 =
                             "<h1 class=" + "sidebar-header" + " style=" + "font-weight:bold" + ">Staff Group<span class=" + "sidebar-close" + ">\n" +
                             "<i class=" + "\'fa fa-caret-right\'></i></span></h1>\n" +
@@ -2832,7 +2965,7 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
                             "</button>\n" +
                             "</span>";
 
-                        document.querySelector("#sidebar #sidebar-content #shiftslider").innerHTML = demo1;
+                        document.querySelector("#sidebar #sidebar-content #select").innerHTML = demo1;
                         var demo =
                             "<table style=width:\'100%\' border=\'1\'>\n" +
                             "<tr>\n" +
@@ -2843,8 +2976,8 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
                             "</table>";
                         for (var i = 0; i < demo.length; i++) {
                             if (demo !== 0) {
-                                return function() {
-                                    (document.querySelector("#sidebar #sidebar-content #shiftslider #stafftable").innerHTML += demo);
+                                return function () {
+                                    (document.querySelector("#sidebar #sidebar-content #select #stafftable").innerHTML += demo);
                                 }
                             }
                         }
@@ -2855,15 +2988,15 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
             });
         });
 
-            
+
         map.on('pm:drawend', e => {
-            e.target.on('click', function() {
+            e.target.on('click', function () {
                 toggleSidebar();
             });
             var sidebarDiv = document.getElementById('sidebar');
-            toggleSidebar = function() {
+            toggleSidebar = function () {
                 if (hasClass(sidebarDiv, 'collapsed')) {
-                    sidebar.open('shiftslider');
+                    sidebar.open('select');
                 } else {
                     sidebar.close();
                 }
@@ -2874,114 +3007,132 @@ sel_SatLogoff.noUiSlider.on('update', function (values) {
             };
         });
 
-        function toggleFunction(bool) {
-            alert(bool)
+
+// Store the weekday layers in an object to manage visibility later
+var weekdayLayers = {
+    "Sun": layer_sunday_9,
+    "Mon": layer_monday_8,
+    "Tue": layer_tuesday_7,
+    "Wed": layer_wednesday_6,
+    "Thur": layer_thursday_5,
+    "Fri": layer_friday_4,
+    "Sat": layer_saturday_3
+};
+
+// Function to handle hiding all weekday layers when "Headsets and Adaptors" is clicked
+function setHdstVisibility() {
+    // Hide weekday layers
+    for (var day in weekdayLayers) {
+        if (weekdayLayers.hasOwnProperty(day)) {
+            map.removeLayer(weekdayLayers[day]); // Remove each weekday layer from the map
         }
-        // Store the weekday layers in an object to manage visibility later
-        var weekdayLayers = {
-            "Sun": layer_sunday_9,
-            "Mon": layer_monday_8,
-            "Tue": layer_tuesday_7,
-            "Wed": layer_wednesday_6,
-            "Thur": layer_thursday_5,
-            "Fri": layer_friday_4,
-            "Sat": layer_saturday_3
-        };
+    }
+    // Show the "Headsets and Adaptors" layer
+    map.addLayer(layer_headsets_1);
+}
 
-        // Function to handle hiding all weekday layers when "Headsets and Adaptors" is clicked
-        function myFunction1() {
-            // Hide weekday layers
-            for (var day in weekdayLayers) {
-                if (weekdayLayers.hasOwnProperty(day)) {
-                    map.removeLayer(weekdayLayers[day]); // Remove each weekday layer from the map
-                }
-            }
+// Modify the setDayVisibility function to handle hiding weekday layers when needed
+function setDayVisibility(day) {
+    // Remove the "Headsets and Adaptors" layer if it's visible
+    map.removeLayer(layer_headsets_1);
 
-            // Show the "Headsets and Adaptors" layer
-            map.addLayer(layer_headsets_1);
+    // Loop through all days and update display for logins/logoffs
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+
+    days.forEach(d => {
+        const loginsElement = document.getElementById(`div_${d}Logins`);
+        const logoffsElement = document.getElementById(`div_${d}Logoffs`);
+
+        if (d === day) {
+            // For the current day, set display to "revert"
+            loginsElement.style.display = "revert";
+            logoffsElement.style.display = "revert";
+        } else {
+            // For other days, set display to "none"
+            loginsElement.style.display = "none";
+            logoffsElement.style.display = "none";
         }
+    });
 
-        // Modify the setDayVisibility function to handle hiding weekday layers when needed
-        function setDayVisibility(day) {
-            // Remove the "Headsets and Adaptors" layer if it's visible
-            map.removeLayer(layer_headsets_1);
-            
-            // Loop through all days and update display for logins/logoffs
-            const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
-            
-            days.forEach(d => {
-                const loginsElement = document.getElementById(`div_${d}Logins`);
-                const logoffsElement = document.getElementById(`div_${d}Logoffs`);
-                
-                if (d === day) {
-                    // For the current day, set display to "revert"
-                    loginsElement.style.display = "revert";
-                    logoffsElement.style.display = "revert";
-                } else {
-                    // For other days, set display to "none"
-                    loginsElement.style.display = "none";
-                    logoffsElement.style.display = "none";
-                }
-            });
+    // Ensure that the selected day layer is shown on the map
+    map.addLayer(weekdayLayers[day]);
+}
 
-            // Ensure that the selected day layer is shown on the map
-            map.addLayer(weekdayLayers[day]);
-        }
+// Listen for base layer change event
+map.on('baselayerchange', function(e) {
+    // Get the title of the layer that was selected
+    var layerTitle = e.layer ? Object.keys(baseMaps).find(key => baseMaps[key] === e.layer) : '';
+    
+    // Define the mapping of layer title to day
+    var dayMapping = {
+        'Sunday': 'Sun',
+        'Monday': 'Mon',
+        'Tuesday': 'Tue',
+        'Wednesday': 'Wed',
+        'Thursday': 'Thur',
+        'Friday': 'Fri',
+        'Saturday': 'Sat'
+    };
+
+    // Extract the day from the layer title
+    var day = Object.keys(dayMapping).find(key => layerTitle.includes(key));
+
+    if (day) {
+        // Call the setDayVisibility function to toggle visibility of logins/logoffs elements
+        setDayVisibility(dayMapping[day]);
+    }
+});
 
 
 
-
-    function style_shiftmaps_1_0() {
+        function style_wednesday_7_0() {
             return {
-                pane: 'pane_shiftmap_1',
-                    shape: 'circle',
-                    radius: 4.0,
-                    opacity: 1,
-                    color: 'rgba(0,0,0,1.0)',
-                    dashArray: '',
-                    lineCap: 'butt',
-                    lineJoin: 'miter',
-                    weight: 1.5,
-                    fill: true,
-                    fillOpacity: 1,
-                    fillColor: 'rgba(84,176,74,1.0)',
-                    interactive: true,
+                pane: 'pane_wednesday_5',
+                shape: 'circle',
+                radius: 6,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.5,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
             }
         }
+        map.createPane('pane_wednesday_5');
+        map.getPane('pane_wednesday_5').style.zIndex = 409;
 
         var timelineControl = L.timelineSliderControl({
-          formatOutput: function (date) {
-            return new Date(date).toString();
-          },
+            //position: 'topright',
+            formatOutput: function (date) {
+                return new Date(date).toString();
+            },
         });
         var timeline = L.timeline(json_wednesday_6, {
-          getInterval: function(feature) {
-      return {
-        start: new Date(feature.properties.start).getTime(),
-        end: new Date(feature.properties.stop).getTime()
-      };
-    },
-          
-    pointToLayer: function (feature, latlng) {
+            getInterval: function (feature) {console.log(new Date(feature.properties.WednesdayLogin))
+                return {
+                    start: new Date(feature.properties.WednesdayLogin).getTime(),
+                    end: new Date(feature.properties.WednesdayLogoff).getTime()
+                };
+            },
+
+            pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_shiftmaps_1_0(feature));
-                //return L.marker(latlng, {icon: L.AwesomeMarkers.icon({
-                //icon: feature.properties.icon, 
-                //icon: 'commenting', 
-                //markerColor: 'green', 
-                //prefix: 'fa', 
-                //iconColor: 'white'
-            //}
-            //)});
+                return L.circleMarker(latlng, style_wednesday_7_0(feature));
             },
-  }).addTo(map);
+        }).addTo(map);
         timelineControl.addTo(map);
         timelineControl.addTimelines(timeline);
         timeline.addTo(map);
 
-        </script>
-    </body>
+
+    </script>
+</body>
+
 </html>
